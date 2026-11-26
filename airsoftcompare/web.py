@@ -80,11 +80,12 @@ def create_app(config_path: str | None = None) -> FastAPI:
         return total, rows
 
     @app.get("/", response_class=HTMLResponse)
-    def index(request: Request, q: str = "", cat: str = "", shop: int | None = None,
+    def index(request: Request, q: str = "", cat: str = "", shop: str = "",
               stock: bool = False, multi: bool = False, pmin: str = "", pmax: str = "",
               sort: str = "relevance", page: int = Query(1, ge=1)):
-        fmin = float(pmin) if pmin.strip() else None
-        fmax = float(pmax) if pmax.strip() else None
+        shop = int(shop) if shop.strip().isdigit() else None
+        fmin = _num(pmin)
+        fmax = _num(pmax)
         total, products = search(q, cat, shop, stock, multi, fmin, fmax, sort, page)
         params = {k: v for k, v in dict(q=q, cat=cat, shop=shop or "", stock="1" if stock else "",
                                          multi="1" if multi else "", pmin=pmin, pmax=pmax, sort=sort).items() if v}
@@ -140,6 +141,13 @@ def create_app(config_path: str | None = None) -> FastAPI:
         return {**dict(p), "offers": [dict(o) for o in offers]}
 
     return app
+
+
+def _num(v: str) -> float | None:
+    try:
+        return float(v.replace(",", ".").replace(" ", ""))
+    except ValueError:
+        return None
 
 
 PALETTE = ["#4f9d69", "#d9822b", "#3a7bd5", "#c94f6d", "#8e6cc9", "#2aa7a0", "#b8a12d", "#7a7a7a"]
