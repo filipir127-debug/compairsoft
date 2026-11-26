@@ -73,7 +73,7 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
         else:
             raise ValueError(f"unknown shop type {shop.get('type')!r} (use 'feed' or 'sitemap')")
 
-        suffix = re.compile(rf"\s*[-|–]\s*{re.escape(shop['name'])}(\.[a-z]{{2,3}})?\s*$", re.I)
+        suffix = _suffix(shop)
         for o in offers:
             o.title = suffix.sub("", o.title)
             save_offer(conn, shop_id, o, settings["exchange_rates"])
@@ -103,6 +103,22 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
     return count, status
 
 
+def _suffix(shop: dict) -> re.Pattern:
+    return re.compile(rf"\s*[-|–]\s*{re.escape(shop['name'])}(\.[a-z]{{2,3}})?\s*$", re.I)
+
+
+def _refresh_titles(conn: sqlite3.Connection, shops: list[dict]) -> None:
+    """Re-apply title cleanup and categories to stored offers (rules may have changed)."""
+    suffixes = {s["name"]: _suffix(s) for s in shops}
+    rows = conn.execute("SELECT o.id, o.title, o.shop_category, s.name FROM offers o JOIN shops s ON s.id = o.shop_id").fetchall()
+    updates = []
+    for r in rows:
+        title = suffixes[r["name"]].sub("", r["title"]) if r["name"] in suffixes else r["title"]
+        updates.append((title, normalize(title), categorize(title, r["shop_category"]), r["id"]))
+    with _write_lock, conn:
+        conn.executemany("UPDATE offers SET title = ?, norm_title = ?, category = ? WHERE id = ?", updates)
+
+
 def _rematch(conn: sqlite3.Connection, settings: dict) -> None:
     with _write_lock:
         n = rebuild_products(conn, settings["match_threshold"])
@@ -115,6 +131,7 @@ def update_all(cfg: dict, only: list[str] | None = None) -> None:
     shops = [s for s in cfg["shops"] if not only or s["name"] in only]
     if not shops:
         log.warning("No enabled shops in config.")
+    _refresh_titles(conn, cfg["shops"])
     _rematch(conn, settings)
     with ThreadPoolExecutor(max_workers=max(1, int(settings["parallel_shops"]))) as pool:
         list(pool.map(lambda s: update_shop(conn, s, settings), shops))
