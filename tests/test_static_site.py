@@ -57,3 +57,28 @@ def test_app_js_guards_every_url_from_data():
         assert raw not in app, raw
     assert "safeUrl(o.u)" in app and "safeUrl(p.i)" in app and "safeUrl(s.url)" in app
     assert 'rel="noopener noreferrer nofollow"' in app
+
+
+def test_every_interpolated_href_and_src_is_guarded():
+    """A new href="${...}"/src="${...}" in app.js must use safeUrl or a known-safe builder."""
+    app = APP_JS.read_text(encoding="utf-8")
+    allowed = ("esc(safeUrl(", "link ? esc(link)", "url(", "more}")  # url(): same-site query; more: export constants
+    found = re.findall(r'(?:href|src)="\$\{([^"]*)', app)
+    assert found
+    for expr in found:
+        assert expr.startswith(allowed), expr
+
+
+def test_safe_url_in_a_js_engine():
+    import shutil
+    import subprocess
+    import pytest
+    if not shutil.which("node"):
+        pytest.skip("node not installed")
+    app = APP_JS.read_text(encoding="utf-8")
+    fn = re.search(r"const safeUrl = \(u\) => \{.*?\n  \};", app, re.S).group(0)
+    cases = ["https://a.cz/p", "http://a.cz/i.jpg", "javascript:alert(1)", " JavaScript:alert(1)", "java\tscript:x",
+             "data:text/html,x", "/relative", "#", "", None]
+    script = fn + "\nconsole.log(JSON.stringify(%s.map(safeUrl)));" % json.dumps(cases)
+    out = json.loads(subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True).stdout)
+    assert out == ["https://a.cz/p", "http://a.cz/i.jpg"] + [""] * 8
