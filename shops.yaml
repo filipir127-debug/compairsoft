@@ -29,6 +29,7 @@ shops:
   - name: AirsoftPro
     url: https://www.airsoftpro.cz
     type: sitemap
+    timeout: 180                # its sitemap is generated on the fly and is slow
     exclude: '/(blog|clanky|novinky|kontakt|kosik|obchodni-podminky|search|vyhledavani)'
     max_pages: 4000
 

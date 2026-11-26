@@ -57,7 +57,7 @@ def save_offer(conn: sqlite3.Connection, shop_id: int, o: Offer, rates: dict, da
 def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[int, str]:
     shop_id = _shop_id(conn, shop)
     fetcher = Fetcher(settings["user_agent"], float(shop.get("request_delay", settings["request_delay"])),
-                      settings["timeout"], settings["respect_robots"])
+                      float(shop.get("timeout", settings["timeout"])), settings["respect_robots"])
     currency = shop.get("currency", settings["base_currency"])
     started = _now()
     count = 0
