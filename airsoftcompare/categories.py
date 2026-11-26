@@ -15,7 +15,7 @@ RULES: list[tuple[str, str, str, str]] = [
     ("bbs", "BBs", "⚪", r"^(?!.*\b(lozisk\w*|bearing\w*)).*\b(kulic\w*|gulick\w*|bbs?|bio ?bbs?|tracer bbs?)\b"),
     # Gas *products* (a can with a volume, CO2 capsules) – gun titles often say "green gas" too.
     ("gas", "Gas & CO2", "🧯", r"\b(gas|plyn\w*|propan\w*)\b.*\b\d+ ?ml\b|\b\d+ ?ml\b.*\b(gas|plyn\w*)\b|\bco2 ?(bombick\w*|capsul\w*|cartridg\w*|nabo\w*)|\bbombick\w*"),
-    ("pouches", "Pouches & bags", "👝", r"\b(sumk\w*|pouch\w*|batoh\w*|backpack\w*|kufr\w*|case|spacak\w*|ruksak\w*|brasn\w*|bag|bags|kaps\w*|dump ?pouch|admin panel)\b"),
+    ("pouches", "Pouches & bags", "👝", r"\b(opas\w*|belt\w*|sumk\w*|pouch\w*|batoh\w*|backpack\w*|kufr\w*|case|spacak\w*|ruksak\w*|brasn\w*|bag|bags|kaps\w*|dump ?pouch|admin panel)\b"),
     ("chargers", "Chargers", "🔌", r"\b(nabij\w*|charger\w*)\b"),
     ("batteries", "Batteries", "🔋", r"\b(bateri\w*|akumulator\w*|batter\w*|lipo|li-?po|nimh|li-?ion|li-?fe)\b"),
     ("magazines", "Magazines", "📦", r"\b(zasobn\w*|magazin\w*|magazine\w*|mags?|hi-?cap|mid-?cap|low-?cap|real-?cap|drum)\b"),
@@ -31,7 +31,7 @@ RULES: list[tuple[str, str, str, str]] = [
     ("comms", "Radios & headsets", "📻", r"\b(vysilac\w*|radio\w*|headset\w*|sluchatk\w*|ptt)\b"),
     ("parts", "Parts & upgrades", "⚙️", r"\b(hop-?up\w*|gumic\w*|telo|tela|zapadk\w*|miridl\w*|iron ?sight\w*|pist|pistu|pistem|pisty|pazb\w*|predpazb\w*|rukojet\w*|grip\w*|krytk\w*|spoust\w*|dorazec\w*|vack\w*|adapter\w*|podavac\w*|natahovac\w*|ramink\w*|upgrade\w*|ris|rail\w*|lista|listy|lisht\w*|montaz\w*|mount\w*|kabelaz\w*|wiring|stock|handguard|tlumic\w*|suppressor\w*|silencer\w*|flash ?hider\w*|kompenzator\w*|bipod\w*|dvojnoz\w*|udrzb\w*|cistic\w*|cisteni|sprej\w*|olej\w*|silikon\w*|lube|valec\w*|valc\w*|cylinder\w*|dil|dilem|nahradn\w*|kulis\w*|prepinac\w*|selector\w*|lozisk\w*|bearing\w*|bushing\w*|gearbox\w*|mechabox\w*|piest\w*|piston\w*|pruzin\w*|spring\w*|hlav\w*|barrel\w*|motor\w*|mosfet\w*|gumick\w*|bucking\w*|nozzle\w*|tryska\w*|cylind\w*|ozuben\w*|gears?|valve\w*|ventil\w*|tappet\w*|trigger ?unit|nub|o-?ring\w*|gate|titan|hpa engine|polarstar)\b"),
     ("grenades", "Grenades & pyro", "💥", r"\b(granat\w*|grenade\w*|min[ay]|pyro\w*|dymovnic\w*|smoke)\b"),
-    ("clothing", "Clothing & boots", "👕", r"\b(kalhot\w*|bluz\w*|uniform\w*|kosil\w*|combat ?(shirt|pants)|pants|jacket\w*|bund\w*|cepic\w*|cap|boot\w*|boty|obuv\w*|ghillie|kuklic\w*|balaclava|nakolenik\w*|knee ?pads?)\b"),
+    ("clothing", "Clothing & boots", "👕", r"\b(nasivk\w*|patch\w*|velcro|morale|kalhot\w*|bluz\w*|uniform\w*|kosil\w*|combat ?(shirt|pants)|pants|jacket\w*|bund\w*|cepic\w*|cap|boot\w*|boty|obuv\w*|ghillie|kuklic\w*|balaclava|nakolenik\w*|knee ?pads?)\b"),
     ("pistols", "Pistols & revolvers", "🔫", r"\b(pistol\w*|revolver\w*|glock\w*|hi-?capa|m?1911\w*|desert ?eagle|usp|p226|beretta|m9a?1?|cz ?75\w*|cz ?p-?0[79]|p-?0[79]|aep)\b"),
     ("snipers", "Sniper rifles", "🎯", r"\b(sniper\w*|odstrelov\w*|bolt ?action|vsr\w*|l96\w*|m24|m40|srs|ssg\d*|mb\d{2,})\b"),
     ("shotguns", "Shotguns", "💨", r"\b(brokovnic\w*|shotgun\w*|m870|m3 ?super)\b"),
