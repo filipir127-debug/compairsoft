@@ -14,7 +14,7 @@ from urllib.parse import urljoin, urlsplit
 
 from lxml import etree, html
 
-from .common import Fetcher, Offer, clean_ean, parse_availability, parse_currency, parse_price
+from .common import Fetcher, Offer, clean_ean, parse_availability, parse_currency, parse_price, safe_url
 
 log = logging.getLogger(__name__)
 
@@ -30,18 +30,23 @@ def find_sitemaps(fetcher: Fetcher, base_url: str) -> list[str]:
     return found or [urljoin(base_url, "/sitemap.xml")]
 
 
+# See feed.parse_feed: huge_tree needs entity expansion switched off.
+_XML_PARSER = etree.XMLParser(recover=True, huge_tree=True, resolve_entities=False, no_network=True, load_dtd=False)
+
+
 def iter_sitemap(fetcher: Fetcher, url: str, depth: int = 0) -> Iterator[str]:
     data = fetcher.get_bytes(url, check_robots=False)
     if not data or depth > 4:
         return
     try:
-        root = etree.fromstring(data, parser=etree.XMLParser(recover=True, huge_tree=True))
+        root = etree.fromstring(data, parser=_XML_PARSER)
     except etree.XMLSyntaxError:
         return
     if root is None:
         return
     is_index = etree.QName(root).localname == "sitemapindex"
-    locs = [el.text.strip() for el in root.iter() if etree.QName(el).localname == "loc" and el.text]
+    locs = [el.text.strip() for el in root.iter(etree.Element)  # elements only: skips entity refs, comments
+            if etree.QName(el).localname == "loc" and el.text]
     for loc in locs:
         if is_index:
             yield from iter_sitemap(fetcher, loc, depth + 1)
@@ -99,7 +104,7 @@ def _offer_from_jsonld(node: dict, page_url: str, default_currency: str) -> Offe
         in_stock=parse_availability(avail),
         ean=clean_ean(ean),
         brand=_text(node.get("brand")),
-        image=urljoin(page_url, _text(node.get("image"))) if node.get("image") else None,
+        image=safe_url(_text(node.get("image")), page_url),
         shop_category=_text(node.get("category")),
     )
 
@@ -152,7 +157,7 @@ def _offer_from_microdata(doc, page_url: str, default_currency: str) -> Offer | 
         in_stock=_availability(doc, props.get("availability")),
         ean=clean_ean(props.get("gtin13") or props.get("gtin")),
         brand=props.get("brand") or None,
-        image=props.get("image"),
+        image=safe_url(props.get("image"), page_url),
     )
 
 
@@ -208,7 +213,7 @@ def extract_product(page: str | bytes, page_url: str, default_currency: str = "C
         in_stock=_availability(doc, meta("product:availability", "og:availability", "availability")),
         ean=clean_ean(meta("product:ean", "gtin13", "gtin")),
         brand=meta("product:brand", "og:brand", "brand"),
-        image=meta("og:image"),
+        image=safe_url(meta("og:image"), page_url),
     )
 
 

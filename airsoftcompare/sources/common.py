@@ -2,18 +2,25 @@
 from __future__ import annotations
 
 import gzip
+import io
 import logging
 import re
 import threading
 import time
 import unicodedata
+import zlib
 from dataclasses import dataclass
 from urllib import robotparser
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 import requests
 
 log = logging.getLogger(__name__)
+
+# Largest download we accept (feeds of big shops are tens of MB). Own limit, not from a spec.
+MAX_DOWNLOAD_BYTES = 256 * 1024 * 1024
+# robots.txt: RFC 9309 section 2.5 asks crawlers to parse at least 500 KiB; anything beyond is cut off.
+MAX_ROBOTS_BYTES = 512 * 1024
 
 
 @dataclass
@@ -82,8 +89,24 @@ def clean_ean(value) -> str | None:
         return None
     digits = re.sub(r"\D", "", str(value))
     if 8 <= len(digits) <= 14 and set(digits) != {"0"}:
-        return digits.lstrip("0").zfill(13) if len(digits) <= 13 else digits
+        # GTIN-8/12/13 and a GTIN-14 with a leading 0 are the same number padded differently.
+        core = digits.lstrip("0")
+        return core.zfill(13) if len(core) <= 13 else core
     return None
+
+
+def safe_url(value, base: str | None = None) -> str | None:
+    """Absolute http(s) URL, or None. Shop data is untrusted: a feed could carry
+    `javascript:` links that would run in our visitors' browsers."""
+    if not value:
+        return None
+    url = str(value).strip()
+    if base:
+        url = urljoin(base, url)
+    parts = urlsplit(url)
+    if parts.scheme.lower() not in ("http", "https") or not parts.netloc:
+        return None
+    return url
 
 
 def parse_availability(value) -> bool | None:
@@ -134,29 +157,60 @@ class Fetcher:
         base = f"{parts.scheme}://{parts.netloc}"
         if base not in self._robots:
             rp = robotparser.RobotFileParser()
-            try:
-                r = self.session.get(base + "/robots.txt", timeout=self.timeout)
-                rp.parse(r.text.splitlines() if r.ok else [])
-            except requests.RequestException:
-                rp.parse([])
+            r = self._fetch(base + "/robots.txt", MAX_ROBOTS_BYTES, truncate=True)
+            rp.parse(r.text.splitlines() if r is not None else [])
             self._robots[base] = rp
         rp = self._robots[base]
         return rp is None or rp.can_fetch(self.session.headers["User-Agent"], url)
+
+    def _fetch(self, url: str, cap: int, truncate: bool = False) -> requests.Response | None:
+        """GET with a size cap: the body is streamed and dropped once it exceeds `cap` bytes,
+        or with `truncate`, cut to its first `cap` bytes (robots.txt: an oversized file must
+        still be obeyed, so we read its beginning instead of ignoring it)."""
+        try:
+            r = self.session.get(url, timeout=self.timeout, stream=True)
+        except requests.RequestException as e:
+            log.warning("GET %s failed: %s", url, e)
+            return None
+        try:
+            if r.status_code != 200:
+                log.debug("GET %s -> %s", url, r.status_code)
+                return None
+            try:
+                declared = int(r.headers.get("Content-Length") or 0)
+            except ValueError:
+                declared = 0
+            if declared > cap and not truncate:
+                log.warning("GET %s: %d bytes announced, limit is %d, skipped", url, declared, cap)
+                return None
+            chunks, size, cut = [], 0, False
+            for chunk in r.iter_content(1 << 16):
+                size += len(chunk)
+                if size > cap:
+                    if truncate:
+                        chunks.append(chunk[:len(chunk) - (size - cap)])
+                        cut = True
+                        break
+                    log.warning("GET %s: response larger than %d bytes, skipped", url, cap)
+                    return None
+                chunks.append(chunk)
+        except requests.RequestException as e:
+            log.warning("GET %s failed while reading: %s", url, e)
+            return None
+        finally:
+            r.close()
+        body = b"".join(chunks)
+        if cut:  # drop the half line: "Allow: /shop/x" cut to "Allow: /" would allow everything
+            body = body[:body.rfind(b"\n") + 1]
+        r._content = body  # later .content / .text read from memory
+        return r
 
     def get(self, url: str, check_robots: bool = True) -> requests.Response | None:
         if check_robots and not self.allowed(url):
             log.info("robots.txt disallows %s", url)
             return None
         self._wait(urlsplit(url).netloc)
-        try:
-            r = self.session.get(url, timeout=self.timeout)
-        except requests.RequestException as e:
-            log.warning("GET %s failed: %s", url, e)
-            return None
-        if r.status_code != 200:
-            log.debug("GET %s -> %s", url, r.status_code)
-            return None
-        return r
+        return self._fetch(url, MAX_DOWNLOAD_BYTES)
 
     def get_bytes(self, url: str, check_robots: bool = True) -> bytes | None:
         r = self.get(url, check_robots)
@@ -164,5 +218,22 @@ class Fetcher:
             return None
         data = r.content
         if data[:2] == b"\x1f\x8b":
-            data = gzip.decompress(data)
+            data = _gunzip(data, url)
         return data
+
+
+def _gunzip(data: bytes, url: str) -> bytes | None:
+    """Decompress a .gz body, refusing anything that expands beyond MAX_DOWNLOAD_BYTES."""
+    chunks, size = [], 0
+    try:
+        with gzip.GzipFile(fileobj=io.BytesIO(data)) as gz:
+            while chunk := gz.read(1 << 20):
+                size += len(chunk)
+                if size > MAX_DOWNLOAD_BYTES:
+                    log.warning("%s: unpacks to more than %d bytes, skipped", url, MAX_DOWNLOAD_BYTES)
+                    return None
+                chunks.append(chunk)
+    except (OSError, EOFError, zlib.error) as e:  # truncated / corrupt .gz must not abort the shop
+        log.warning("%s: broken gzip data: %s", url, e)
+        return None
+    return b"".join(chunks)
