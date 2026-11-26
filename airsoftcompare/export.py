@@ -244,6 +244,22 @@ def export_site(cfg: dict, out: str | Path) -> None:
     for asset in ("style.css", "app.js", "LICENSE-Lucide.txt"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
     shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
+    # Search engines: every category and product page, on the canonical host.
+    site = settings.get("site_url", "https://www.compairsoft.eu").rstrip("/")
+    today = date.today().isoformat()
+    urls = [f"{site}/", f"{site}/shops"] + [f"{site}/?cat={c}" for c in list(GROUPS) + sorted(counts)]
+    urls += [f"{site}/product/{p['id']}" for p in sorted(products, key=lambda p: -p["shop_count"])]
+    chunks = [urls[i:i + 40000] for i in range(0, len(urls), 40000)]
+    for n, chunk in enumerate(chunks, 1):
+        (out / f"sitemap-{n}.xml").write_text(
+            '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + "".join(f"<url><loc>{u.replace('&', '&amp;')}</loc><lastmod>{today}</lastmod></url>\n" for u in chunk)
+            + "</urlset>\n", encoding="utf-8")
+    (out / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "".join(f"<sitemap><loc>{site}/sitemap-{n}.xml</loc><lastmod>{today}</lastmod></sitemap>\n" for n in range(1, len(chunks) + 1))
+        + "</sitemapindex>\n", encoding="utf-8")
+    (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site}/sitemap.xml\n", encoding="utf-8")
     (out / "_redirects").write_text("/product/*  /product  200\n", encoding="utf-8")
     (out / "_headers").write_text(
         "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"
