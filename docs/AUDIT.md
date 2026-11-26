@@ -46,9 +46,9 @@ Without commit 6, B5 stays open and the suite has 31 tests instead of 34.
 | B6 | Low | Updates | Offers in a currency missing from `exchange_rates` vanished with no message | Fixed (warning) |
 | B7 | Low | Web | Price labels hard-coded to CZK even when `base_currency` is something else | Fixed |
 | B8 | Medium | Crawling | A sitemap with an XML comment inside it crashed that shop's crawl | Fixed |
-| R1–R14 | – | – | Problems found but not changed. Each needs a decision by the owner | See [Recommendations](#recommendations-not-changed) |
+| R1–R17 | – | – | Problems found but not changed. Each needs a decision by the owner | See [Recommendations](#recommendations-not-changed) |
 
-Verification: the test suite went from 11 to 34 tests, and all of them pass. The demo
+Verification: the test suite went from 11 to 34 tests (36 with the static-site branch), and all of them pass. The demo
 data (`python -m airsoftcompare demo`) produces **identical** products (same IDs, shop counts
 and categories) before and after the change. The site was started locally and every page
 and API route was checked with `curl`.
@@ -283,6 +283,87 @@ nodes of the same kind.
 
 ---
 
+## Static site (Cloudflare Pages)
+
+Branch `fix/static-site-hardening`, stacked on `audit/security-and-fixes`.
+
+Since `5ee7a26` the live site is static. `export.py` writes JSON, and `static/app.js` renders
+it in the browser. The FastAPI fixes (S1 templates, S4, S5) don't reach it, so it needs its own.
+
+### P1 – XSS in the static site (High)
+
+**Where:** `static/app.js:191` (`href="${esc(o.u)}"`), plus the product images (`p.i`) and the
+shop links (`s.url`).
+
+**Problem:** `esc()` escapes HTML but lets `javascript:` URLs through. The database lives in the
+GitHub Actions cache and was filled before the S1 checks existed, so it can still hold such
+URLs. `export.py` copied them into the JSON unchanged.
+
+**Fix, in two layers:**
+1. `export.py` passes every offer URL, product image and shop URL through `safe_url()`. An
+   unsafe offer is left out (and the log says how many). An unsafe image becomes no image. An
+   unsafe shop URL becomes a shop with no link.
+2. `app.js` has a new `safeUrl()`, which accepts only absolute `http:`/`https:` URLs parsed
+   with `new URL()`. It is used on every `href`/`src` that comes from data (`o.u`, `p.i`,
+   `s.url`). An unsafe link becomes `#`, and an unsafe image is not shown. This covers JSON
+   from an older export that is still cached. Shop links now have `rel="noopener noreferrer nofollow"`.
+
+**Limit:** when an offer is left out, the product's shop count and price range in `products`
+still include it, until the next update re-matches. The page then shows e.g. "In stock at 3 of
+4 shops" with three offers listed. A feed shop corrects itself on its next update, because the
+unsafe row is no longer refreshed and so it is deactivated. A crawled shop corrects itself
+within 7 days.
+
+### P2 – Security headers and CSP (Medium)
+
+**Where:** `export.py`, which writes `dist/_headers`. The workflow deploys `dist` with
+`wrangler pages deploy dist`.
+
+**Fix:** `_headers` now sends these on `/*`: `X-Content-Type-Options: nosniff`,
+`X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, and this
+Content-Security-Policy:
+
+```
+default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com;
+font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self';
+object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+```
+
+The policy matches what the site actually loads: its own JS, CSS and JSON, Google Fonts, shop
+product images over https, and the `data:` emoji favicon. The existing `Cache-Control` rules
+are kept. To avoid needing `'unsafe-inline'`:
+* `window.SITE` moved from an inline `<script>` into the generated `static/site.js`.
+* The `onerror=` / `onchange=` attributes were replaced by two listeners in `app.js`: broken
+  images are removed, and `data-autosubmit` controls submit their form when changed.
+* The chart legend's `style="background:…"` became a small SVG swatch.
+
+**Cloudflare Web Analytics:** if it is switched on in the Pages project, Cloudflare injects a
+script from `static.cloudflareinsights.com` that reports to `cloudflareinsights.com`. The
+CSP blocks both without any error the visitor sees. To use it, add
+`https://static.cloudflareinsights.com` to `script-src` and `https://cloudflareinsights.com`
+to `connect-src` in `SECURITY_HEADERS`.
+
+**Limit:** shop images over plain `http:` are blocked by `img-src … https:`. The category icon
+shows instead. Czech shops serve images over https, so this has not come up.
+
+### How it was checked
+* Tests in `tests/test_export.py`: export leaves out `javascript:` URLs from an old database,
+  `_headers` contains every header, and the pages have no inline scripts or handlers.
+* Ran `demo` and planted `javascript:` URLs in the database (offer, product image, shop),
+  then exported. The JSON contained none of them, and the log said
+  `Left out 1 offers whose link is not an http(s) URL`.
+* Served the export with a small local server that applies `_headers` and the `/product/*`
+  rewrite, as Cloudflare Pages does. Then opened it in headless Chromium: home, category
+  listing, filtered listing, shops, product, unknown product.
+  * No CSP violations, console errors or `javascript:`/`data:` links.
+  * Inter loaded from Google Fonts.
+  * The checkbox and the shop dropdown submit the form.
+  * A broken image is removed.
+* Wrote `javascript:` URLs straight back into the exported JSON. `app.js` still rendered no unsafe link.
+* Not checked on the real Cloudflare Pages; see the PR description.
+
+---
+
 ## Recommendations (not changed)
 
 These need a decision, or they are larger than an audit fix.
@@ -302,6 +383,9 @@ These need a decision, or they are larger than an audit fix.
 | R11 | CI | There is no automated test run. | A GitHub Actions workflow that runs `pytest` on every push or PR. Not added, because it needs a token with `workflow` scope and is the owner's choice. |
 | R13 | SSRF and slow servers | A sitemap `<loc>` or a redirect can point at internal addresses (`127.0.0.1`, cloud metadata). The read timeout also applies to each socket read separately, so a server that sends one byte at a time can hold a worker indefinitely. | Allow only public IPs for crawled hosts, and add an overall deadline per request. |
 | R14 | Product IDs when groups collide | If B1's tie-break offer becomes inactive, two colliding groups can swap IDs. A bookmark would then open the other product. This only affects groups that collide, which are rare. | Store the IDs that have been issued, if fully stable links matter. |
+| R15 | Disabled shops on the static site | `export.py` lists every shop in the database in `meta.json`, including shops removed from `shops.yaml`. B5 hides their offers, but the shop itself still appears on the Shops page and in the filter. | Pass the configured shop names into `export_site` and filter `shops` the way `web.py` does. |
+| R16 | Product page crash on a missing original price | `app.js` `product()`: `o.r.toFixed(2)` throws when an offer is in another currency and `o.r` is null, and the whole page then shows "Couldn't load the data". This is rare in practice. It existed before the static-site PR. | `o.y && o.y !== CUR && o.r != null`. |
+| R17 | Prototype keys in URL parameters | `?cat=__proto__`, `?cat=constructor` or `/product.html?id=__proto__` reach `GROUPS[c]` / `GROUP_OF[c]` / `shard[id]` and give an error page. This is not XSS. It existed before the static-site PR. | `Object.hasOwn(...)`, or build the maps with `Object.create(null)`. |
 | R12 | Speed of `_refresh_titles` | Every update re-normalises and re-categorises **all** stored offers. That is fine at tens of thousands, but slow beyond that. | Only re-run it when the code or config that cleans titles changes (e.g. store a hash of those rules). |
 
 ## Reviewing and testing this branch
@@ -311,7 +395,7 @@ git fetch origin
 git checkout audit/security-and-fixes
 python -m venv .venv && . .venv/bin/activate      # fish: source .venv/bin/activate.fish
 pip install -r requirements.txt
-python -m pytest -q                               # expect: 34 passed
+python -m pytest -q                               # expect: 34 passed (36 on fix/static-site-hardening)
 python -m airsoftcompare demo
 python -m airsoftcompare -c demo/shops.yaml serve # http://127.0.0.1:8000
 ```
