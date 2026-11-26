@@ -225,10 +225,10 @@
     const tiles = Object.entries(GROUPS).map(([g, [, , subs]]) => {
       const total = subs.reduce((n, s) => n + (m.counts[s] || 0), 0);
       if (!total) return "";
-      const img = m.images && m.images[g];
+
       const links = subs.length > 1 ? `<div class="tile-subs">${subs.filter((s) => m.counts[s]).map((s) => `<a href="/?cat=${s}">${esc(catName(s))}</a>`).join("")}</div>` : "";
       return `<div class="tile"><a class="tile-main" href="/?cat=${g}">
-          <span class="tile-img">${icon(ICONS[g], "ph")}${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}</span>
+<span class="tile-img"><svg class="illu" viewBox="0 0 160 90" aria-hidden="true"><use href="#cat-${g}"/></svg></span>
           <span class="tile-text"><span class="tile-name">${esc(catName(g))}</span><span class="tile-n">${nprod(total)}</span></span></a>${links}</div>`;
     }).join("");
     const titles = { "Compared in the most shops": t("sec.most"), "Biggest price differences": t("sec.diff") };

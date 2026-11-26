@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Category illustrations, drawn for CompAirsoft. Colours come from CSS variables (--il-*), so they follow the theme. -->
+
+<!-- Guns: assault rifle -->
+<symbol id="cat-weapons" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <rect x="44" y="30" width="40" height="5" rx="1.5" fill="var(--il-mid)"/>
+  <path d="M14 39 L38 37 L38 50 L20 57 L14 55 Z" fill="var(--il-main)"/>
+  <rect x="36" y="35" width="52" height="15" rx="2.5" fill="var(--il-main)"/>
+  <rect x="88" y="37" width="34" height="11" rx="2" fill="var(--il-mid)"/>
+  <rect x="122" y="40.5" width="24" height="4" rx="1" fill="var(--il-main)"/>
+  <rect x="145" y="38.5" width="6" height="8" rx="1.5" fill="var(--il-main)"/>
+  <path d="M59 50 L70 50 L66 67 L56 67 Z" fill="var(--il-main)"/>
+  <path d="M73 50 L85 50 C86 58 89 64 93 70 L82 73 C78 66 75 58 73 50 Z" fill="var(--il-accent)"/>
+  <path d="M52 50 C52 57 58 58 62 57" fill="none" stroke="var(--il-main)" stroke-width="2.5" stroke-linecap="round"/>
+</symbol>
+
+<!-- Magazines, BBs & gas -->
+<symbol id="cat-ammo" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <path d="M48 14 L66 14 C67 34 71 54 80 74 L62 79 C53 59 48 36 48 14 Z" fill="var(--il-main)"/>
+  <path d="M50 22 L64 22" stroke="var(--il-mid)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M51 30 L65 30" stroke="var(--il-mid)" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="96" y="26" width="24" height="46" rx="5" fill="var(--il-mid)"/>
+  <rect x="102" y="18" width="12" height="9" rx="2" fill="var(--il-main)"/>
+  <rect x="96" y="40" width="24" height="12" fill="var(--il-accent)"/>
+  <circle cx="82" cy="70" r="4.5" fill="var(--il-accent)"/>
+  <circle cx="92" cy="76" r="4.5" fill="var(--il-accent)"/>
+  <circle cx="129" cy="72" r="4.5" fill="var(--il-accent)"/>
+  <circle cx="86" cy="60" r="4.5" fill="var(--il-accent)"/>
+</symbol>
+
+<!-- Optics & lights: rifle scope -->
+<symbol id="cat-sights" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <path d="M22 34 L44 38 L44 52 L22 56 Z" fill="var(--il-main)"/>
+  <rect x="44" y="38" width="76" height="14" rx="4" fill="var(--il-main)"/>
+  <path d="M120 38 L140 32 L140 58 L120 52 Z" fill="var(--il-main)"/>
+  <rect x="139" y="31" width="5" height="28" rx="1.5" fill="var(--il-accent)"/>
+  <rect x="74" y="27" width="14" height="11" rx="2" fill="var(--il-mid)"/>
+  <rect x="88" y="41" width="9" height="8" rx="2" fill="var(--il-mid)"/>
+  <rect x="56" y="52" width="10" height="12" rx="1.5" fill="var(--il-mid)"/>
+  <rect x="98" y="52" width="10" height="12" rx="1.5" fill="var(--il-mid)"/>
+  <rect x="50" y="63" width="64" height="5" rx="1.5" fill="var(--il-main)"/>
+</symbol>
+
+<!-- Parts & accessories: gears and a spring -->
+<symbol id="cat-upgrades" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <g fill="var(--il-main)">
+    <circle cx="66" cy="44" r="20"/>
+    <rect x="62" y="16" width="8" height="10" rx="1.5"/><rect x="62" y="62" width="8" height="10" rx="1.5"/>
+    <rect x="38" y="40" width="10" height="8" rx="1.5"/><rect x="84" y="40" width="10" height="8" rx="1.5"/>
+    <rect x="62" y="16" width="8" height="10" rx="1.5" transform="rotate(45 66 44)"/><rect x="62" y="62" width="8" height="10" rx="1.5" transform="rotate(45 66 44)"/>
+    <rect x="62" y="16" width="8" height="10" rx="1.5" transform="rotate(-45 66 44)"/><rect x="62" y="62" width="8" height="10" rx="1.5" transform="rotate(-45 66 44)"/>
+  </g>
+  <circle cx="66" cy="44" r="7" fill="var(--il-bg)"/>
+  <g fill="var(--il-accent)">
+    <circle cx="104" cy="58" r="12"/>
+    <rect x="101" y="40" width="6" height="7" rx="1"/><rect x="101" y="69" width="6" height="7" rx="1"/>
+    <rect x="86" y="55" width="7" height="6" rx="1"/><rect x="115" y="55" width="7" height="6" rx="1"/>
+  </g>
+  <circle cx="104" cy="58" r="4" fill="var(--il-bg)"/>
+  <path d="M96 18 l8 8 l-8 0 l8 8 l-8 0 l8 8" fill="none" stroke="var(--il-mid)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-30 100 30)"/>
+</symbol>
+
+<!-- Tactical gear: plate carrier -->
+<symbol id="cat-gear" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <rect x="60" y="10" width="10" height="20" rx="3" fill="var(--il-main)"/>
+  <rect x="90" y="10" width="10" height="20" rx="3" fill="var(--il-main)"/>
+  <path d="M54 26 C62 32 98 32 106 26 L108 76 C96 80 64 80 52 76 Z" fill="var(--il-main)"/>
+  <rect x="58" y="36" width="44" height="3" rx="1.5" fill="var(--il-mid)"/>
+  <rect x="58" y="43" width="44" height="3" rx="1.5" fill="var(--il-mid)"/>
+  <rect x="58" y="52" width="12" height="20" rx="2" fill="var(--il-accent)"/>
+  <rect x="74" y="52" width="12" height="20" rx="2" fill="var(--il-accent)"/>
+  <rect x="90" y="52" width="12" height="20" rx="2" fill="var(--il-accent)"/>
+</symbol>
+
+<!-- Protection: helmet and goggles -->
+<symbol id="cat-protection" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <path d="M42 60 C42 30 60 16 82 16 C106 16 120 32 120 52 L120 60 Z" fill="var(--il-main)"/>
+  <rect x="96" y="40" width="22" height="5" rx="2" fill="var(--il-mid)"/>
+  <rect x="38" y="58" width="86" height="7" rx="3.5" fill="var(--il-main)"/>
+  <path d="M50 46 L114 46" stroke="var(--il-mid)" stroke-width="3" stroke-linecap="round"/>
+  <rect x="52" y="36" width="20" height="12" rx="5" fill="var(--il-accent)"/>
+  <rect x="74" y="36" width="20" height="12" rx="5" fill="var(--il-accent)"/>
+  <rect x="70" y="40" width="6" height="4" fill="var(--il-accent)"/>
+</symbol>
+
+<!-- Clothing & boots: combat shirt and boot -->
+<symbol id="cat-apparel" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <path d="M58 16 L72 12 C74 18 86 18 88 12 L102 16 L120 32 L110 42 L102 36 L102 76 L58 76 L58 36 L50 42 L40 32 Z" fill="var(--il-main)"/>
+  <rect x="64" y="40" width="12" height="10" rx="2" fill="var(--il-mid)"/>
+  <rect x="84" y="40" width="12" height="10" rx="2" fill="var(--il-mid)"/>
+  <path d="M106 58 L118 58 L118 70 L132 72 C136 73 137 78 132 79 L106 79 Z" fill="var(--il-accent)"/>
+  <rect x="105" y="78" width="30" height="4" rx="1.5" fill="var(--il-main)"/>
+</symbol>
+
+<!-- Other: grenade and radio -->
+<symbol id="cat-misc" viewBox="0 0 160 90">
+  <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
+  <ellipse cx="62" cy="54" rx="17" ry="21" fill="var(--il-main)"/>
+  <rect x="56" y="28" width="12" height="9" rx="2" fill="var(--il-mid)"/>
+  <path d="M68 30 C80 30 82 40 78 50" fill="none" stroke="var(--il-mid)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="52" cy="28" r="6" fill="none" stroke="var(--il-accent)" stroke-width="3"/>
+  <path d="M50 46 L74 46 M48 56 L76 56 M50 66 L74 66" stroke="var(--il-mid)" stroke-width="2" stroke-linecap="round"/>
+  <rect x="96" y="32" width="24" height="44" rx="5" fill="var(--il-main)"/>
+  <rect x="112" y="12" width="4" height="22" rx="2" fill="var(--il-main)"/>
+  <rect x="100" y="38" width="16" height="10" rx="2" fill="var(--il-accent)"/>
+  <circle cx="104" cy="58" r="2.5" fill="var(--il-mid)"/><circle cx="112" cy="58" r="2.5" fill="var(--il-mid)"/>
+  <circle cx="104" cy="66" r="2.5" fill="var(--il-mid)"/><circle cx="112" cy="66" r="2.5" fill="var(--il-mid)"/>
+</symbol>
+</svg>
