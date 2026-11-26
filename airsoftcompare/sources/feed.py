@@ -17,7 +17,7 @@ from typing import Iterator
 
 from lxml import etree
 
-from .common import Fetcher, Offer, clean_ean, parse_availability, parse_currency, parse_price
+from .common import Fetcher, Offer, clean_ean, parse_availability, parse_currency, parse_price, safe_url
 
 log = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ def _fields(el) -> dict[str, str]:
 
 def _to_offer(f: dict[str, str], default_currency: str) -> Offer | None:
     title = f.get("productname") or f.get("product") or f.get("title")
-    url = f.get("url") or f.get("link")
+    url = safe_url(f.get("url") or f.get("link"))
     if not title or not url:
         return None
     raw_price = f.get("sale_price") or f.get("price_vat") or f.get("price")
@@ -59,14 +59,17 @@ def _to_offer(f: dict[str, str], default_currency: str) -> Offer | None:
         in_stock=parse_availability(avail),
         ean=clean_ean(f.get("ean") or f.get("gtin")),
         brand=f.get("manufacturer") or f.get("brand"),
-        image=f.get("imgurl") or f.get("image_link"),
+        image=safe_url(f.get("imgurl") or f.get("image_link"), url),
         shop_category=f.get("categorytext") or f.get("product_type") or f.get("google_product_category"),
     )
 
 
 def parse_feed(data: bytes, default_currency: str = "CZK") -> Iterator[Offer]:
     seen: dict[str, int] = {}
-    for _, el in etree.iterparse(io.BytesIO(data), events=("end",), recover=True, huge_tree=True):
+    # huge_tree: big shops' feeds exceed libxml2's default limits. That also lifts its guard
+    # against entity expansion ("billion laughs"), so entities and network access stay off.
+    for _, el in etree.iterparse(io.BytesIO(data), events=("end",), recover=True, huge_tree=True,
+                                 resolve_entities=False, no_network=True, load_dtd=False):
         if _local(el.tag) not in ITEM_TAGS:
             continue
         fields = _fields(el)
