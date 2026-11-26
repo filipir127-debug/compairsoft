@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import re
 import sqlite3
 import threading
 from concurrent.futures import ThreadPoolExecutor
@@ -72,7 +73,9 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
         else:
             raise ValueError(f"unknown shop type {shop.get('type')!r} (use 'feed' or 'sitemap')")
 
+        suffix = re.compile(rf"\s*[-|–]\s*{re.escape(shop['name'])}(\.[a-z]{{2,3}})?\s*$", re.I)
         for o in offers:
+            o.title = suffix.sub("", o.title)
             save_offer(conn, shop_id, o, settings["exchange_rates"])
             count += 1
             if count % 500 == 0:

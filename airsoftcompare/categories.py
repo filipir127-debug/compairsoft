@@ -12,7 +12,7 @@ from .text import strip_accents
 
 # slug, label, icon, regex (applied to lowercase text without diacritics)
 RULES: list[tuple[str, str, str, str]] = [
-    ("bbs", "BBs", "⚪", r"\b(kulic\w*|gulick\w*|bbs?|bio ?bbs?|tracer bbs?)\b"),
+    ("bbs", "BBs", "⚪", r"^(?!.*\b(lozisk\w*|bearing\w*)).*\b(kulic\w*|gulick\w*|bbs?|bio ?bbs?|tracer bbs?)\b"),
     # Gas *products* (a can with a volume, CO2 capsules) – gun titles often say "green gas" too.
     ("gas", "Gas & CO2", "🧯", r"\b(gas|plyn\w*|propan\w*)\b.*\b\d+ ?ml\b|\b\d+ ?ml\b.*\b(gas|plyn\w*)\b|\bco2 ?(bombick\w*|capsul\w*|cartridg\w*|nabo\w*)|\bbombick\w*"),
     ("pouches", "Pouches", "👝", r"\b(sumk\w*|pouch\w*|kaps\w*|dump ?pouch|admin panel)\b"),
@@ -29,7 +29,7 @@ RULES: list[tuple[str, str, str, str]] = [
     ("slings", "Slings", "➰", r"\b(popruh\w*|sling\w*|remen\w*)\b"),
     ("lights", "Lights & lasers", "🔦", r"\b(svitiln\w*|flashlight\w*|weapon ?light|laser\w*|peq|baterk\w*)\b"),
     ("comms", "Radios & headsets", "📻", r"\b(vysilac\w*|radio\w*|headset\w*|sluchatk\w*|ptt)\b"),
-    ("parts", "Parts & upgrades", "⚙️", r"\b(hop-?up\w*|gearbox\w*|mechabox\w*|piest\w*|piston\w*|pruzin\w*|spring\w*|hlav\w*|barrel\w*|motor\w*|mosfet\w*|gumick\w*|bucking\w*|nozzle\w*|tryska\w*|cylind\w*|ozuben\w*|gears?|valve\w*|ventil\w*|tappet\w*|trigger ?unit|nub|o-?ring\w*|gate|titan|hpa engine|polarstar)\b"),
+    ("parts", "Parts & upgrades", "⚙️", r"\b(hop-?up\w*|lozisk\w*|bearing\w*|bushing\w*|gearbox\w*|mechabox\w*|piest\w*|piston\w*|pruzin\w*|spring\w*|hlav\w*|barrel\w*|motor\w*|mosfet\w*|gumick\w*|bucking\w*|nozzle\w*|tryska\w*|cylind\w*|ozuben\w*|gears?|valve\w*|ventil\w*|tappet\w*|trigger ?unit|nub|o-?ring\w*|gate|titan|hpa engine|polarstar)\b"),
     ("grenades", "Grenades & pyro", "💥", r"\b(granat\w*|grenade\w*|min[ay]|pyro\w*|dymovnic\w*|smoke)\b"),
     ("clothing", "Clothing & boots", "👕", r"\b(kalhot\w*|bluz\w*|uniform\w*|kosil\w*|combat ?(shirt|pants)|pants|jacket\w*|bund\w*|cepic\w*|cap|boot\w*|boty|obuv\w*|ghillie|kuklic\w*|balaclava|nakolenik\w*|knee ?pads?)\b"),
     ("guns", "Guns", "🔫", r"\b(zbran\w*|pistol\w*|revolver\w*|samopal\w*|smg|pusk\w*|pusk[ay]|rifle\w*|carbine\w*|karabin\w*|sniper\w*|odstrelov\w*|brokovnic\w*|shotgun\w*|aeg|gbb|gbbr|aep|m4|m16|ak-?\d+|mp5|g36|scar|hk416|ump|vss|l96|vsr|glock|g17|1911|hi-?capa)\b"),
