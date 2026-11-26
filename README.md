@@ -68,6 +68,17 @@ Crawl slowly, respect robots.txt (both on by default) and prefer feeds. Before
 publishing the site, check each shop's terms or ask permission. Most shops are
 glad to be listed, which is how Heureka works.
 
+## Tests
+```bash
+python -m pytest -q
+```
+
+## Security notes
+Shop feeds and pages are untrusted input. Links and images are accepted only as absolute
+`http(s)` URLs (`sources/common.py: safe_url`). XML entities are not expanded. Downloads are
+capped at 256 MB (`MAX_DOWNLOAD_BYTES`). See [`docs/AUDIT.md`](docs/AUDIT.md) for the full
+audit and open recommendations.
+
 ## Project layout
 ```
 airsoftcompare/
