@@ -19,6 +19,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
+from .sources.common import safe_url
 from .text import SYNONYMS
 
 log = logging.getLogger(__name__)
@@ -32,7 +33,7 @@ def _num(v):
 
 def _card(p: dict, shops_of: dict) -> dict:
     return {"id": p["id"], "t": p["title"], "c": p["category"], "p": _num(p["min_price"]), "x": _num(p["max_price"]),
-            "s": p["shop_count"], "k": p["in_stock_count"], "i": p["image"] or "", "h": sorted(shops_of.get(p["id"], ()))}
+            "s": p["shop_count"], "k": p["in_stock_count"], "i": safe_url(p["image"]) or "", "h": sorted(shops_of.get(p["id"], ()))}
 
 
 def _dump(path: Path, data) -> int:
@@ -72,8 +73,10 @@ def export_site(cfg: dict, out: str | Path) -> None:
     products = [dict(r) for r in conn.execute("SELECT * FROM products")]
     if not products:
         raise SystemExit("No products in the database – refusing to publish an empty site.")
-    shops = [dict(r) for r in conn.execute("SELECT * FROM shops ORDER BY name")]
-    shop_name = {s["id"]: s["name"] for s in shops}
+    listed = {s["name"] for s in cfg["shops"]}  # shops removed from shops.yaml stay in the DB, hidden
+    all_shops = [dict(r) for r in conn.execute("SELECT * FROM shops ORDER BY name")]
+    shops = [s for s in all_shops if s["name"] in listed]
+    shop_name = {s["id"]: s["name"] for s in all_shops}
 
     offers: dict[str, list[dict]] = defaultdict(list)
     shops_of: dict[str, set[int]] = defaultdict(set)
@@ -107,7 +110,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
         pid = p["id"]
         shards[pid[:2]][pid] = {
             "p": {**cards[pid], "b": p["brand"], "e": p["ean"]},
-            "o": [{"s": shop_name[o["shop_id"]], "t": o["title"], "u": o["url"], "v": _num(o["price_base"]),
+            "o": [{"s": shop_name[o["shop_id"]], "t": o["title"], "u": safe_url(o["url"]) or "#", "v": _num(o["price_base"]),
                    "r": _num(o["price"]), "y": o["currency"], "k": o["in_stock"], "a": o["active"]}
                   for o in offers.get(pid, [])],
             "hist": history.get(pid, {}),
@@ -150,7 +153,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "currency": settings["base_currency"],
         "stats": {"products": len(products), "compared": sum(p["shop_count"] > 1 for p in products),
                   "offers": sum(len(v) for v in shops_of.values()), "shops": len(shops)},
-        "shops": [{"id": s["id"], "name": s["name"], "url": s["url"], "type": s["type"], "offers": s["offer_count"],
+        "shops": [{"id": s["id"], "name": s["name"], "url": safe_url(s["url"]), "type": s["type"], "offers": s["offer_count"],
                    "cheapest": cheapest[s["id"]], "updated": s["last_update"], "status": s["last_status"]} for s in shops],
         "counts": counts,
         "sections": sections,
@@ -168,8 +171,12 @@ def export_site(cfg: dict, out: str | Path) -> None:
         (out / f"{page}.html").write_text(env.get_template(f"{page}.html").render(page=page, **site), encoding="utf-8")
     for asset in ("style.css", "app.js"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
+    shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
     (out / "_redirects").write_text("/product/*  /product.html  200\n", encoding="utf-8")
     (out / "_headers").write_text(
+        "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"
+        "  Referrer-Policy: strict-origin-when-cross-origin\n"
+        "  Permissions-Policy: camera=(), microphone=(), geolocation=()\n"
         "/data/*\n  Cache-Control: public, max-age=600\n"
         "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
     files = sum(1 for f in out.rglob("*") if f.is_file())

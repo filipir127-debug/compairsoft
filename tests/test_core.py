@@ -127,3 +127,30 @@ def test_microdata_ignores_related_products():
     </div></body></html>""".encode()
     o = extract_product(page, "https://shop.example/p")
     assert (o.title, o.price, o.in_stock) == ("Tlumič 32 × 150 mm – Černá", 1190, False)
+
+
+def test_export_sanitises_urls_and_hides_unlisted_shops(tmp_path):
+    import json
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.export import export_site
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    dbfile = tmp_path / "t.db"
+    conn = dbmod.connect(str(dbfile))
+    rates = {"CZK": 1.0}
+    for name in ("Kept", "Removed"):
+        sid = _shop_id(conn, {"name": name, "url": "https://x.cz", "type": "feed"})
+        save_offer(conn, sid, Offer(url=f"https://{name}.cz/m4", title="M4 mid-cap zásobník 120 ran",
+                                    price=200, currency="CZK", in_stock=True, ean=None, brand=None, image=None), rates)
+    conn.execute("UPDATE offers SET url = 'javascript:alert(1)' WHERE shop_id = 1")
+    conn.commit()
+    rebuild_products(conn)
+    cfg = {"settings": {"database": str(dbfile), "base_currency": "CZK"},
+           "shops": [{"name": "Kept"}]}
+    export_site(cfg, tmp_path / "dist")
+    meta = json.loads((tmp_path / "dist/data/meta.json").read_text())
+    assert [s["name"] for s in meta["shops"]] == ["Kept"]
+    shard = next((tmp_path / "dist/data/p").glob("*.json"))
+    urls = {o["u"] for p in json.loads(shard.read_text()).values() for o in p["o"]}
+    assert "javascript:alert(1)" not in urls and "#" in urls
