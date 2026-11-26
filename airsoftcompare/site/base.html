@@ -1,50 +1,71 @@
 <!doctype html>
-<html lang="en" data-v="{{ version }}">
+<html lang="cs" data-v="{{ version }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}CompAirsoft – compare airsoft prices{% endblock %}</title>
+  <title>{% block title %}CompAirsoft{% endblock %}</title>
   <meta name="description" content="Compare prices of airsoft guns, magazines, optics and gear across Czech airsoft shops.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+  <script>
+    // Theme and language before first paint, so the page doesn't flash.
+    (function () {
+      var d = document.documentElement, t = null, l = null;
+      try { t = localStorage.getItem("theme"); l = localStorage.getItem("lang"); } catch (e) {}
+      if (t === "light" || t === "dark") d.dataset.theme = t;
+      var nav = (navigator.language || "en").slice(0, 2).toLowerCase();
+      d.lang = l || (["cs", "sk", "de", "en"].indexOf(nav) >= 0 ? nav : "en");
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff7a00' stroke-width='2.4' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M22 12h-4M6 12H2M12 6V2M12 22v-4'/></svg>">
   <link rel="preload" href="/static/fonts/inter-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/static/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/static/style.css?v={{ version }}">
   <link rel="preload" href="/data/meta.json?v={{ version }}" as="fetch" crossorigin>
 </head>
 <body data-page="{{ page }}">
+{% include "icons.svg" %}
 <header class="top">
   <div class="wrap top-inner">
-    <a class="logo" href="/"><span class="logo-mark">🎯</span><span class="logo-text">Comp<b>airsoft</b></span></a>
+    <a class="logo" href="/"><span class="logo-mark"><svg class="ic"><use href="#i-crosshair"/></svg></span><span class="logo-text">Comp<b>airsoft</b></span></a>
     <form class="search" action="/" method="get" role="search">
-      <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"/></svg>
-      <input type="search" name="q" placeholder="Search guns, magazines, red dots…" autocomplete="off" aria-label="Search products">
-      <button type="submit">Search</button>
+      <svg class="search-ico ic"><use href="#i-search"/></svg>
+      <input type="search" name="q" data-i18n-ph="search.ph" placeholder="Search guns, magazines, red dots…" autocomplete="off" aria-label="Search">
+      <button type="submit" data-i18n="search.btn">Search</button>
     </form>
-    <nav class="top-nav"><a href="/shops">Shops</a></nav>
+    <nav class="top-nav">
+      <a href="/shops"><svg class="ic"><use href="#i-store"/></svg><span data-i18n="nav.shops">Shops</span></a>
+      <label class="lang" title="Language"><svg class="ic"><use href="#i-globe"/></svg>
+        <select id="lang" aria-label="Language">
+          <option value="cs">CS</option><option value="sk">SK</option><option value="en">EN</option><option value="de">DE</option>
+        </select></label>
+      <button class="theme-btn" id="theme" type="button" aria-label="Dark / light mode">
+        <svg class="ic ic-moon"><use href="#i-moon"/></svg><svg class="ic ic-sun"><use href="#i-sun"/></svg>
+      </button>
+    </nav>
   </div>
   <nav class="catbar" aria-label="Categories">
     <div class="wrap catbar-inner">
       {% for g, (label, icon, subs) in GROUPS.items() %}
-        <a href="/?cat={{ g }}" data-group="{{ g }}"><span>{{ icon }}</span>{{ label }}</a>
+        <a href="/?cat={{ g }}" data-group="{{ g }}"><svg class="ic"><use href="#i-{{ ICONS[g] }}"/></svg><span data-i18n="g.{{ g }}">{{ label }}</span></a>
       {% endfor %}
     </div>
   </nav>
 </header>
-<main class="wrap main" id="app">{% block content %}<div class="loading">Loading…</div>{% endblock %}</main>
+<main class="wrap main" id="app">{% block content %}<div class="loading" data-i18n="loading">Loading…</div>{% endblock %}</main>
 <footer class="foot">
   <div class="wrap foot-inner">
     <div>
-      <div class="logo small"><span class="logo-mark">🎯</span><span class="logo-text">Comp<b>airsoft</b></span></div>
-      <p>Compare airsoft prices across Czech shops in one place.</p>
+      <div class="logo small"><span class="logo-mark"><svg class="ic"><use href="#i-crosshair"/></svg></span><span class="logo-text">Comp<b>airsoft</b></span></div>
+      <p data-i18n="foot.about">Compare airsoft prices across Czech shops in one place.</p>
     </div>
     <div>
-      <h4>Browse</h4>
-      <a href="/?all=1">All products</a><a href="/?multi=1&sort=savings">Biggest price differences</a><a href="/shops">Shops</a>
+      <h4 data-i18n="foot.browse">Browse</h4>
+      <a href="/?all=1" data-i18n="all">All products</a><a href="/?multi=1&sort=savings" data-i18n="sec.diff">Biggest price differences</a><a href="/shops" data-i18n="nav.shops">Shops</a>
     </div>
     <div>
-      <h4>Good to know</h4>
-      <p>Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.</p>
+      <h4 data-i18n="foot.know">Good to know</h4>
+      <p data-i18n="foot.disclaimer">Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.</p>
       <p class="small" id="updated"></p>
+      <p class="small credits">Product photos © the shops listed. Icons: <a href="https://lucide.dev" rel="noopener">Lucide</a> (ISC). Font: Inter (OFL).</p>
     </div>
   </div>
 </footer>

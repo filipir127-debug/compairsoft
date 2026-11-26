@@ -10,8 +10,9 @@ from __future__ import annotations
 import bisect
 import json
 import logging
+import re
 import shutil
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -20,20 +21,67 @@ from jinja2 import Environment, FileSystemLoader
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
 from .sources.common import safe_url
-from .text import SYNONYMS
+from .text import SYNONYMS, colors, normalize, strip_accents
 
 log = logging.getLogger(__name__)
 HERE = Path(__file__).parent
 HISTORY_DAYS = 180
+GROUP_ICONS = {"weapons": "crosshair", "ammo": "layers", "sights": "telescope", "upgrades": "cog",
+               "gear": "backpack", "protection": "shield", "apparel": "shirt", "misc": "layout-grid"}
 
 
 def _num(v):
     return None if v is None else round(v, 2)
 
 
-def _card(p: dict, shops_of: dict) -> dict:
-    return {"id": p["id"], "t": p["title"], "c": p["category"], "p": _num(p["min_price"]), "x": _num(p["max_price"]),
-            "s": p["shop_count"], "k": p["in_stock_count"], "i": safe_url(p["image"]) or "", "h": sorted(shops_of.get(p["id"], ()))}
+_POWER = [("hpa", r"\bhpa\b"), ("co2", r"\bco2\b"),
+          ("gas", r"\b(gbbr?|gnb|plyn\w*|green ?gas|gas ?blow\w*)\b"),
+          ("electric", r"\b(aeg|aep|ebb|etu|bldc|mosfet|elektri\w*|electric\w*)\b"),
+          ("spring", r"\b(manual\w*|manualn\w*|pruzin\w*|spring\w*|bolt ?action)\b")]
+_METAL = r"\b(kov\w*|celokov\w*|full ?metal|metal\w*|ocel\w*|steel|hlinik\w*|alu\w*|cnc)\b"
+_PLASTIC = r"\b(abs|plast\w*|nylon\w*|polymer\w*)\b"
+_CAP = r"\b(mid|hi|high|low|real)[ -]?cap\b"
+_BB_WEIGHT = r"\b0[,.](\d{2})\d? ?g\b"
+
+
+def _attrs(title: str, category: str) -> list[str]:
+    """Filterable tags derived from the title: colour, power source, material, capacity, BB weight."""
+    t = strip_accents(title.lower())
+    tags = [f"col:{c}" for c in sorted(colors(normalize(title)))]
+    if GROUP_OF.get(category) == "weapons":
+        power = next((name for name, rx in _POWER if re.search(rx, t)), None)
+        if power:
+            tags.append(f"pw:{power}")
+        if re.search(_METAL, t):
+            tags.append("mt:metal")
+        elif re.search(_PLASTIC, t):
+            tags.append("mt:plastic")
+    if category == "magazines" and (m := re.search(_CAP, t)):
+        tags.append("cap:" + {"high": "hi"}.get(m.group(1), m.group(1)))
+    if category == "bbs" and (m := re.search(_BB_WEIGHT, t)):
+        tags.append(f"bbw:0.{m.group(1)}")
+    return tags
+
+
+def _brand(p: dict, known: dict[str, str]) -> str | None:
+    """The product's brand, or a known brand named at the end of the title ("…, Specna Arms")."""
+    if p["brand"]:
+        return known.get(p["brand"].strip().lower(), p["brand"].strip())
+    for part in reversed(re.split(r"\s*[,\-–]\s*", p["title"])):
+        if part.strip().lower() in known:
+            return known[part.strip().lower()]
+    return None
+
+
+def _card(p: dict, shops_of: dict, brand: str | None = None) -> dict:
+    card = {"id": p["id"], "t": p["title"], "c": p["category"], "p": _num(p["min_price"]), "x": _num(p["max_price"]),
+            "s": p["shop_count"], "k": p["in_stock_count"], "i": safe_url(p["image"]) or "",
+            "h": sorted(shops_of.get(p["id"], ()))}
+    if brand:
+        card["b"] = brand
+    if tags := _attrs(p["title"], p["category"]):
+        card["a"] = tags
+    return card
 
 
 def _dump(path: Path, data) -> int:
@@ -59,6 +107,23 @@ def _similar(products: list[dict]) -> dict[str, list[str]]:
             cands = sorted((q for q in window if q["id"] != p["id"]),
                            key=lambda q: (-q["shop_count"], abs(q["min_price"] - p["min_price"])))
             out[p["id"]] = [q["id"] for q in cands[:8]]
+    return out
+
+
+TILE_SUBCATEGORY = {"weapons": "guns", "ammo": "magazines", "sights": "optics", "upgrades": "parts",
+                    "gear": "vests", "protection": "helmets", "apparel": "clothing", "misc": "grenades"}
+
+
+def _group_images(products: list[dict], offers: dict) -> dict[str, str]:
+    """A representative photo per top-level category: a typical item (a rifle for guns, a vest for
+    gear) that is widely compared and pricier, which tends to be the flagship product."""
+    out = {}
+    for g, sub in TILE_SUBCATEGORY.items():
+        cands = [p for p in products if p["category"] == sub and safe_url(p["image"])] or \
+                [p for p in products if GROUP_OF.get(p["category"]) == g and safe_url(p["image"])]
+        if cands:
+            best = max(cands, key=lambda p: (min(p["shop_count"], 3), p["in_stock_count"] > 0, p["min_price"]))
+            out[g] = safe_url(best["image"])
     return out
 
 
@@ -101,7 +166,13 @@ def export_site(cfg: dict, out: str | Path) -> None:
         if history[pid][shop][-1] != point:
             history[pid][shop].append(point)
 
-    cards = {p["id"]: _card(p, shops_of) for p in products}
+    # Brands as most shops spell them; a brand must be used by 3+ products to count.
+    spellings: dict[str, Counter] = defaultdict(Counter)
+    for p in products:
+        if p["brand"] and 1 < len(p["brand"].strip()) <= 30:
+            spellings[p["brand"].strip().lower()][p["brand"].strip()] += 1
+    known = {k: c.most_common(1)[0][0] for k, c in spellings.items() if sum(c.values()) >= 3}
+    cards = {p["id"]: _card(p, shops_of, _brand(p, known)) for p in products}
     similar = _similar(products)
 
     # Product detail shards
@@ -156,6 +227,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "shops": [{"id": s["id"], "name": s["name"], "url": safe_url(s["url"]), "type": s["type"], "offers": s["offer_count"],
                    "cheapest": cheapest[s["id"]], "updated": s["last_update"], "status": s["last_status"]} for s in shops],
         "counts": counts,
+        "images": _group_images(products, offers),
         "sections": sections,
         "syn": synonyms,
     }
@@ -164,12 +236,12 @@ def export_site(cfg: dict, out: str | Path) -> None:
     # HTML shells and assets
     version = datetime.now().strftime("%Y%m%d%H%M")
     env = Environment(loader=FileSystemLoader(HERE / "site"), autoescape=True)
-    site = {"CATEGORIES": CATEGORIES, "GROUPS": GROUPS, "GROUP_OF": GROUP_OF, "version": version,
-            "config": json.dumps({"cats": CATEGORIES, "groups": GROUPS, "groupOf": GROUP_OF,
+    site = {"CATEGORIES": CATEGORIES, "GROUPS": GROUPS, "GROUP_OF": GROUP_OF, "version": version, "ICONS": GROUP_ICONS,
+            "config": json.dumps({"cats": CATEGORIES, "groups": GROUPS, "groupOf": GROUP_OF, "icons": GROUP_ICONS,
                                   "currency": settings["base_currency"]}, ensure_ascii=False)}
     for page in ("index", "product", "shops", "404"):
         (out / f"{page}.html").write_text(env.get_template(f"{page}.html").render(page=page, **site), encoding="utf-8")
-    for asset in ("style.css", "app.js"):
+    for asset in ("style.css", "app.js", "LICENSE-Lucide.txt"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
     shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
     (out / "_redirects").write_text("/product/*  /product  200\n", encoding="utf-8")
