@@ -275,3 +275,6 @@ img { max-width: 100%; }
   .top-nav a span { display: none; }
 }
 .layout > * { min-width: 0; }
+.prose { max-width: 760px; background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 32px; margin: 0 auto; }
+.prose h1 { margin: 0 0 4px; font-size: 28px; } .prose h2 { font-size: 18px; margin: 24px 0 6px; } .prose p { margin: 0 0 8px; line-height: 1.6; }
+@media (max-width: 640px) { .prose { padding: 20px 18px; } }

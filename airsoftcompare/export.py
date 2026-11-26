@@ -110,6 +110,13 @@ def _similar(products: list[dict]) -> dict[str, list[str]]:
     return out
 
 
+# No inline scripts anywhere: only our own files run. Product photos come from the shops (https only);
+# Cloudflare Web Analytics is allowed in case it is switched on in the dashboard.
+CSP = ("default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; "
+       "style-src-attr 'unsafe-inline'; img-src 'self' https: data:; font-src 'self'; "
+       "connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'none'; "
+       "frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests")
+
 TILE_SUBCATEGORY = {"weapons": "guns", "ammo": "magazines", "sights": "optics", "upgrades": "parts",
                     "gear": "vests", "protection": "helmets", "apparel": "clothing", "misc": "grenades"}
 
@@ -237,17 +244,19 @@ def export_site(cfg: dict, out: str | Path) -> None:
     version = datetime.now().strftime("%Y%m%d%H%M")
     env = Environment(loader=FileSystemLoader(HERE / "site"), autoescape=True)
     site = {"CATEGORIES": CATEGORIES, "GROUPS": GROUPS, "GROUP_OF": GROUP_OF, "version": version, "ICONS": GROUP_ICONS,
+            # Embedded in a <script type="application/json">: "</" must not end that element early.
             "config": json.dumps({"cats": CATEGORIES, "groups": GROUPS, "groupOf": GROUP_OF, "icons": GROUP_ICONS,
-                                  "currency": settings["base_currency"]}, ensure_ascii=False)}
-    for page in ("index", "product", "shops", "404"):
+                                  "currency": settings["base_currency"], "contact": settings.get("contact_email") or ""},
+                                 ensure_ascii=False).replace("</", "<\\/")}
+    for page in ("index", "product", "shops", "privacy", "404"):
         (out / f"{page}.html").write_text(env.get_template(f"{page}.html").render(page=page, **site), encoding="utf-8")
-    for asset in ("style.css", "app.js", "LICENSE-Lucide.txt"):
+    for asset in ("style.css", "app.js", "init.js", "LICENSE-Lucide.txt"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
     shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
     # Search engines: every category and product page, on the canonical host.
     site = settings.get("site_url", "https://www.compairsoft.eu").rstrip("/")
     today = date.today().isoformat()
-    urls = [f"{site}/", f"{site}/shops"] + [f"{site}/?cat={c}" for c in list(GROUPS) + sorted(counts)]
+    urls = [f"{site}/", f"{site}/shops", f"{site}/privacy"] + [f"{site}/?cat={c}" for c in list(GROUPS) + sorted(counts)]
     urls += [f"{site}/product/{p['id']}" for p in sorted(products, key=lambda p: -p["shop_count"])]
     chunks = [urls[i:i + 40000] for i in range(0, len(urls), 40000)]
     for n, chunk in enumerate(chunks, 1):
@@ -264,7 +273,10 @@ def export_site(cfg: dict, out: str | Path) -> None:
     (out / "_headers").write_text(
         "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
-        "  Permissions-Policy: camera=(), microphone=(), geolocation=()\n"
+        "  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()\n"
+        "  Strict-Transport-Security: max-age=31536000; includeSubDomains\n"
+        "  Cross-Origin-Opener-Policy: same-origin\n"
+        f"  Content-Security-Policy: {CSP}\n"
         "/data/*\n  Cache-Control: public, max-age=600\n"
         "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
     files = sum(1 for f in out.rglob("*") if f.is_file())

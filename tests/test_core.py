@@ -154,3 +154,10 @@ def test_export_sanitises_urls_and_hides_unlisted_shops(tmp_path):
     shard = next((tmp_path / "dist/data/p").glob("*.json"))
     urls = {o["u"] for p in json.loads(shard.read_text()).values() for o in p["o"]}
     assert "javascript:alert(1)" not in urls and "#" in urls
+
+
+def test_crawler_refuses_private_addresses():
+    from airsoftcompare.sources.common import Fetcher, public_host
+    for url in ("http://127.0.0.1/x", "http://169.254.169.254/latest/meta-data/", "http://10.0.0.5/", "http://[::1]/", "file:///etc/passwd"):
+        assert not public_host(url), url
+    assert Fetcher("t", 0, 5, False).get("http://169.254.169.254/latest/meta-data/") is None

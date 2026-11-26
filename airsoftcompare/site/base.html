@@ -5,16 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}CompAirsoft{% endblock %}</title>
   <meta name="description" content="Compare prices of airsoft guns, magazines, optics and gear across Czech airsoft shops.">
-  <script>
-    // Theme and language before first paint, so the page doesn't flash.
-    (function () {
-      var d = document.documentElement, t = null, l = null;
-      try { t = localStorage.getItem("theme"); l = localStorage.getItem("lang"); } catch (e) {}
-      if (t === "light" || t === "dark") d.dataset.theme = t;
-      var nav = (navigator.language || "en").slice(0, 2).toLowerCase();
-      d.lang = l || (["cs", "sk", "de", "en"].indexOf(nav) >= 0 ? nav : "en");
-    })();
-  </script>
+  <script src="/static/init.js?v={{ version }}"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff7a00' stroke-width='2.4' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M22 12h-4M6 12H2M12 6V2M12 22v-4'/></svg>">
   <link rel="preload" href="/static/fonts/inter-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/static/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -59,7 +50,7 @@
     </div>
     <div>
       <h4 data-i18n="foot.browse">Browse</h4>
-      <a href="/?all=1" data-i18n="all">All products</a><a href="/?multi=1&sort=savings" data-i18n="sec.diff">Biggest price differences</a><a href="/shops" data-i18n="nav.shops">Shops</a>
+      <a href="/?all=1" data-i18n="all">All products</a><a href="/?multi=1&sort=savings" data-i18n="sec.diff">Biggest price differences</a><a href="/shops" data-i18n="nav.shops">Shops</a><a href="/privacy" data-i18n="privacy">Privacy</a>
     </div>
     <div>
       <h4 data-i18n="foot.know">Good to know</h4>
@@ -69,7 +60,7 @@
     </div>
   </div>
 </footer>
-<script>window.SITE = {{ config|safe }};</script>
+<script type="application/json" id="site-config">{{ config|safe }}</script>
 <script src="/static/app.js?v={{ version }}" defer></script>
 </body>
 </html>

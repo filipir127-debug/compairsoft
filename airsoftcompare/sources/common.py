@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import gzip
 import io
+import ipaddress
 import logging
 import re
+import socket
 import threading
 import time
 import unicodedata
@@ -167,8 +169,11 @@ class Fetcher:
         """GET with a size cap: the body is streamed and dropped once it exceeds `cap` bytes,
         or with `truncate`, cut to its first `cap` bytes (robots.txt: an oversized file must
         still be obeyed, so we read its beginning instead of ignoring it)."""
+        if not public_host(url):
+            log.warning("GET %s refused: not a public internet address", url)
+            return None
         try:
-            r = self.session.get(url, timeout=self.timeout, stream=True)
+            r = self.session.get(url, timeout=self.timeout, stream=True, hooks={"response": _refuse_private_redirect})
         except requests.RequestException as e:
             log.warning("GET %s failed: %s", url, e)
             return None
@@ -220,6 +225,27 @@ class Fetcher:
         if data[:2] == b"\x1f\x8b":
             data = _gunzip(data, url)
         return data
+
+
+def public_host(url: str) -> bool:
+    """True when every address the URL's host resolves to is on the public internet. Shop data
+    (sitemaps, redirects) must not make the crawler reach localhost, private networks or cloud
+    metadata services."""
+    parts = urlsplit(url)
+    if parts.scheme not in ("http", "https") or not parts.hostname:
+        return False
+    try:
+        infos = socket.getaddrinfo(parts.hostname, parts.port or (443 if parts.scheme == "https" else 80))
+    except (socket.gaierror, UnicodeError):
+        return True  # let the request itself fail with a normal network error
+    return all(ipaddress.ip_address(info[4][0].split("%")[0]).is_global for info in infos)
+
+
+def _refuse_private_redirect(r: requests.Response, *args, **kwargs):
+    if r.is_redirect:
+        target = urljoin(r.url, r.headers.get("Location", ""))
+        if not public_host(target):
+            raise requests.exceptions.InvalidURL(f"redirect to a non-public address refused: {target}")
 
 
 def _gunzip(data: bytes, url: str) -> bytes | None:
