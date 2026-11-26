@@ -1,7 +1,7 @@
 {% set c = CATEGORIES.get(p.category, CATEGORIES['other']) %}
 <a class="card" href="/product/{{ p.id }}">
   <div class="thumb">
-    {% if p.image %}<img src="{{ p.image }}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
+    {% if p.image %}<img src="{{ p.image|safe_url }}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
     <span class="ph">{{ c[1] }}</span>
     {% if p.shop_count > 1 and p.max_price > p.min_price %}
       <span class="badge-save">−{{ ((1 - p.min_price / p.max_price) * 100)|round|int }} %</span>

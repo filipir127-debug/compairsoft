@@ -137,7 +137,9 @@ def rebuild_products(conn: sqlite3.Connection, threshold: int = 90) -> int:
         groups[root].append(o)
 
     products, assignments = [], []
-    for members in groups.values():
+    used: set[str] = set()
+    # Process groups in a stable order so a colliding id is resolved the same way on every run.
+    for members in sorted(groups.values(), key=lambda ms: min(m["id"] for m in ms)):
         # One offer per shop: a shop listing the same item twice shows its best one.
         best: dict[int, dict] = {}
         for m in sorted(members, key=lambda m: (not m["in_stock"], m["price_base"])):
@@ -146,6 +148,13 @@ def rebuild_products(conn: sqlite3.Connection, threshold: int = 90) -> int:
         eans = sorted({m["ean"] for m in members if m["ean"]})
         anchor = f"ean:{eans[0]}" if eans else "t:" + min(m["norm_title"] for m in members)
         pid = hashlib.sha1(anchor.encode()).hexdigest()[:12]
+        if pid in used:
+            # Two groups can share an anchor (same title, kept apart by category or by the
+            # same-shop rule). Without this, one would overwrite the other in `products`
+            # while both groups' offers pointed at the survivor.
+            anchor += "|" + str(min(m["id"] for m in members))
+            pid = hashlib.sha1(anchor.encode()).hexdigest()[:12]
+        used.add(pid)
         cheapest = min(members, key=lambda m: m["price_base"])
         # The most common title wins; ties go to the longest (usually the most descriptive).
         title = max(Counter(m["title"] for m in members).items(), key=lambda kv: (kv[1], len(kv[0])))[0]

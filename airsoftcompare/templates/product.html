@@ -8,7 +8,7 @@
 
 <section class="pd">
   <div class="pd-img">
-    {% if p.image %}<img src="{{ p.image }}" alt="{{ p.title }}" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
+    {% if p.image %}<img src="{{ p.image|safe_url }}" alt="{{ p.title }}" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
     <span class="ph">{{ c[1] }}</span>
   </div>
   <div class="pd-info">
@@ -49,8 +49,8 @@
         {% elif o.in_stock == 0 %}<span class="stock no">Out of stock</span>
         {% else %}<span class="stock">Availability unknown</span>{% endif %}
       </div>
-      <div class="o-price">{{ o.price_base|money }}{% if o.currency != 'CZK' %}<small>{{ '%.2f'|format(o.price) }} {{ o.currency }}</small>{% endif %}</div>
-      <a class="btn btn-shop" href="{{ o.url }}" target="_blank" rel="noopener nofollow">Go to shop</a>
+      <div class="o-price">{{ o.price_base|money }}{% if o.currency != BASE_CURRENCY and o.price is not none %}<small>{{ '%.2f'|format(o.price) }} {{ o.currency }}</small>{% endif %}</div>
+      <a class="btn btn-shop" href="{{ o.url|safe_url }}" target="_blank" rel="noopener noreferrer nofollow">Go to shop</a>
     </div>
   {% endfor %}
 </div>

@@ -18,6 +18,7 @@ from .text import normalize
 
 log = logging.getLogger(__name__)
 _write_lock = threading.Lock()
+_warned_currencies: set[str] = set()
 
 
 def _now() -> str:
@@ -34,6 +35,13 @@ def _shop_id(conn: sqlite3.Connection, shop: dict) -> int:
 
 def save_offer(conn: sqlite3.Connection, shop_id: int, o: Offer, rates: dict, day: str | None = None) -> None:
     rate = rates.get(o.currency.upper())
+    cur = o.currency.upper()
+    if o.price is not None and not rate and cur not in _warned_currencies and len(_warned_currencies) < 50:
+        _warned_currencies.add(cur)
+        if re.fullmatch(r"[A-Z]{3}", cur):  # the value comes from the shop: don't echo junk into the log
+            log.warning("No exchange rate for %s in settings.exchange_rates; such offers are not compared.", cur)
+        else:
+            log.warning("Offer with an invalid currency code %r ignored in comparisons.", cur[:10])
     price_base = round(o.price * rate, 2) if (o.price is not None and rate) else None
     now = _now()
     with _write_lock, conn:
@@ -138,6 +146,21 @@ def _rematch(conn: sqlite3.Connection, settings: dict) -> None:
     log.info("Matched offers into %d products.", n)
 
 
+def _hide_unlisted_shops(conn: sqlite3.Connection, shops: list[dict]) -> None:
+    """Offers of shops removed from shops.yaml (or set `enabled: false`) leave the comparison.
+    Nothing is deleted: re-enabling the shop brings them back on its next update."""
+    names = [s["name"] for s in shops]
+    if not names:  # most likely a broken shops.yaml; hiding everything would blank the site
+        log.warning("No enabled shops in config; not hiding any offers.")
+        return
+    with _write_lock, conn:
+        n = conn.execute(
+            f"UPDATE offers SET active = 0 WHERE active = 1 AND shop_id NOT IN "
+            f"(SELECT id FROM shops WHERE name IN ({','.join('?' * len(names))}))", names).rowcount
+    if n:
+        log.info("Hid %d offers of shops no longer in the config.", n)
+
+
 def update_all(cfg: dict, only: list[str] | None = None, max_minutes: float | None = None,
                batch: bool = False) -> None:
     """batch=True (scheduled jobs): match products once at the end instead of while crawling."""
@@ -146,6 +169,7 @@ def update_all(cfg: dict, only: list[str] | None = None, max_minutes: float | No
     shops = [s for s in cfg["shops"] if not only or s["name"] in only]
     if not shops:
         log.warning("No enabled shops in config.")
+    _hide_unlisted_shops(conn, cfg["shops"])
     if max_minutes is not None:
         deadline = time.time() + max_minutes * 60
         shops = [{**s, "deadline": deadline} for s in shops]

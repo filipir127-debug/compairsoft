@@ -15,10 +15,12 @@ from fastapi.templating import Jinja2Templates
 from . import config as cfgmod
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
+from .sources.common import safe_url
 from .text import normalize
 
 HERE = Path(__file__).parent
 PAGE_SIZE = 48
+MAX_PAGE = 10_000  # own limit: keeps OFFSET far from SQLite's 64-bit overflow
 SORTS = {
     "relevance": "p.shop_count DESC, p.min_price ASC",
     "price_asc": "p.min_price ASC",
@@ -39,6 +41,14 @@ def create_app(config_path: str | None = None) -> FastAPI:
     app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
     tpl = Jinja2Templates(directory=HERE / "templates")
 
+    @app.middleware("http")
+    async def security_headers(request: Request, call_next):
+        response = await call_next(request)
+        response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        response.headers.setdefault("X-Frame-Options", "DENY")
+        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        return response
+
     def money(v):
         if v is None:
             return "–"
@@ -46,11 +56,19 @@ def create_app(config_path: str | None = None) -> FastAPI:
         return s.replace(",", " ") + {"CZK": " Kč", "EUR": " €", "PLN": " zł"}.get(currency, " " + currency)
 
     tpl.env.filters["money"] = money
+    # Offers stored before URL checks existed may still hold e.g. `javascript:` links.
+    tpl.env.filters["safe_url"] = lambda v: safe_url(v) or "#"
+    tpl.env.globals["BASE_CURRENCY"] = currency
+    tpl.env.globals["CURRENCY_LABEL"] = {"CZK": "Kč", "EUR": "€", "PLN": "zł"}.get(currency, currency)
+    # Shops removed from (or disabled in) shops.yaml stay in the DB; don't list them.
+    shop_names = [s["name"] for s in cfg["shops"]]
+    live_shops = f"s.name IN ({','.join('?' * len(shop_names))})" if shop_names else "0"
     tpl.env.globals["CATEGORIES"] = CATEGORIES
     tpl.env.globals["GROUPS"] = GROUPS
     tpl.env.globals["GROUP_OF"] = GROUP_OF
     tpl.env.globals["category_counts"] = lambda: category_counts()
-    tpl.env.globals["shop_total"] = lambda: conn.execute("SELECT COUNT(*) FROM shops").fetchone()[0]
+    tpl.env.globals["shop_total"] = lambda: conn.execute(
+        f"SELECT COUNT(*) FROM shops s WHERE {live_shops}", shop_names).fetchone()[0]
 
     def category_counts():
         return {r[0]: r[1] for r in conn.execute("SELECT category, COUNT(*) FROM products GROUP BY category")}
@@ -89,7 +107,7 @@ def create_app(config_path: str | None = None) -> FastAPI:
     @app.get("/", response_class=HTMLResponse)
     def index(request: Request, q: str = "", cat: str = "", shop: str = "",
               stock: bool = False, multi: bool = False, pmin: str = "", pmax: str = "",
-              sort: str = "relevance", page: int = Query(1, ge=1)):
+              sort: str = "relevance", page: int = Query(1, ge=1, le=MAX_PAGE)):
         shop = int(shop) if shop.strip().isdigit() else None
         fmin = _num(pmin)
         fmax = _num(pmax)
@@ -110,7 +128,7 @@ def create_app(config_path: str | None = None) -> FastAPI:
         return tpl.TemplateResponse(request, "index.html", dict(
             products=products, total=total, page=page, home=home, sections=sections, pages=max(1, math.ceil(total / PAGE_SIZE)),
             q=q, cat=cat, shop=shop, stock=stock, multi=multi, pmin=pmin, pmax=pmax, sort=sort,
-            shops=conn.execute("SELECT * FROM shops ORDER BY name").fetchall(),
+            shops=conn.execute(f"SELECT * FROM shops s WHERE {live_shops} ORDER BY name", shop_names).fetchall(),
             counts=category_counts(), qs=lambda **kw: "?" + urlencode({**params, **kw}),
             stats=conn.execute("SELECT COUNT(*) AS products, SUM(shop_count > 1) AS compared FROM products").fetchone(),
             offers_total=conn.execute("SELECT COUNT(*) FROM offers WHERE active=1").fetchone()[0],
@@ -137,15 +155,15 @@ def create_app(config_path: str | None = None) -> FastAPI:
 
     @app.get("/shops", response_class=HTMLResponse)
     def shops(request: Request):
-        rows = conn.execute("""
+        rows = conn.execute(f"""
             SELECT s.*, (SELECT COUNT(*) FROM offers o JOIN products p ON p.id = o.product_id
                          WHERE o.shop_id = s.id AND o.active = 1 AND o.price_base = p.min_price AND p.shop_count > 1) AS cheapest
-            FROM shops s ORDER BY s.name""").fetchall()
+            FROM shops s WHERE {live_shops} ORDER BY s.name""", shop_names).fetchall()
         return tpl.TemplateResponse(request, "shops.html", dict(shops=rows))
 
     @app.get("/api/products")
     def api_products(q: str = "", cat: str = "", stock: bool = False, sort: str = "relevance",
-                     page: int = Query(1, ge=1), limit: int = Query(50, le=500)):
+                     page: int = Query(1, ge=1, le=MAX_PAGE), limit: int = Query(50, ge=1, le=500)):
         total, rows = search(q, cat, None, stock, False, None, None, sort, page, limit)
         return {"total": total, "currency": currency, "items": [dict(r) for r in rows]}
 
@@ -163,9 +181,10 @@ def create_app(config_path: str | None = None) -> FastAPI:
 
 def _num(v: str) -> float | None:
     try:
-        return float(v.replace(",", ".").replace(" ", ""))
+        f = float(v.replace(",", ".").replace(" ", ""))
     except ValueError:
         return None
+    return f if math.isfinite(f) else None  # "nan" / "inf" parse as floats but filter nothing sensibly
 
 
 PALETTE = ["#4f9d69", "#d9822b", "#3a7bd5", "#c94f6d", "#8e6cc9", "#2aa7a0", "#b8a12d", "#7a7a7a"]
