@@ -15,10 +15,12 @@ from fastapi.templating import Jinja2Templates
 from . import config as cfgmod
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
+from .sources.common import safe_url
 from .text import normalize
 
 HERE = Path(__file__).parent
 PAGE_SIZE = 48
+MAX_PAGE = 10_000  # own limit: keeps OFFSET far from SQLite's 64-bit overflow
 SORTS = {
     "relevance": "p.shop_count DESC, p.min_price ASC",
     "price_asc": "p.min_price ASC",
@@ -39,6 +41,14 @@ def create_app(config_path: str | None = None) -> FastAPI:
     app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
     tpl = Jinja2Templates(directory=HERE / "templates")
 
+    @app.middleware("http")
+    async def security_headers(request: Request, call_next):
+        response = await call_next(request)
+        response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        response.headers.setdefault("X-Frame-Options", "DENY")
+        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        return response
+
     def money(v):
         if v is None:
             return "–"
@@ -46,6 +56,10 @@ def create_app(config_path: str | None = None) -> FastAPI:
         return s.replace(",", " ") + {"CZK": " Kč", "EUR": " €", "PLN": " zł"}.get(currency, " " + currency)
 
     tpl.env.filters["money"] = money
+    # Offers stored before URL checks existed may still hold e.g. `javascript:` links.
+    tpl.env.filters["safe_url"] = lambda v: safe_url(v) or "#"
+    tpl.env.globals["BASE_CURRENCY"] = currency
+    tpl.env.globals["CURRENCY_LABEL"] = {"CZK": "Kč", "EUR": "€", "PLN": "zł"}.get(currency, currency)
     tpl.env.globals["CATEGORIES"] = CATEGORIES
     tpl.env.globals["GROUPS"] = GROUPS
     tpl.env.globals["GROUP_OF"] = GROUP_OF
@@ -89,7 +103,7 @@ def create_app(config_path: str | None = None) -> FastAPI:
     @app.get("/", response_class=HTMLResponse)
     def index(request: Request, q: str = "", cat: str = "", shop: str = "",
               stock: bool = False, multi: bool = False, pmin: str = "", pmax: str = "",
-              sort: str = "relevance", page: int = Query(1, ge=1)):
+              sort: str = "relevance", page: int = Query(1, ge=1, le=MAX_PAGE)):
         shop = int(shop) if shop.strip().isdigit() else None
         fmin = _num(pmin)
         fmax = _num(pmax)
@@ -145,7 +159,7 @@ def create_app(config_path: str | None = None) -> FastAPI:
 
     @app.get("/api/products")
     def api_products(q: str = "", cat: str = "", stock: bool = False, sort: str = "relevance",
-                     page: int = Query(1, ge=1), limit: int = Query(50, le=500)):
+                     page: int = Query(1, ge=1, le=MAX_PAGE), limit: int = Query(50, ge=1, le=500)):
         total, rows = search(q, cat, None, stock, False, None, None, sort, page, limit)
         return {"total": total, "currency": currency, "items": [dict(r) for r in rows]}
 
@@ -163,9 +177,10 @@ def create_app(config_path: str | None = None) -> FastAPI:
 
 def _num(v: str) -> float | None:
     try:
-        return float(v.replace(",", ".").replace(" ", ""))
+        f = float(v.replace(",", ".").replace(" ", ""))
     except ValueError:
         return None
+    return f if math.isfinite(f) else None  # "nan" / "inf" parse as floats but filter nothing sensibly
 
 
 PALETTE = ["#4f9d69", "#d9822b", "#3a7bd5", "#c94f6d", "#8e6cc9", "#2aa7a0", "#b8a12d", "#7a7a7a"]
