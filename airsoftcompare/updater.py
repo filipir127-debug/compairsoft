@@ -93,6 +93,8 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
                 week = (datetime.now() - timedelta(days=7)).isoformat(timespec="seconds")
                 conn.execute("UPDATE offers SET active = 0 WHERE shop_id = ? AND updated_at < ?", (shop_id, week))
         status = f"ok: {count} offers read"
+        if shop.get("type") == "feed":
+            _last_match[0] = 0.0  # a whole catalogue just arrived: match it on the next chance
     except Exception as e:  # keep other shops running
         log.exception("%s failed", shop["name"])
         status = f"error: {e}"
