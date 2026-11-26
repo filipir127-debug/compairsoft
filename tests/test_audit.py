@@ -134,6 +134,21 @@ def test_nan_price_filter_is_ignored(client):
     assert r.status_code == 200 and "Mask" in r.text
 
 
+def test_disabled_shops_are_not_listed(client):
+    r = client.get("/shops")
+    assert ">A<" in r.text and ">B<" not in r.text
+
+
+def test_update_hides_offers_of_unlisted_shops(tmp_path):
+    from airsoftcompare.updater import _hide_unlisted_shops
+    c = _conn(tmp_path)
+    for oid, sid in ((1, 1), (2, 2)):
+        c.execute("INSERT INTO offers(id, shop_id, url, title, norm_title) VALUES (?, ?, ?, 't', 't')", (oid, sid, f"u{oid}"))
+    c.commit()
+    _hide_unlisted_shops(c, [{"name": "A"}])
+    assert dict(c.execute("SELECT id, active FROM offers").fetchall()) == {1: 1, 2: 0}
+
+
 def test_unknown_currency_warns_once(tmp_path, caplog):
     from airsoftcompare.sources.common import Offer
     from airsoftcompare.updater import _warned_currencies, save_offer
@@ -215,6 +230,14 @@ def test_jsonld_unsafe_image_dropped():
 
 
 # ---------------------------------------------------------------- updater guards
+
+def test_empty_shop_list_hides_nothing(tmp_path):
+    from airsoftcompare.updater import _hide_unlisted_shops
+    c = _conn(tmp_path)
+    c.execute("INSERT INTO offers(id, shop_id, url, title, norm_title) VALUES (1, 1, 'u', 't', 't')")
+    c.commit()
+    _hide_unlisted_shops(c, [])
+    assert c.execute("SELECT active FROM offers").fetchone()[0] == 1
 
 
 def test_invalid_currency_not_echoed(tmp_path, caplog):

@@ -146,6 +146,21 @@ def _rematch(conn: sqlite3.Connection, settings: dict) -> None:
     log.info("Matched offers into %d products.", n)
 
 
+def _hide_unlisted_shops(conn: sqlite3.Connection, shops: list[dict]) -> None:
+    """Offers of shops removed from shops.yaml (or set `enabled: false`) leave the comparison.
+    Nothing is deleted: re-enabling the shop brings them back on its next update."""
+    names = [s["name"] for s in shops]
+    if not names:  # most likely a broken shops.yaml; hiding everything would blank the site
+        log.warning("No enabled shops in config; not hiding any offers.")
+        return
+    with _write_lock, conn:
+        n = conn.execute(
+            f"UPDATE offers SET active = 0 WHERE active = 1 AND shop_id NOT IN "
+            f"(SELECT id FROM shops WHERE name IN ({','.join('?' * len(names))}))", names).rowcount
+    if n:
+        log.info("Hid %d offers of shops no longer in the config.", n)
+
+
 def update_all(cfg: dict, only: list[str] | None = None, max_minutes: float | None = None,
                batch: bool = False) -> None:
     """batch=True (scheduled jobs): match products once at the end instead of while crawling."""
@@ -157,6 +172,7 @@ def update_all(cfg: dict, only: list[str] | None = None, max_minutes: float | No
     if max_minutes is not None:
         deadline = time.time() + max_minutes * 60
         shops = [{**s, "deadline": deadline} for s in shops]
+    _hide_unlisted_shops(conn, cfg["shops"])
     _refresh_titles(conn, cfg["shops"])
     if not batch:
         _rematch(conn, settings)
