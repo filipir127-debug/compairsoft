@@ -19,11 +19,40 @@ from jinja2 import Environment, FileSystemLoader
 
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
+from .sources.common import safe_url
 from .text import SYNONYMS
 
 log = logging.getLogger(__name__)
 HERE = Path(__file__).parent
 HISTORY_DAYS = 180
+
+# Served on every page by Cloudflare Pages. The CSP lists exactly what the site loads:
+# its own scripts, styles and JSON, Google Fonts, and product images from any shop over https.
+SECURITY_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Content-Security-Policy": "; ".join([
+        "default-src 'self'",
+        "script-src 'self'",
+        "style-src 'self' https://fonts.googleapis.com",
+        "font-src https://fonts.gstatic.com",
+        "img-src 'self' https: data:",       # shop images; data: for the emoji favicon
+        "connect-src 'self'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+    ]),
+}
+
+
+def headers_file() -> str:
+    """Cloudflare Pages `_headers`: security headers everywhere, cache rules for data and assets."""
+    lines = ["/*"] + [f"  {k}: {v}" for k, v in SECURITY_HEADERS.items()]
+    lines += ["/data/*", "  Cache-Control: public, max-age=600",
+              "/static/*", "  Cache-Control: public, max-age=31536000, immutable"]
+    return "\n".join(lines) + "\n"
 
 
 def _num(v):
@@ -32,7 +61,8 @@ def _num(v):
 
 def _card(p: dict, shops_of: dict) -> dict:
     return {"id": p["id"], "t": p["title"], "c": p["category"], "p": _num(p["min_price"]), "x": _num(p["max_price"]),
-            "s": p["shop_count"], "k": p["in_stock_count"], "i": p["image"] or "", "h": sorted(shops_of.get(p["id"], ()))}
+            "s": p["shop_count"], "k": p["in_stock_count"], "i": safe_url(p["image"]) or "",
+            "h": sorted(shops_of.get(p["id"], ()))}
 
 
 def _dump(path: Path, data) -> int:
@@ -77,10 +107,17 @@ def export_site(cfg: dict, out: str | Path) -> None:
 
     offers: dict[str, list[dict]] = defaultdict(list)
     shops_of: dict[str, set[int]] = defaultdict(set)
+    unsafe = 0
     for o in conn.execute("SELECT * FROM offers WHERE product_id IS NOT NULL ORDER BY (in_stock = 0), price_base"):
+        if not safe_url(o["url"]):  # stored before URLs were checked on import (e.g. javascript:)
+            unsafe += 1
+            continue
         offers[o["product_id"]].append(o)
         if o["active"]:
             shops_of[o["product_id"]].add(o["shop_id"])
+
+    if unsafe:
+        log.warning("Left out %d offers whose link is not an http(s) URL.", unsafe)
 
     # Price history, kept only where the price changed (plus the latest point).
     cutoff = (date.today() - timedelta(days=HISTORY_DAYS)).isoformat()
@@ -150,7 +187,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "currency": settings["base_currency"],
         "stats": {"products": len(products), "compared": sum(p["shop_count"] > 1 for p in products),
                   "offers": sum(len(v) for v in shops_of.values()), "shops": len(shops)},
-        "shops": [{"id": s["id"], "name": s["name"], "url": s["url"], "type": s["type"], "offers": s["offer_count"],
+        "shops": [{"id": s["id"], "name": s["name"], "url": safe_url(s["url"]), "type": s["type"], "offers": s["offer_count"],
                    "cheapest": cheapest[s["id"]], "updated": s["last_update"], "status": s["last_status"]} for s in shops],
         "counts": counts,
         "sections": sections,
@@ -168,9 +205,9 @@ def export_site(cfg: dict, out: str | Path) -> None:
         (out / f"{page}.html").write_text(env.get_template(f"{page}.html").render(page=page, **site), encoding="utf-8")
     for asset in ("style.css", "app.js"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
+    # Site config as a file rather than an inline <script>, so the CSP needs no 'unsafe-inline'.
+    (out / "static" / "site.js").write_text(f"window.SITE = {site['config']};\n", encoding="utf-8")
     (out / "_redirects").write_text("/product/*  /product.html  200\n", encoding="utf-8")
-    (out / "_headers").write_text(
-        "/data/*\n  Cache-Control: public, max-age=600\n"
-        "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
+    (out / "_headers").write_text(headers_file(), encoding="utf-8")
     files = sum(1 for f in out.rglob("*") if f.is_file())
     log.info("Exported %d products as %d files to %s", len(products), files, out)

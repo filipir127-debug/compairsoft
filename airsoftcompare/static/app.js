@@ -7,6 +7,13 @@
   const SORTS = [["relevance", "Most compared"], ["price_asc", "Cheapest"], ["price_desc", "Most expensive"],
                  ["savings", "Biggest saving"], ["name", "Name"]];
 
+  // Links and images come from shop data: allow only absolute http(s) URLs (no javascript:, data:…).
+  const safeUrl = (u) => {
+    try {
+      const x = new URL(String(u ?? ""));
+      return x.protocol === "http:" || x.protocol === "https:" ? x.href : "";
+    } catch { return ""; }
+  };
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const json = (u) => fetch(`${u}?v=${V}`).then((r) => { if (!r.ok) throw new Error(`${u}: ${r.status}`); return r.json(); });
   const fold = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -35,7 +42,7 @@
       ? `<div class="stock yes">In stock${p.s > 1 ? ` · ${p.k} of ${p.s} shops` : ""}</div>`
       : `<div class="stock no">Out of stock</div>`;
     return `<a class="card" href="/product/${p.id}">
-      <div class="thumb">${p.i ? `<img src="${esc(p.i)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}
+      <div class="thumb">${safeUrl(p.i) ? `<img src="${esc(safeUrl(p.i))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}
         <span class="ph">${c[1]}</span>${save}</div>
       <div class="card-body">
         <div class="name">${esc(p.t)}</div>${stock}
@@ -124,9 +131,9 @@
             <input type="number" name="pmin" value="${isNaN(pmin) ? "" : pmin}" min="0" inputmode="numeric" placeholder="from" aria-label="Minimum price"><span>–</span>
             <input type="number" name="pmax" value="${isNaN(pmax) ? "" : pmax}" min="0" inputmode="numeric" placeholder="to" aria-label="Maximum price"></div></div>
           <div class="f-group"><div class="f-title">Availability</div>
-            <label class="check"><input type="checkbox" name="stock" value="1" ${stock ? "checked" : ""} onchange="this.form.submit()"> In stock only</label>
-            <label class="check"><input type="checkbox" name="multi" value="1" ${multi ? "checked" : ""} onchange="this.form.submit()"> Sold in 2+ shops</label></div>
-          <div class="f-group"><div class="f-title">Shop</div><select name="shop" onchange="this.form.submit()" aria-label="Shop">
+            <label class="check"><input type="checkbox" name="stock" value="1" ${stock ? "checked" : ""} data-autosubmit> In stock only</label>
+            <label class="check"><input type="checkbox" name="multi" value="1" ${multi ? "checked" : ""} data-autosubmit> Sold in 2+ shops</label></div>
+          <div class="f-group"><div class="f-title">Shop</div><select name="shop" data-autosubmit aria-label="Shop">
             <option value="">All shops</option>${m.shops.map((s) => `<option value="${s.id}" ${s.id === shop ? "selected" : ""}>${esc(s.name)}</option>`).join("")}
           </select></div>
           <button type="submit" class="btn">Show results</button></form></details></aside>
@@ -164,7 +171,7 @@
         ${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" class="grid-line"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" class="axis">${money(v)}</text>`).join("")}
         <text x="${L}" y="${H - 6}" class="axis">${days[0]}</text><text x="${W - R}" y="${H - 6}" text-anchor="end" class="axis">${days[days.length - 1]}</text>
         ${lines.map((l) => `<path d="${l.d}" fill="none" stroke="${l.color}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="${l.cx}" cy="${l.cy}" r="4" fill="${l.color}"/>`).join("")}
-      </svg><div class="legend">${lines.map((l) => `<span><i style="background:${l.color}"></i>${esc(l.s)}</span>`).join("")}</div></div>`;
+      </svg><div class="legend">${lines.map((l) => `<span><svg class="sw" width="14" height="4" aria-hidden="true"><rect width="14" height="4" rx="2" fill="${l.color}"/></svg>${esc(l.s)}</span>`).join("")}</div></div>`;
   }
 
   async function product() {
@@ -185,14 +192,15 @@
       const st = !o.a ? `<span class="stock no">Removed</span>` : o.k === 1 ? `<span class="stock yes">In stock</span>`
         : o.k === 0 ? `<span class="stock no">Out of stock</span>` : `<span class="stock">Availability unknown</span>`;
       const foreign = o.y && o.y !== CUR ? `<small>${o.r.toFixed(2)} ${esc(o.y)}</small>` : "";
+      const link = safeUrl(o.u);
       return `<div class="offer ${best ? "best" : ""} ${o.a ? "" : "gone"}">
         <div class="o-shop"><b>${esc(o.s)}</b>${best && d.o.length > 1 ? `<span class="tag">Cheapest</span>` : ""}<div class="o-title">${esc(o.t)}</div></div>
         <div class="o-stock">${st}</div><div class="o-price">${money(o.v)}${foreign}</div>
-        <a class="btn btn-shop" href="${esc(o.u)}" target="_blank" rel="noopener nofollow">Go to shop</a></div>`;
+        <a class="btn btn-shop" href="${link ? esc(link) : "#"}" target="_blank" rel="noopener noreferrer nofollow">Go to shop</a></div>`;
     }).join("");
     app.innerHTML = `
       <nav class="crumbs"><a href="/">Home</a><span>›</span><a href="/?cat=${g}">${esc(GROUPS[g][0])}</a>${GROUPS[g][2].length > 1 ? `<span>›</span><a href="/?cat=${p.c}">${esc(c[0])}</a>` : ""}</nav>
-      <section class="pd"><div class="pd-img">${p.i ? `<img src="${esc(p.i)}" alt="${esc(p.t)}" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}<span class="ph">${c[1]}</span></div>
+      <section class="pd"><div class="pd-img">${safeUrl(p.i) ? `<img src="${esc(safeUrl(p.i))}" alt="${esc(p.t)}" referrerpolicy="no-referrer">` : ""}<span class="ph">${c[1]}</span></div>
         <div class="pd-info"><h1>${esc(p.t)}</h1>
           <div class="pd-meta">${p.b ? `<span>Brand: <b>${esc(p.b)}</b></span>` : ""}<span>Category: <a href="/?cat=${p.c}">${esc(c[0])}</a></span>${p.e ? `<span>EAN: ${esc(p.e)}</span>` : ""}</div>
           <div class="pd-buy"><div>
@@ -212,12 +220,18 @@
       <div class="shop-grid">${m.shops.map((s) => `<div class="shop-card">
         <div class="sc-head"><a class="sc-name" href="/?shop=${s.id}&all=1">${esc(s.name)}</a>${
           s.status && s.status.startsWith("error") ? `<span class="pill bad">Update failed</span>` : s.updated ? `<span class="pill good">Up to date</span>` : `<span class="pill">Loading…</span>`}</div>
-        ${s.url ? `<a class="sc-url" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url.split("//").pop().replace(/\/$/, ""))}</a>` : ""}
+        ${safeUrl(s.url) ? `<a class="sc-url" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer nofollow">${esc(s.url.split("//").pop().replace(/\/$/, ""))}</a>` : ""}
         <div class="sc-stats"><div><b>${fmt(s.offers || 0)}</b><span>offers</span></div><div><b>${fmt(s.cheapest)}</b><span>cheapest on</span></div></div>
         <div class="sc-foot">Updated ${esc((s.updated || "–").replace("T", " "))} · ${s.type === "feed" ? "feed" : "crawled"}</div>
         <a class="btn btn-ghost" href="/?shop=${s.id}&all=1">Show products</a></div>`).join("")}</div>
       <p class="muted small">“Cheapest on” counts products that this shop sells for the lowest price among the shops that carry it.</p>`;
   }
+
+  // Event handlers live here, not in inline on…= attributes, which the CSP blocks.
+  // Broken shop images disappear (the category icon behind them shows instead).
+  document.addEventListener("error", (e) => { if (e.target.tagName === "IMG") e.target.remove(); }, true);
+  // Filter checkboxes and the shop dropdown submit the form when changed.
+  document.addEventListener("change", (e) => { if (e.target.matches("[data-autosubmit]")) e.target.form.submit(); });
 
   // ---------------------------------------------------------------- router
   async function main() {
