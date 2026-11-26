@@ -116,6 +116,18 @@ def cluster(offers: list[dict], threshold: int = 90, chunk: int = 2000) -> list[
     return [uf.find(i) for i in range(n)]
 
 
+def _product_category(members: list[dict]) -> str:
+    """Most common category among the shops; specific ones beat catch-alls ("pistols" over "guns")."""
+    votes = Counter(m["category"] for m in members)
+    for weak in ("other", "guns"):
+        if len(votes) > 1:
+            votes.pop(weak, None)
+    found = votes.most_common(1)[0][0] if votes else "other"
+    if found == "guns" and max(m["price_base"] for m in members) < 400:
+        return "parts"  # no airsoft rifle costs this little; "M4"/"AK" in a part's name fooled the rules
+    return found
+
+
 def rebuild_products(conn: sqlite3.Connection, threshold: int = 90) -> int:
     rows = [dict(r) for r in conn.execute(
         "SELECT id, shop_id, title, norm_title, ean, brand, image, category, price_base, in_stock "
@@ -140,7 +152,7 @@ def rebuild_products(conn: sqlite3.Connection, threshold: int = 90) -> int:
         prices = [m["price_base"] for m in members]
         products.append((
             pid, title, cheapest["norm_title"],
-            (Counter(m["category"] for m in members if m["category"] != "other").most_common(1) or [("other",)])[0][0],
+            _product_category(members),
             next((m["brand"] for m in members if m["brand"]), None),
             next((m["image"] for m in members if m["image"]), None),
             eans[0] if eans else None,

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css?v=3">
+  <link rel="stylesheet" href="/static/style.css?v=4">
 </head>
 <body>
 <header class="top">
@@ -25,9 +25,9 @@
   </div>
   <nav class="catbar" aria-label="Categories">
     <div class="wrap catbar-inner">
-      {% set cc = category_counts() %}
-      {% for slug, (label, icon) in CATEGORIES.items() if cc.get(slug) %}
-        <a href="/?cat={{ slug }}" class="{% if cat == slug %}on{% endif %}"><span>{{ icon }}</span>{{ label }}</a>
+      {% set active_group = cat if cat in GROUPS else GROUP_OF.get(cat) %}
+      {% for g, (label, icon, subs) in GROUPS.items() %}
+        <a href="/?cat={{ g }}" class="{% if active_group == g %}on{% endif %}"><span>{{ icon }}</span>{{ label }}</a>
       {% endfor %}
     </div>
   </nav>

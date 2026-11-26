@@ -15,14 +15,22 @@
 
 <h2 class="sec-title">Categories</h2>
 <section class="tiles">
-  {% for slug, (label, icon) in CATEGORIES.items() if counts.get(slug) %}
-    <a class="tile" href="/?cat={{ slug }}"><span class="tile-ico">{{ icon }}</span><span class="tile-name">{{ label }}</span><span class="tile-n">{{ counts[slug] }}</span></a>
+  {% for g, (label, icon, subs) in GROUPS.items() %}
+    {% set n = namespace(total=0) %}{% for sub in subs %}{% set n.total = n.total + counts.get(sub, 0) %}{% endfor %}
+    {% if n.total %}
+    <div class="tile">
+      <a class="tile-main" href="/?cat={{ g }}"><span class="tile-ico">{{ icon }}</span><span class="tile-name">{{ label }}</span><span class="tile-n">{{ n.total }} products</span></a>
+      {% if subs|length > 1 %}
+      <div class="tile-subs">{% for sub in subs if counts.get(sub) %}<a href="/?cat={{ sub }}">{{ CATEGORIES[sub][0] }}</a>{% endfor %}</div>
+      {% endif %}
+    </div>
+    {% endif %}
   {% endfor %}
 </section>
 
 {% for title, more, items in sections if items %}
 <div class="sec-head"><h2 class="sec-title">{{ title }}</h2><a href="{{ more }}">Show all ›</a></div>
-<div class="row-scroll">{% for p in items %}{% include "_card.html" %}{% endfor %}</div>
+<div class="row-one">{% for p in items %}{% include "_card.html" %}{% endfor %}</div>
 {% endfor %}
 
 <div class="sec-head"><h2 class="sec-title">All products</h2></div>
@@ -64,9 +72,18 @@
   <section class="results">
     {% if not home %}
     <div class="results-head">
-      <h1>{% if q %}“{{ q }}”{% elif cat %}{{ CATEGORIES[cat][1] }} {{ CATEGORIES[cat][0] }}{% else %}All products{% endif %}</h1>
+      <h1>{% if q %}“{{ q }}”{% elif cat in GROUPS %}{{ GROUPS[cat][0] }}{% elif cat in CATEGORIES %}{{ CATEGORIES[cat][0] }}{% else %}All products{% endif %}</h1>
       <span class="muted">{{ '{:,}'.format(total).replace(',', ' ') }} product{{ 's' if total != 1 }}</span>
     </div>
+    {% set g = cat if cat in GROUPS else GROUP_OF.get(cat) %}
+    {% if g and GROUPS[g][2]|length > 1 %}
+    <nav class="subcats" aria-label="Subcategories">
+      <a href="{{ qs(cat=g, page=1) }}" class="{% if cat == g %}on{% endif %}">All {{ GROUPS[g][0]|lower }}</a>
+      {% for sub in GROUPS[g][2] if counts.get(sub) %}
+        <a href="{{ qs(cat=sub, page=1) }}" class="{% if cat == sub %}on{% endif %}">{{ CATEGORIES[sub][1] }} {{ CATEGORIES[sub][0] }} <b>{{ counts[sub] }}</b></a>
+      {% endfor %}
+    </nav>
+    {% endif %}
     {% endif %}
     <nav class="sort-tabs" aria-label="Sort">
       {% for k, label in [('relevance','Most compared'),('price_asc','Cheapest'),('price_desc','Most expensive'),('savings','Biggest saving'),('name','Name')] %}

@@ -14,7 +14,7 @@ from fastapi.templating import Jinja2Templates
 
 from . import config as cfgmod
 from . import db as dbmod
-from .categories import CATEGORIES
+from .categories import CATEGORIES, GROUP_OF, GROUPS
 from .text import normalize
 
 HERE = Path(__file__).parent
@@ -47,6 +47,8 @@ def create_app(config_path: str | None = None) -> FastAPI:
 
     tpl.env.filters["money"] = money
     tpl.env.globals["CATEGORIES"] = CATEGORIES
+    tpl.env.globals["GROUPS"] = GROUPS
+    tpl.env.globals["GROUP_OF"] = GROUP_OF
     tpl.env.globals["category_counts"] = lambda: category_counts()
     tpl.env.globals["shop_total"] = lambda: conn.execute("SELECT COUNT(*) FROM shops").fetchone()[0]
 
@@ -61,7 +63,10 @@ def create_app(config_path: str | None = None) -> FastAPI:
             args.append(f"%{word}%")
         if q.strip().isdigit() and len(q.strip()) >= 8:  # EAN search
             where, args = ["p.ean LIKE ?"], [f"%{q.strip().lstrip('0')}%"]
-        if cat:
+        if cat in GROUPS:
+            subs = GROUPS[cat][2]
+            where.append(f"p.category IN ({','.join('?' * len(subs))})"); args.extend(subs)
+        elif cat:
             where.append("p.category = ?"); args.append(cat)
         if shop:
             where.append("EXISTS (SELECT 1 FROM offers o WHERE o.product_id = p.id AND o.shop_id = ? AND o.active = 1)")

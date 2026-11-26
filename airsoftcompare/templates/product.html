@@ -3,7 +3,8 @@
 {% block content %}
 {% set c = CATEGORIES.get(p.category, CATEGORIES['other']) %}
 {% set live = offers|selectattr('active')|list %}
-<nav class="crumbs"><a href="/">Home</a><span>›</span><a href="/?cat={{ p.category }}">{{ c[0] }}</a></nav>
+{% set g = GROUP_OF.get(p.category, 'misc') %}
+<nav class="crumbs"><a href="/">Home</a><span>›</span><a href="/?cat={{ g }}">{{ GROUPS[g][0] }}</a>{% if GROUPS[g][2]|length > 1 %}<span>›</span><a href="/?cat={{ p.category }}">{{ c[0] }}</a>{% endif %}</nav>
 
 <section class="pd">
   <div class="pd-img">
@@ -76,6 +77,6 @@
 
 {% if similar %}
 <div class="sec-head"><h2 class="sec-title">Similar {{ c[0]|lower }}</h2><a href="/?cat={{ p.category }}">Show all ›</a></div>
-<div class="row-scroll">{% for p in similar %}{% include "_card.html" %}{% endfor %}</div>
+<div class="row-one">{% for p in similar %}{% include "_card.html" %}{% endfor %}</div>
 {% endif %}
 {% endblock %}

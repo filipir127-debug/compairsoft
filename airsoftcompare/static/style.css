@@ -42,7 +42,7 @@ img { max-width: 100%; }
 .top-nav a:hover { background: rgba(255,255,255,.1); text-decoration: none; }
 
 .catbar { background: var(--panel); border-bottom: 1px solid var(--line); color: var(--ink); }
-.catbar-inner { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.catbar-inner { display: flex; justify-content: space-between; gap: 2px; overflow-x: auto; scrollbar-width: none; }
 .catbar-inner::-webkit-scrollbar { display: none; }
 .catbar a { color: var(--ink); white-space: nowrap; padding: 11px 12px; font-size: 14px; font-weight: 500; border-bottom: 3px solid transparent; display: flex; gap: 6px; align-items: center; }
 .catbar a:hover { text-decoration: none; background: var(--soft); }
@@ -74,13 +74,23 @@ img { max-width: 100%; }
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .sec-head a { font-weight: 600; font-size: 14px; }
 
-.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.tile { background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; color: var(--ink); transition: box-shadow .15s, transform .15s; }
-.tile:hover { text-decoration: none; box-shadow: var(--shadow-hover); transform: translateY(-2px); }
-.tile-ico { font-size: 30px; line-height: 1.2; } .tile-name { font-weight: 600; font-size: 14px; } .tile-n { font-size: 12px; color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.tile { background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 10px; transition: box-shadow .15s; }
+.tile:hover { box-shadow: var(--shadow-hover); }
+.tile-main { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 12px; align-items: center; color: var(--ink); }
+.tile-main:hover { text-decoration: none; } .tile-main:hover .tile-name { color: var(--link); }
+.tile-ico { grid-row: span 2; font-size: 30px; width: 48px; height: 48px; display: grid; place-items: center; background: var(--soft); border-radius: 12px; }
+.tile-name { font-weight: 700; font-size: 15px; line-height: 1.25; } .tile-n { font-size: 12px; color: var(--muted); }
+.tile-subs { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; }
 
-.row-scroll { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 220px); gap: 12px; overflow-x: auto; padding: 4px 2px 12px; scroll-snap-type: x mandatory; }
-.row-scroll .card { scroll-snap-align: start; }
+/* One row of cards that fits the width; extra cards are hidden instead of scrolling. */
+.row-one { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-template-rows: auto; grid-auto-rows: 0; row-gap: 0; column-gap: 12px; overflow: hidden; padding: 4px; margin: -4px; }
+
+.subcats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.subcats a { background: var(--panel); box-shadow: var(--shadow); color: var(--ink); padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+.subcats a b { color: var(--muted); font-weight: 500; margin-left: 2px; }
+.subcats a:hover { text-decoration: none; box-shadow: var(--shadow-hover); }
+.subcats a.on { background: var(--brand); color: #fff; } .subcats a.on b { color: #cfd8ea; }
 
 /* ---------- listing ---------- */
 .layout { display: grid; grid-template-columns: 250px 1fr; gap: 20px; align-items: start; }
@@ -195,8 +205,8 @@ img { max-width: 100%; }
   .hero-stats { width: 100%; } .hero-stats div { flex: 1; min-width: 0; padding: 10px 8px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .card-body { padding: 10px; } .price { font-size: 17px; }
-  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .tile { padding: 12px 6px; } .tile-ico { font-size: 24px; } .tile-name { font-size: 12px; }
+  .tiles { grid-template-columns: 1fr; gap: 8px; }
+  .row-one { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; }
   .results-head h1 { font-size: 21px; }
   .pd-info h1 { font-size: 21px; } .pd-price { font-size: 28px; }
   .btn-big { width: 100%; }

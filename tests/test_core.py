@@ -33,7 +33,7 @@ def test_categories():
     assert categorize("Sumka na zásobník M4") == "pouches"
     assert categorize("Mid-cap zásobník M4 140 ran") == "magazines"
     assert categorize("Kolimátor T1 Red Dot") == "optics"
-    assert categorize("Pistole Glock 17 GBB green gas") == "guns"
+    assert categorize("Pistole Glock 17 GBB green gas") == "pistols"
     assert categorize("Green gas Nimrod 500 ml") == "gas"
     assert categorize("Gearbox V2 pro M4") == "parts"
     assert categorize("Specna Arms SA-E05 EDGE", "Airsoftové zbraně | Útočné pušky") == "guns"
