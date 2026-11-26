@@ -59,6 +59,23 @@ If products that should merge don't, lower `match_threshold` (e.g. 85) or add wo
 `python -m airsoftcompare rematch`, which re-matches without downloading anything.
 Categories are keyword rules in `categories.py`. Add your own keywords there.
 
+## Hosting (free): GitHub Actions + Cloudflare Pages
+The live site is static. Twice a day `.github/workflows/update.yml`:
+1. restores the database from the Actions cache,
+2. runs `python -m airsoftcompare update --batch --max-minutes 290` (feeds in seconds; crawled
+   shops continue where they stopped last time),
+3. runs `python -m airsoftcompare export dist`, which writes HTML shells plus JSON data
+   (`data/meta.json`, `data/g/<category>.json`, `data/p/<id prefix>.json`) rendered by `static/app.js`,
+4. uploads `dist/` to the Cloudflare Pages project `compairsoft`.
+
+Needs repository secrets `CLOUDFLARE_API_TOKEN` (permission: Account → Cloudflare Pages → Edit) and
+`CLOUDFLARE_ACCOUNT_ID`. Run it by hand from the Actions tab ("Run workflow"); a push to `master`
+re-publishes the site without crawling. Preview an export locally with
+`python -m airsoftcompare export dist && python -m http.server -d dist` (product pages need the
+`_redirects` rule, so open them as `/product.html?id=<id>` locally).
+
+`python -m airsoftcompare serve` still runs the same site as a normal web server for development.
+
 ## API
 * `GET /api/products?q=tango&cat=masks&stock=true&sort=price_asc`
 * `GET /api/products/{id}` – a product with all its shop offers

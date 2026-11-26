@@ -81,7 +81,7 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
             count += 1
             if count % 500 == 0:
                 log.info("%s: %d offers…", shop["name"], count)
-            if time.monotonic() - _last_match[0] > REMATCH_EVERY:
+            if settings.get("live_rematch", True) and time.monotonic() - _last_match[0] > REMATCH_EVERY:
                 _rematch(conn, settings)
 
         with _write_lock, conn:
@@ -138,14 +138,20 @@ def _rematch(conn: sqlite3.Connection, settings: dict) -> None:
     log.info("Matched offers into %d products.", n)
 
 
-def update_all(cfg: dict, only: list[str] | None = None) -> None:
-    settings = cfg["settings"]
+def update_all(cfg: dict, only: list[str] | None = None, max_minutes: float | None = None,
+               batch: bool = False) -> None:
+    """batch=True (scheduled jobs): match products once at the end instead of while crawling."""
+    settings = {**cfg["settings"], "live_rematch": not batch}
     conn = dbmod.connect(settings["database"])
     shops = [s for s in cfg["shops"] if not only or s["name"] in only]
     if not shops:
         log.warning("No enabled shops in config.")
+    if max_minutes is not None:
+        deadline = time.time() + max_minutes * 60
+        shops = [{**s, "deadline": deadline} for s in shops]
     _refresh_titles(conn, cfg["shops"])
-    _rematch(conn, settings)
+    if not batch:
+        _rematch(conn, settings)
     with ThreadPoolExecutor(max_workers=max(1, int(settings["parallel_shops"]))) as pool:
         list(pool.map(lambda s: update_shop(conn, s, settings), shops))
     _rematch(conn, settings)

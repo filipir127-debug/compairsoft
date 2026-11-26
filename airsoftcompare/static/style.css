@@ -211,3 +211,7 @@ img { max-width: 100%; }
   .pd-info h1 { font-size: 21px; } .pd-price { font-size: 28px; }
   .btn-big { width: 100%; }
 }
+
+.loading { padding: 60px 0; text-align: center; color: var(--muted); }
+.center { text-align: center; margin: 28px 0 8px; }
+.empty h1 { color: var(--ink); font-size: 22px; margin: 0 0 8px; }

@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+import time
 from typing import Callable, Iterable, Iterator
 from urllib.parse import urljoin, urlsplit
 
@@ -232,6 +233,9 @@ def crawl(fetcher: Fetcher, shop: dict, default_currency: str = "CZK",
                 continue
             if fetched >= max_pages:
                 log.info("%s: reached max_pages=%d", shop["name"], max_pages)
+                return
+            if shop.get("deadline") and time.time() > shop["deadline"]:
+                log.info("%s: time budget used up after %d pages; continuing next run", shop["name"], fetched)
                 return
             fetched += 1
             r = fetcher.get(url)
