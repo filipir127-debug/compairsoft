@@ -60,11 +60,15 @@ def create_app(config_path: str | None = None) -> FastAPI:
     tpl.env.filters["safe_url"] = lambda v: safe_url(v) or "#"
     tpl.env.globals["BASE_CURRENCY"] = currency
     tpl.env.globals["CURRENCY_LABEL"] = {"CZK": "Kč", "EUR": "€", "PLN": "zł"}.get(currency, currency)
+    # Shops removed from (or disabled in) shops.yaml stay in the DB; don't list them.
+    shop_names = [s["name"] for s in cfg["shops"]]
+    live_shops = f"s.name IN ({','.join('?' * len(shop_names))})" if shop_names else "0"
     tpl.env.globals["CATEGORIES"] = CATEGORIES
     tpl.env.globals["GROUPS"] = GROUPS
     tpl.env.globals["GROUP_OF"] = GROUP_OF
     tpl.env.globals["category_counts"] = lambda: category_counts()
-    tpl.env.globals["shop_total"] = lambda: conn.execute("SELECT COUNT(*) FROM shops").fetchone()[0]
+    tpl.env.globals["shop_total"] = lambda: conn.execute(
+        f"SELECT COUNT(*) FROM shops s WHERE {live_shops}", shop_names).fetchone()[0]
 
     def category_counts():
         return {r[0]: r[1] for r in conn.execute("SELECT category, COUNT(*) FROM products GROUP BY category")}
@@ -124,7 +128,7 @@ def create_app(config_path: str | None = None) -> FastAPI:
         return tpl.TemplateResponse(request, "index.html", dict(
             products=products, total=total, page=page, home=home, sections=sections, pages=max(1, math.ceil(total / PAGE_SIZE)),
             q=q, cat=cat, shop=shop, stock=stock, multi=multi, pmin=pmin, pmax=pmax, sort=sort,
-            shops=conn.execute("SELECT * FROM shops ORDER BY name").fetchall(),
+            shops=conn.execute(f"SELECT * FROM shops s WHERE {live_shops} ORDER BY name", shop_names).fetchall(),
             counts=category_counts(), qs=lambda **kw: "?" + urlencode({**params, **kw}),
             stats=conn.execute("SELECT COUNT(*) AS products, SUM(shop_count > 1) AS compared FROM products").fetchone(),
             offers_total=conn.execute("SELECT COUNT(*) FROM offers WHERE active=1").fetchone()[0],
@@ -151,10 +155,10 @@ def create_app(config_path: str | None = None) -> FastAPI:
 
     @app.get("/shops", response_class=HTMLResponse)
     def shops(request: Request):
-        rows = conn.execute("""
+        rows = conn.execute(f"""
             SELECT s.*, (SELECT COUNT(*) FROM offers o JOIN products p ON p.id = o.product_id
                          WHERE o.shop_id = s.id AND o.active = 1 AND o.price_base = p.min_price AND p.shop_count > 1) AS cheapest
-            FROM shops s ORDER BY s.name""").fetchall()
+            FROM shops s WHERE {live_shops} ORDER BY s.name""", shop_names).fetchall()
         return tpl.TemplateResponse(request, "shops.html", dict(shops=rows))
 
     @app.get("/api/products")

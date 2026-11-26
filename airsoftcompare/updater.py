@@ -146,12 +146,28 @@ def _rematch(conn: sqlite3.Connection, settings: dict) -> None:
     log.info("Matched offers into %d products.", n)
 
 
+def _hide_unlisted_shops(conn: sqlite3.Connection, shops: list[dict]) -> None:
+    """Offers of shops removed from shops.yaml (or set `enabled: false`) leave the comparison.
+    Nothing is deleted: re-enabling the shop brings them back on its next update."""
+    names = [s["name"] for s in shops]
+    if not names:  # most likely a broken shops.yaml; hiding everything would blank the site
+        log.warning("No enabled shops in config; not hiding any offers.")
+        return
+    with _write_lock, conn:
+        n = conn.execute(
+            f"UPDATE offers SET active = 0 WHERE active = 1 AND shop_id NOT IN "
+            f"(SELECT id FROM shops WHERE name IN ({','.join('?' * len(names))}))", names).rowcount
+    if n:
+        log.info("Hid %d offers of shops no longer in the config.", n)
+
+
 def update_all(cfg: dict, only: list[str] | None = None) -> None:
     settings = cfg["settings"]
     conn = dbmod.connect(settings["database"])
     shops = [s for s in cfg["shops"] if not only or s["name"] in only]
     if not shops:
         log.warning("No enabled shops in config.")
+    _hide_unlisted_shops(conn, cfg["shops"])
     _refresh_titles(conn, cfg["shops"])
     _rematch(conn, settings)
     with ThreadPoolExecutor(max_workers=max(1, int(settings["parallel_shops"]))) as pool:
