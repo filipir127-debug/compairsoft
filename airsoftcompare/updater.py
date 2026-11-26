@@ -68,7 +68,7 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
         elif shop.get("type") == "sitemap":
             cutoff = (datetime.now() - timedelta(hours=settings["recrawl_hours"])).isoformat(timespec="seconds")
             fresh = {r[0] for r in conn.execute(
-                "SELECT url FROM offers WHERE shop_id = ? AND active = 1 AND updated_at > ?", (shop_id, cutoff))}
+                "SELECT url FROM offers WHERE shop_id = ? AND active = 1 AND updated_at > ? AND in_stock IS NOT NULL", (shop_id, cutoff))}
             offers = sitemap.crawl(fetcher, shop, currency, skip=fresh.__contains__)
         else:
             raise ValueError(f"unknown shop type {shop.get('type')!r} (use 'feed' or 'sitemap')")

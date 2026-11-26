@@ -102,3 +102,13 @@ def test_opengraph_fallback():
       </head></html>"""
     o = extract_product(page, "https://shop.cz/g")
     assert o.title == "Gloves" and o.price == 590
+
+
+def test_microdata_availability_link():
+    from airsoftcompare.sources.sitemap import extract_product
+    page = b"""<html><head><meta property="og:title" content="Hop-up rubber"></head><body>
+    <span itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+    <meta itemprop="price" content="79"><meta itemprop="priceCurrency" content="CZK">
+    <link itemprop="availability" href="https://schema.org/InStock" /></span></body></html>"""
+    o = extract_product(page, "https://shop.example/p")
+    assert o.price == 79 and o.in_stock is True

@@ -128,7 +128,8 @@ def extract_product(page: str | bytes, page_url: str, default_currency: str = "C
     # Fallback: OpenGraph / microdata meta tags.
     def meta(*names):
         for n in names:
-            v = doc.xpath(f'//meta[@property="{n}" or @name="{n}" or @itemprop="{n}"]/@content')
+            v = doc.xpath(f'//meta[@property="{n}" or @name="{n}" or @itemprop="{n}"]/@content'
+                          f' | //link[@itemprop="{n}"]/@href')
             if v:
                 return v[0].strip()
         return None
