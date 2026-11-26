@@ -1,43 +1,61 @@
 {% extends "base.html" %}
-{% block title %}{{ p.title }} – Airsoft Compare{% endblock %}
+{% block title %}{{ p.title }} – price comparison | CompAirsoft{% endblock %}
 {% block content %}
 {% set c = CATEGORIES.get(p.category, CATEGORIES['other']) %}
-<p class="crumbs"><a href="/">All</a> › <a href="/?cat={{ p.category }}">{{ c[0] }}</a></p>
+{% set live = offers|selectattr('active')|list %}
+<nav class="crumbs"><a href="/">Home</a><span>›</span><a href="/?cat={{ p.category }}">{{ c[0] }}</a></nav>
 
-<section class="product-head">
-  <div class="thumb big">
-    {% if p.image %}<img src="{{ p.image }}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
+<section class="pd">
+  <div class="pd-img">
+    {% if p.image %}<img src="{{ p.image }}" alt="{{ p.title }}" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
     <span class="ph">{{ c[1] }}</span>
   </div>
-  <div>
+  <div class="pd-info">
     <h1>{{ p.title }}</h1>
-    <div class="muted">{% if p.brand %}{{ p.brand }} · {% endif %}{{ c[0] }}{% if p.ean %} · EAN {{ p.ean }}{% endif %}</div>
-    <div class="headline-price">
-      {{ p.min_price|money }}
-      {% if p.shop_count > 1 and p.max_price > p.min_price %}<span class="muted">– {{ p.max_price|money }}</span>{% endif %}
+    <div class="pd-meta">
+      {% if p.brand %}<span>Brand: <b>{{ p.brand }}</b></span>{% endif %}
+      <span>Category: <a href="/?cat={{ p.category }}">{{ c[0] }}</a></span>
+      {% if p.ean %}<span>EAN: {{ p.ean }}</span>{% endif %}
     </div>
-    <div class="muted">Sold by {{ p.shop_count }} shop{{ 's' if p.shop_count != 1 }}, in stock at {{ p.in_stock_count }}</div>
+    <div class="pd-buy">
+      <div>
+        <div class="pd-price">{% if p.shop_count > 1 %}<small>from</small> {% endif %}{{ p.min_price|money }}</div>
+        {% if p.shop_count > 1 and p.max_price > p.min_price %}
+          <div class="pd-range">up to {{ p.max_price|money }} · save <b>{{ (p.max_price - p.min_price)|money }}</b></div>
+        {% endif %}
+        <div class="stock {{ 'yes' if p.in_stock_count else 'no' }}">
+          {% if p.in_stock_count %}In stock at {{ p.in_stock_count }} of {{ p.shop_count }} shop{{ 's' if p.shop_count != 1 }}{% else %}Out of stock everywhere{% endif %}
+        </div>
+      </div>
+      <a class="btn btn-big" href="#offers">Compare {{ live|length }} offer{{ 's' if live|length != 1 }}</a>
+    </div>
   </div>
 </section>
 
-<h2>Compare prices</h2>
-<table class="offers">
-  <thead><tr><th>Shop</th><th>Listing title</th><th>Stock</th><th class="r">Price</th><th></th></tr></thead>
-  <tbody>
+<h2 class="sec-title" id="offers">Price comparison</h2>
+<div class="offers">
   {% for o in offers %}
-    <tr class="{% if loop.first and o.in_stock != 0 %}best{% endif %} {% if not o.active %}gone{% endif %}">
-      <td class="shop">{{ o.shop_name }}{% if loop.first and o.in_stock != 0 %}<span class="tag">Cheapest</span>{% endif %}</td>
-      <td class="title">{{ o.title }}</td>
-      <td>{% if not o.active %}<span class="st no">Removed</span>{% elif o.in_stock == 1 %}<span class="st yes">In stock</span>{% elif o.in_stock == 0 %}<span class="st no">Out of stock</span>{% else %}<span class="st">Unknown</span>{% endif %}</td>
-      <td class="r price">{{ o.price_base|money }}{% if o.currency != 'CZK' %}<div class="muted small">{{ '%.2f'|format(o.price) }} {{ o.currency }}</div>{% endif %}</td>
-      <td class="r"><a class="go" href="{{ o.url }}" target="_blank" rel="noopener nofollow">Go to shop ↗</a></td>
-    </tr>
+    {% set best = loop.first and o.in_stock != 0 and o.active %}
+    <div class="offer {% if best %}best{% endif %} {% if not o.active %}gone{% endif %}">
+      <div class="o-shop">
+        <b>{{ o.shop_name }}</b>
+        {% if best and offers|length > 1 %}<span class="tag">Cheapest</span>{% endif %}
+        <div class="o-title">{{ o.title }}</div>
+      </div>
+      <div class="o-stock">
+        {% if not o.active %}<span class="stock no">Removed</span>
+        {% elif o.in_stock == 1 %}<span class="stock yes">In stock</span>
+        {% elif o.in_stock == 0 %}<span class="stock no">Out of stock</span>
+        {% else %}<span class="stock">Availability unknown</span>{% endif %}
+      </div>
+      <div class="o-price">{{ o.price_base|money }}{% if o.currency != 'CZK' %}<small>{{ '%.2f'|format(o.price) }} {{ o.currency }}</small>{% endif %}</div>
+      <a class="btn btn-shop" href="{{ o.url }}" target="_blank" rel="noopener nofollow">Go to shop</a>
+    </div>
   {% endfor %}
-  </tbody>
-</table>
+</div>
 
 {% if chart %}
-<h2>Price history</h2>
+<h2 class="sec-title">Price history</h2>
 <div class="chart">
   <svg viewBox="0 0 {{ chart.w }} {{ chart.h }}" role="img" aria-label="Price history per shop">
     {% for yy, label in chart.yticks %}
@@ -48,8 +66,8 @@
       <text x="{{ xx }}" y="{{ chart.h - 6 }}" text-anchor="{{ 'start' if loop.first else 'end' }}" class="axis">{{ label }}</text>
     {% endfor %}
     {% for l in chart.lines %}
-      <polyline points="{{ l.points }}" fill="none" stroke="{{ l.color }}" stroke-width="2" stroke-linejoin="round"/>
-      <circle cx="{{ l.last[0] }}" cy="{{ l.last[1] }}" r="3.5" fill="{{ l.color }}"/>
+      <polyline points="{{ l.points }}" fill="none" stroke="{{ l.color }}" stroke-width="2.5" stroke-linejoin="round"/>
+      <circle cx="{{ l.last[0] }}" cy="{{ l.last[1] }}" r="4" fill="{{ l.color }}"/>
     {% endfor %}
   </svg>
   <div class="legend">{% for l in chart.lines %}<span><i style="background:{{ l.color }}"></i>{{ l.shop }}</span>{% endfor %}</div>
@@ -57,7 +75,7 @@
 {% endif %}
 
 {% if similar %}
-<h2>Similar {{ c[0]|lower }}</h2>
-<div class="grid">{% for p in similar %}{% include "_card.html" %}{% endfor %}</div>
+<div class="sec-head"><h2 class="sec-title">Similar {{ c[0]|lower }}</h2><a href="/?cat={{ p.category }}">Show all ›</a></div>
+<div class="row-scroll">{% for p in similar %}{% include "_card.html" %}{% endfor %}</div>
 {% endif %}
 {% endblock %}

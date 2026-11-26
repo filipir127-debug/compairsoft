@@ -1,55 +1,81 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="cats">
-  <a class="chip {% if not cat %}on{% endif %}" href="{{ qs(cat='', page=1) }}">All <b>{{ counts.values()|sum }}</b></a>
+{% if home %}
+<section class="hero">
+  <div>
+    <h1>Find the cheapest airsoft gear</h1>
+    <p>We compare <b>{{ '{:,}'.format(offers_total).replace(',', ' ') }}</b> offers from <b>{{ shops|length }}</b> airsoft shops, so you don't have to open every one.</p>
+  </div>
+  <div class="hero-stats">
+    <div><b>{{ '{:,}'.format(stats.products or 0).replace(',', ' ') }}</b><span>products</span></div>
+    <div><b>{{ '{:,}'.format(stats.compared or 0).replace(',', ' ') }}</b><span>compared across shops</span></div>
+    <div><b>{{ shops|length }}</b><span>shops</span></div>
+  </div>
+</section>
+
+<h2 class="sec-title">Categories</h2>
+<section class="tiles">
   {% for slug, (label, icon) in CATEGORIES.items() if counts.get(slug) %}
-    <a class="chip {% if cat == slug %}on{% endif %}" href="{{ qs(cat=slug, page=1) }}">{{ icon }} {{ label }} <b>{{ counts[slug] }}</b></a>
+    <a class="tile" href="/?cat={{ slug }}"><span class="tile-ico">{{ icon }}</span><span class="tile-name">{{ label }}</span><span class="tile-n">{{ counts[slug] }}</span></a>
   {% endfor %}
 </section>
 
+{% for title, more, items in sections if items %}
+<div class="sec-head"><h2 class="sec-title">{{ title }}</h2><a href="{{ more }}">Show all ›</a></div>
+<div class="row-scroll">{% for p in items %}{% include "_card.html" %}{% endfor %}</div>
+{% endfor %}
+
+<div class="sec-head"><h2 class="sec-title">All products</h2></div>
+{% endif %}
+
 <div class="layout">
   <aside class="filters">
-    <form method="get" action="/">
-      <input type="hidden" name="q" value="{{ q }}">
-      <input type="hidden" name="cat" value="{{ cat }}">
-      <label>Sort by
-        <select name="sort" onchange="this.form.submit()">
-          {% for k, label in [('relevance','Most compared'),('price_asc','Price: low → high'),('price_desc','Price: high → low'),('savings','Biggest price difference'),('name','Name')] %}
-            <option value="{{ k }}" {% if sort == k %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label>Shop
-        <select name="shop" onchange="this.form.submit()">
-          <option value="">All shops</option>
-          {% for s in shops %}<option value="{{ s.id }}" {% if shop == s.id %}selected{% endif %}>{{ s.name }}</option>{% endfor %}
-        </select>
-      </label>
-      <div class="range">
-        <label>Min price<input type="number" name="pmin" value="{{ pmin }}" min="0" inputmode="numeric"></label>
-        <label>Max price<input type="number" name="pmax" value="{{ pmax }}" min="0" inputmode="numeric"></label>
-      </div>
-      <label class="check"><input type="checkbox" name="stock" value="1" {% if stock %}checked{% endif %} onchange="this.form.submit()"> In stock only</label>
-      <label class="check"><input type="checkbox" name="multi" value="1" {% if multi %}checked{% endif %} onchange="this.form.submit()"> Sold in 2+ shops</label>
-      <button type="submit">Apply</button>
-    </form>
-    <div class="stats">
-      <div><b>{{ stats.products or 0 }}</b> products</div>
-      <div><b>{{ stats.compared or 0 }}</b> compared across shops</div>
-      <div><b>{{ offers_total }}</b> offers from <b>{{ shops|length }}</b> shops</div>
-    </div>
+    <details {% if not home %}open{% endif %} class="filters-box">
+      <summary>Filters</summary>
+      <form method="get" action="/">
+        <input type="hidden" name="q" value="{{ q }}">
+        <input type="hidden" name="cat" value="{{ cat }}">
+        <input type="hidden" name="sort" value="{{ sort }}">
+        <div class="f-group">
+          <div class="f-title">Price (Kč)</div>
+          <div class="range">
+            <input type="number" name="pmin" value="{{ pmin }}" min="0" inputmode="numeric" placeholder="from" aria-label="Minimum price">
+            <span>–</span>
+            <input type="number" name="pmax" value="{{ pmax }}" min="0" inputmode="numeric" placeholder="to" aria-label="Maximum price">
+          </div>
+        </div>
+        <div class="f-group">
+          <div class="f-title">Availability</div>
+          <label class="check"><input type="checkbox" name="stock" value="1" {% if stock %}checked{% endif %} onchange="this.form.submit()"> In stock only</label>
+          <label class="check"><input type="checkbox" name="multi" value="1" {% if multi %}checked{% endif %} onchange="this.form.submit()"> Sold in 2+ shops</label>
+        </div>
+        <div class="f-group">
+          <div class="f-title">Shop</div>
+          <select name="shop" onchange="this.form.submit()" aria-label="Shop">
+            <option value="">All shops</option>
+            {% for s in shops %}<option value="{{ s.id }}" {% if shop == s.id %}selected{% endif %}>{{ s.name }}</option>{% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn">Show results</button>
+      </form>
+    </details>
   </aside>
 
   <section class="results">
+    {% if not home %}
     <div class="results-head">
-      <h1>{% if q %}“{{ q }}”{% elif cat %}{{ CATEGORIES[cat][0] }}{% else %}All products{% endif %}</h1>
-      <span class="muted">{{ total }} result{{ 's' if total != 1 }}</span>
+      <h1>{% if q %}“{{ q }}”{% elif cat %}{{ CATEGORIES[cat][1] }} {{ CATEGORIES[cat][0] }}{% else %}All products{% endif %}</h1>
+      <span class="muted">{{ '{:,}'.format(total).replace(',', ' ') }} product{{ 's' if total != 1 }}</span>
     </div>
+    {% endif %}
+    <nav class="sort-tabs" aria-label="Sort">
+      {% for k, label in [('relevance','Most compared'),('price_asc','Cheapest'),('price_desc','Most expensive'),('savings','Biggest saving'),('name','Name')] %}
+        <a href="{{ qs(sort=k, page=1) }}" class="{% if sort == k %}on{% endif %}">{{ label }}</a>
+      {% endfor %}
+    </nav>
     {% if not products %}
       <div class="empty">
-        {% if not shops %}
-          No data yet. Run <code>python -m airsoftcompare demo</code> for sample data, or add shops to <code>shops.yaml</code> and run <code>python -m airsoftcompare update</code>.
-        {% else %}Nothing matches these filters.{% endif %}
+        {% if not shops %}No data yet – the first shop update is still running.{% else %}Nothing matches these filters.{% endif %}
       </div>
     {% endif %}
     <div class="grid">
@@ -57,11 +83,12 @@
     </div>
     {% if pages > 1 %}
     <nav class="pager">
-      {% if page > 1 %}<a href="{{ qs(page=page-1) }}">← Prev</a>{% endif %}
-      <span>Page {{ page }} / {{ pages }}</span>
-      {% if page < pages %}<a href="{{ qs(page=page+1) }}">Next →</a>{% endif %}
+      {% if page > 1 %}<a href="{{ qs(page=page-1) }}">‹ Previous</a>{% endif %}
+      <span>Page {{ page }} of {{ pages }}</span>
+      {% if page < pages %}<a href="{{ qs(page=page+1) }}">Next ›</a>{% endif %}
     </nav>
     {% endif %}
   </section>
 </div>
+<script>if (innerWidth < 900) document.querySelector('.filters-box')?.removeAttribute('open');</script>
 {% endblock %}

@@ -3,24 +3,53 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Airsoft Compare{% endblock %}</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <title>{% block title %}CompAirsoft – compare airsoft prices{% endblock %}</title>
+  <meta name="description" content="Compare prices of airsoft guns, magazines, optics and gear across Czech airsoft shops.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v=3">
 </head>
 <body>
 <header class="top">
   <div class="wrap top-inner">
-    <a class="logo" href="/">🎯 Airsoft<span>Compare</span></a>
-    <form class="search" action="/" method="get">
-      <input type="search" name="q" value="{{ q or '' }}" placeholder="Search masks, magazines, red dots, EAN…" autocomplete="off">
+    <a class="logo" href="/"><span class="logo-mark">🎯</span><span class="logo-text">Comp<b>airsoft</b></span></a>
+    <form class="search" action="/" method="get" role="search">
+      <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"/></svg>
+      <input type="search" name="q" value="{{ q or '' }}" placeholder="Search guns, magazines, red dots, EAN…" autocomplete="off" aria-label="Search products">
       {% if cat %}<input type="hidden" name="cat" value="{{ cat }}">{% endif %}
       <button type="submit">Search</button>
     </form>
-    <nav><a href="/shops">Shops</a></nav>
+    <nav class="top-nav"><a href="/shops">Shops</a></nav>
   </div>
+  <nav class="catbar" aria-label="Categories">
+    <div class="wrap catbar-inner">
+      {% set cc = category_counts() %}
+      {% for slug, (label, icon) in CATEGORIES.items() if cc.get(slug) %}
+        <a href="/?cat={{ slug }}" class="{% if cat == slug %}on{% endif %}"><span>{{ icon }}</span>{{ label }}</a>
+      {% endfor %}
+    </div>
+  </nav>
 </header>
-<main class="wrap">
+<main class="wrap main">
 {% block content %}{% endblock %}
 </main>
-<footer class="wrap foot">Prices are read from each shop's public feed or product pages and may be out of date – always check the shop before buying.</footer>
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div>
+      <div class="logo small"><span class="logo-mark">🎯</span><span class="logo-text">Comp<b>airsoft</b></span></div>
+      <p>Compare airsoft prices across Czech shops in one place.</p>
+    </div>
+    <div>
+      <h4>Browse</h4>
+      <a href="/">All products</a><a href="/?multi=1&sort=savings">Biggest price differences</a><a href="/shops">Shops</a>
+    </div>
+    <div>
+      <h4>Good to know</h4>
+      <p>Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.</p>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

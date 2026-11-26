@@ -1,23 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Shops – Airsoft Compare{% endblock %}
+{% block title %}Shops – CompAirsoft{% endblock %}
 {% block content %}
-<h1>Shops</h1>
-<table class="offers">
-  <thead><tr><th>Shop</th><th>Source</th><th class="r">Offers</th><th class="r">Cheapest on</th><th>Last update</th><th>Status</th></tr></thead>
-  <tbody>
+<div class="results-head"><h1>Shops we compare</h1><span class="muted">{{ shops|length }} shops</span></div>
+<div class="shop-grid">
   {% for s in shops %}
-    <tr>
-      <td class="shop"><a href="/?shop={{ s.id }}">{{ s.name }}</a>{% if s.url %}<div class="muted small"><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.url }}</a></div>{% endif %}</td>
-      <td>{{ s.type }}</td>
-      <td class="r">{{ s.offer_count }}</td>
-      <td class="r">{{ s.cheapest }}</td>
-      <td>{{ (s.last_update or '–')|replace('T', ' ') }}</td>
-      <td class="{% if s.last_status and s.last_status.startswith('error') %}err{% endif %}">{{ s.last_status or '–' }}</td>
-    </tr>
+    <div class="shop-card">
+      <div class="sc-head">
+        <a class="sc-name" href="/?shop={{ s.id }}">{{ s.name }}</a>
+        {% if s.last_status and s.last_status.startswith('error') %}<span class="pill bad">Update failed</span>
+        {% elif s.last_update %}<span class="pill good">Up to date</span>
+        {% else %}<span class="pill">Loading…</span>{% endif %}
+      </div>
+      {% if s.url %}<a class="sc-url" href="{{ s.url }}" target="_blank" rel="noopener">{{ s.url.split('//')[-1].rstrip('/') }}</a>{% endif %}
+      <div class="sc-stats">
+        <div><b>{{ s.offer_count or 0 }}</b><span>offers</span></div>
+        <div><b>{{ s.cheapest }}</b><span>cheapest on</span></div>
+      </div>
+      <div class="sc-foot">Updated {{ (s.last_update or '–')|replace('T', ' ') }} · {{ 'feed' if s.type == 'feed' else 'crawled' }}</div>
+      <a class="btn btn-ghost" href="/?shop={{ s.id }}">Show products</a>
+    </div>
   {% else %}
-    <tr><td colspan="6">No shops yet – add them to <code>shops.yaml</code>.</td></tr>
+    <div class="empty">No shops yet.</div>
   {% endfor %}
-  </tbody>
-</table>
-<p class="muted">“Cheapest on” counts products that this shop sells for the lowest price among the shops that carry it.</p>
+</div>
+<p class="muted small">“Cheapest on” counts products that this shop sells for the lowest price among the shops that carry it.</p>
 {% endblock %}

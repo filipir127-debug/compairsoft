@@ -47,6 +47,8 @@ def create_app(config_path: str | None = None) -> FastAPI:
 
     tpl.env.filters["money"] = money
     tpl.env.globals["CATEGORIES"] = CATEGORIES
+    tpl.env.globals["category_counts"] = lambda: category_counts()
+    tpl.env.globals["shop_total"] = lambda: conn.execute("SELECT COUNT(*) FROM shops").fetchone()[0]
 
     def category_counts():
         return {r[0]: r[1] for r in conn.execute("SELECT category, COUNT(*) FROM products GROUP BY category")}
@@ -87,10 +89,21 @@ def create_app(config_path: str | None = None) -> FastAPI:
         fmin = _num(pmin)
         fmax = _num(pmax)
         total, products = search(q, cat, shop, stock, multi, fmin, fmax, sort, page)
+        home = not (q or cat or shop or stock or multi or fmin or fmax) and page == 1 and sort == "relevance"
+        sections = []
+        if home:
+            sections = [
+                ("Compared in the most shops", "?multi=1&sort=shops", conn.execute(
+                    "SELECT * FROM products WHERE shop_count > 1 AND in_stock_count > 0 "
+                    "ORDER BY shop_count DESC, (max_price - min_price) DESC LIMIT 10").fetchall()),
+                ("Biggest price differences", "?multi=1&sort=savings", conn.execute(
+                    "SELECT * FROM products WHERE shop_count > 1 AND in_stock_count > 0 "
+                    "ORDER BY (max_price - min_price) DESC LIMIT 10").fetchall()),
+            ]
         params = {k: v for k, v in dict(q=q, cat=cat, shop=shop or "", stock="1" if stock else "",
                                          multi="1" if multi else "", pmin=pmin, pmax=pmax, sort=sort).items() if v}
         return tpl.TemplateResponse(request, "index.html", dict(
-            products=products, total=total, page=page, pages=max(1, math.ceil(total / PAGE_SIZE)),
+            products=products, total=total, page=page, home=home, sections=sections, pages=max(1, math.ceil(total / PAGE_SIZE)),
             q=q, cat=cat, shop=shop, stock=stock, multi=multi, pmin=pmin, pmax=pmax, sort=sort,
             shops=conn.execute("SELECT * FROM shops ORDER BY name").fetchall(),
             counts=category_counts(), qs=lambda **kw: "?" + urlencode({**params, **kw}),
