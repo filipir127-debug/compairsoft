@@ -288,3 +288,18 @@ img { max-width: 100%; }
 .tile:hover .illu { transform: scale(1.05); }
 /* Language menu: readable options in both themes */
 .lang select option { background: var(--panel); color: var(--ink); }
+
+/* Homepage: category bar hidden while the category tiles are visible, slides in after */
+.catbar { max-height: 60px; overflow: hidden; transition: max-height .5s ease, opacity .5s ease; }
+.top.cats-hidden .catbar { max-height: 0; opacity: 0; border-bottom-width: 0; }
+@media (prefers-reduced-motion: reduce) { .catbar { transition: none; } }
+
+/* Product photo: our small copy; click opens the shop's original */
+.zoom { position: absolute; inset: 0; border: 0; padding: 0; background: var(--photo-bg); cursor: zoom-in; z-index: 1; }
+.zoom img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 20px; }
+.zoom-hint { position: absolute; right: 10px; bottom: 10px; background: rgba(20, 40, 75, .75); color: #fff; border-radius: 8px; padding: 6px; display: grid; }
+.lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(8, 12, 20, .88); display: grid; place-items: center; cursor: zoom-out; padding: 24px; }
+.lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; background: #fff; border-radius: 10px; }
+.lb-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,.12); color: #fff; border: 0; border-radius: 10px; padding: 8px; cursor: pointer; }
+.lb-close .ic { width: 22px; height: 22px; }
+.home-start .catbar { max-height: 0; opacity: 0; border-bottom-width: 0; transition: none; }

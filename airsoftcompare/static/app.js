@@ -37,7 +37,7 @@
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
-      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", showEmail: "Show email address",
+      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", zoom: "Show the original photo", showEmail: "Show email address",
     },
     cs: {
       "search.ph": "Hledat zbraně, zásobníky, kolimátory…", "search.btn": "Hledat", "nav.shops": "Obchody", loading: "Načítání…",
@@ -67,7 +67,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", showEmail: "Zobrazit e-mail",
+      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
     },
     sk: {
       "search.ph": "Hľadať zbrane, zásobníky, kolimátory…", "search.btn": "Hľadať", "nav.shops": "Obchody", loading: "Načítava sa…",
@@ -97,7 +97,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", showEmail: "Zobraziť e-mail",
+      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
     },
     de: {
       "search.ph": "Waffen, Magazine, Red Dots suchen…", "search.btn": "Suchen", "nav.shops": "Shops", loading: "Wird geladen…",
@@ -127,7 +127,7 @@
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
-      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", showEmail: "E-Mail-Adresse anzeigen",
+      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
     },
   };
   const CAT_NAMES = {
@@ -219,6 +219,20 @@
   const markGroup = (g) => document.querySelectorAll(".catbar a").forEach((a) => a.classList.toggle("on", a.dataset.group === g));
 
   // ---------------------------------------------------------------- home
+  // On the homepage the category bar slides in only once the category tiles have scrolled away.
+  let tilesObserver = null;
+  function catbarFollow(target) {
+    const top = document.querySelector(".top");
+    if (tilesObserver) { tilesObserver.disconnect(); tilesObserver = null; }
+    if (!target || !("IntersectionObserver" in window)) {
+      top.classList.remove("cats-hidden"); document.documentElement.classList.remove("home-start"); return;
+    }
+    tilesObserver = new IntersectionObserver(([entry]) => {
+      top.classList.toggle("cats-hidden", entry.isIntersecting);
+      document.documentElement.classList.remove("home-start");
+    }, { threshold: 0 });
+    tilesObserver.observe(target);
+  }
   function home(m) {
     markGroup(null);
     document.title = `CompAirsoft – ${t("hero.title")}`;
@@ -236,9 +250,10 @@
       <section class="hero"><div><h1>${t("hero.title")}</h1><p>${t("hero.text", { offers: fmt(m.stats.offers), shops: m.stats.shops })}</p></div>
         <div class="hero-stats"><div><b>${fmt(m.stats.products)}</b><span>${t("stat.products")}</span></div>
           <div><b>${fmt(m.stats.compared)}</b><span>${t("stat.compared")}</span></div><div><b>${m.stats.shops}</b><span>${t("stat.shops")}</span></div></div></section>
-      <h2 class="sec-title">${t("categories")}</h2><section class="tiles">${tiles}</section>
+      <div class="hero-cats"><h2 class="sec-title">${t("categories")}</h2><section class="tiles">${tiles}</section></div>
       ${m.sections.map((s) => row(titles[s.title] || s.title, s.more, s.items)).join("")}
       <div class="center"><a class="btn btn-big" href="/?all=1">${t("browseAll", { n: fmt(m.stats.products) })}</a></div>`;
+    catbarFollow(app.querySelector(".hero-cats"));
   }
 
   // ---------------------------------------------------------------- listing with facets
@@ -407,7 +422,7 @@
     }).join("");
     app.innerHTML = `
       <nav class="crumbs"><a href="/">${t("home")}</a><span>›</span><a href="/?cat=${g}">${esc(catName(g))}</a>${GROUPS[g][2].length > 1 ? `<span>›</span><a href="/?cat=${p.c}">${esc(catName(p.c))}</a>` : ""}</nav>
-      <section class="pd"><div class="pd-img">${groupIcon(p.c)}${p.i ? `<img src="${esc(p.i)}" alt="${esc(p.t)}" referrerpolicy="no-referrer">` : ""}</div>
+      <section class="pd"><div class="pd-img">${groupIcon(p.c)}${p.i ? `<button type="button" class="zoom" data-orig="${esc(p.orig || p.i)}" aria-label="${t("zoom")}"><img src="${esc(p.i)}" alt="${esc(p.t)}" referrerpolicy="no-referrer"><span class="zoom-hint">${icon("search")}</span></button>` : ""}</div>
         <div class="pd-info"><h1>${esc(p.t)}</h1>
           <div class="pd-meta">${p.b ? `<span>${t("brand")}: <b>${esc(p.b)}</b></span>` : ""}<span>${t("category")}: <a href="/?cat=${p.c}">${esc(catName(p.c))}</a></span>${p.e ? `<span>EAN: ${esc(p.e)}</span>` : ""}</div>
           <div class="pd-buy"><div>
@@ -442,7 +457,7 @@
       [["What we collect", "Nothing about you personally. CompAirsoft has no user accounts, uses no cookies and runs no analytics, advertising or tracking scripts."],
        ["Stored in your browser", "Your choice of language and dark/light mode is saved in your browser's local storage so the site remembers it. It never leaves your device; you can delete it by clearing the site data in your browser."],
        ["Hosting (Cloudflare)", "The site is delivered by Cloudflare, Inc. To deliver it and protect it against attacks, Cloudflare processes technical data of each request, such as your IP address, browser type and the page requested. Legal basis: legitimate interest in running a secure website (Art. 6(1)(f) GDPR). See Cloudflare's privacy policy: https://www.cloudflare.com/privacypolicy/"],
-       ["Product photos and shop links", "Product photos are loaded directly from the servers of the shops that sell them, so those shops receive your IP address and browser details when an image is shown. We tell your browser not to send them which page you were on. When you click “Go to shop”, the shop's own privacy policy applies."],
+       ["Product photos and shop links", "Product photos are shown as small copies stored on this website's own hosting. Only when you click a photo to enlarge it is the original loaded from the shop's server; that shop then receives your IP address and browser details (we tell your browser not to send which page you were on). When you click “Go to shop”, the shop's own privacy policy applies."],
        ["Fonts and icons", "Fonts and icons are served from this website itself; nothing is loaded from Google or other font services."],
        ["Your rights", "Under the GDPR you may ask for access to, correction or deletion of personal data, object to processing, and complain to a data protection authority (in the Czech Republic: Úřad pro ochranu osobních údajů, www.uoou.cz). As we store no personal data ourselves, requests about request logs are best directed to Cloudflare."]],
       "Contact"],
@@ -450,7 +465,7 @@
       [["Co shromažďujeme", "O vás osobně nic. CompAirsoft nemá uživatelské účty, nepoužívá cookies a nespouští žádné analytické, reklamní ani sledovací skripty."],
        ["Uloženo ve vašem prohlížeči", "Zvolený jazyk a tmavý/světlý režim se ukládají do místního úložiště vašeho prohlížeče, aby si je web pamatoval. Nikdy neopouštějí vaše zařízení; smažete je vymazáním dat webu v prohlížeči."],
        ["Hosting (Cloudflare)", "Web doručuje společnost Cloudflare, Inc. Aby ho mohla doručit a chránit před útoky, zpracovává technické údaje každého požadavku, např. vaši IP adresu, typ prohlížeče a požadovanou stránku. Právní základ: oprávněný zájem na provozu bezpečného webu (čl. 6 odst. 1 písm. f) GDPR). Zásady ochrany soukromí Cloudflare: https://www.cloudflare.com/privacypolicy/"],
-       ["Fotografie produktů a odkazy do obchodů", "Fotografie produktů se načítají přímo ze serverů obchodů, které je prodávají, takže tyto obchody při zobrazení obrázku obdrží vaši IP adresu a údaje o prohlížeči. Prohlížeči zakazujeme posílat jim, na které stránce jste byli. Po kliknutí na „Do obchodu“ platí zásady ochrany soukromí daného obchodu."],
+       ["Fotografie produktů a odkazy do obchodů", "Fotografie produktů zobrazujeme jako zmenšené kopie uložené na hostingu tohoto webu. Teprve když fotku kliknutím zvětšíte, načte se originál ze serveru obchodu; ten pak obdrží vaši IP adresu a údaje o prohlížeči (prohlížeči zakazujeme posílat, na které stránce jste byli). Po kliknutí na „Do obchodu“ platí zásady ochrany soukromí daného obchodu."],
        ["Písma a ikony", "Písma a ikony poskytuje přímo tento web; nic se nenačítá od Googlu ani jiných služeb."],
        ["Vaše práva", "Podle GDPR můžete požádat o přístup k osobním údajům, jejich opravu či výmaz, vznést námitku proti zpracování a podat stížnost u dozorového úřadu (v ČR: Úřad pro ochranu osobních údajů, www.uoou.cz). Protože sami žádné osobní údaje neukládáme, žádosti týkající se záznamů o požadavcích směřujte na Cloudflare."]],
       "Kontakt"],
@@ -458,7 +473,7 @@
       [["Čo zhromažďujeme", "O vás osobne nič. CompAirsoft nemá používateľské účty, nepoužíva cookies a nespúšťa žiadne analytické, reklamné ani sledovacie skripty."],
        ["Uložené vo vašom prehliadači", "Zvolený jazyk a tmavý/svetlý režim sa ukladajú do lokálneho úložiska vášho prehliadača, aby si ich web pamätal. Nikdy neopúšťajú vaše zariadenie; vymažete ich vymazaním údajov webu v prehliadači."],
        ["Hosting (Cloudflare)", "Web doručuje spoločnosť Cloudflare, Inc. Aby ho mohla doručiť a chrániť pred útokmi, spracúva technické údaje každej požiadavky, napr. vašu IP adresu, typ prehliadača a požadovanú stránku. Právny základ: oprávnený záujem na prevádzke bezpečného webu (čl. 6 ods. 1 písm. f) GDPR). Zásady ochrany súkromia Cloudflare: https://www.cloudflare.com/privacypolicy/"],
-       ["Fotografie produktov a odkazy do obchodov", "Fotografie produktov sa načítavajú priamo zo serverov obchodov, ktoré ich predávajú, takže tieto obchody pri zobrazení obrázka dostanú vašu IP adresu a údaje o prehliadači. Prehliadaču zakazujeme posielať im, na ktorej stránke ste boli. Po kliknutí na „Do obchodu“ platia zásady ochrany súkromia daného obchodu."],
+       ["Fotografie produktov a odkazy do obchodov", "Fotografie produktov zobrazujeme ako zmenšené kópie uložené na hostingu tohto webu. Až keď fotku kliknutím zväčšíte, načíta sa originál zo servera obchodu; ten potom dostane vašu IP adresu a údaje o prehliadači (prehliadaču zakazujeme posielať, na ktorej stránke ste boli). Po kliknutí na „Do obchodu“ platia zásady ochrany súkromia daného obchodu."],
        ["Písma a ikony", "Písma a ikony poskytuje priamo tento web; nič sa nenačítava od Googlu ani iných služieb."],
        ["Vaše práva", "Podľa GDPR môžete požiadať o prístup k osobným údajom, ich opravu či vymazanie, namietať proti spracúvaniu a podať sťažnosť dozornému orgánu (na Slovensku: Úrad na ochranu osobných údajov SR, v ČR: ÚOOÚ). Keďže sami žiadne osobné údaje neukladáme, žiadosti týkajúce sa záznamov o požiadavkách smerujte na Cloudflare."]],
       "Kontakt"],
@@ -466,7 +481,7 @@
       [["Was wir erheben", "Nichts über dich persönlich. CompAirsoft hat keine Benutzerkonten, verwendet keine Cookies und keine Analyse-, Werbe- oder Tracking-Skripte."],
        ["In deinem Browser gespeichert", "Deine Sprache und der Dunkel-/Hellmodus werden im lokalen Speicher deines Browsers gespeichert, damit die Seite sie sich merkt. Sie verlassen nie dein Gerät; du kannst sie löschen, indem du die Websitedaten im Browser löschst."],
        ["Hosting (Cloudflare)", "Die Seite wird von Cloudflare, Inc. ausgeliefert. Um sie auszuliefern und vor Angriffen zu schützen, verarbeitet Cloudflare technische Daten jeder Anfrage, z. B. deine IP-Adresse, den Browsertyp und die aufgerufene Seite. Rechtsgrundlage: berechtigtes Interesse am Betrieb einer sicheren Website (Art. 6 Abs. 1 lit. f DSGVO). Datenschutzerklärung von Cloudflare: https://www.cloudflare.com/privacypolicy/"],
-       ["Produktfotos und Shop-Links", "Produktfotos werden direkt von den Servern der Shops geladen, die das Produkt verkaufen; diese Shops erhalten dabei deine IP-Adresse und Browserangaben. Wir weisen deinen Browser an, ihnen nicht mitzuteilen, auf welcher Seite du warst. Nach einem Klick auf „Zum Shop“ gilt die Datenschutzerklärung des jeweiligen Shops."],
+       ["Produktfotos und Shop-Links", "Produktfotos zeigen wir als verkleinerte Kopien, die auf dem Hosting dieser Website liegen. Erst wenn du ein Foto zum Vergrößern anklickst, wird das Original vom Server des Shops geladen; dieser erhält dann deine IP-Adresse und Browserangaben (wir weisen deinen Browser an, nicht mitzuteilen, auf welcher Seite du warst). Nach einem Klick auf „Zum Shop“ gilt die Datenschutzerklärung des jeweiligen Shops."],
        ["Schriften und Icons", "Schriften und Icons werden von dieser Website selbst geladen; nichts wird von Google oder anderen Diensten geladen."],
        ["Deine Rechte", "Nach der DSGVO kannst du Auskunft, Berichtigung oder Löschung personenbezogener Daten verlangen, der Verarbeitung widersprechen und dich bei einer Datenschutzbehörde beschweren. Da wir selbst keine personenbezogenen Daten speichern, richte Anfragen zu Anfrageprotokollen am besten an Cloudflare."]],
       "Kontakt"],
@@ -493,6 +508,7 @@
     try {
       const m = await json("/data/meta.json");
       document.getElementById("updated").textContent = t("updated", { d: m.generated.replace("T", " ") });
+      catbarFollow(null);
       if (page === "product") return await product();
       if (page === "shops") return shopsPage(m);
       if (page === "privacy") return privacyPage();
@@ -529,6 +545,20 @@
     });
     addEventListener("popstate", route);
   }
+  // Full-size photo straight from the shop, only when the visitor asks for it.
+  document.addEventListener("click", (e) => {
+    const z = e.target.closest(".zoom");
+    if (z) {
+      const box = document.createElement("div");
+      box.className = "lightbox";
+      box.innerHTML = `<button type="button" class="lb-close" aria-label="×">${icon("x")}</button><img src="${esc(z.dataset.orig)}" alt="" referrerpolicy="no-referrer">`;
+      const close = () => { box.remove(); document.removeEventListener("keydown", onKey); };
+      const onKey = (ev) => { if (ev.key === "Escape") close(); };
+      box.addEventListener("click", close);
+      document.addEventListener("keydown", onKey);
+      document.body.appendChild(box);
+    }
+  });
   document.addEventListener("error", (e) => { if (e.target.tagName === "IMG") e.target.remove(); }, true);
   applyShell();
   route();

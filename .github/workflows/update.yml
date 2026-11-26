@@ -52,7 +52,11 @@ jobs:
         if: github.event_name != 'push'
         run: |
           mkdir -p data
-          python -m airsoftcompare update --batch --max-minutes "${{ github.event.inputs.crawl_minutes || '290' }}"
+          python -m airsoftcompare update --batch --max-minutes "${{ github.event.inputs.crawl_minutes || '240' }}"
+
+      - name: Cache product photos
+        if: github.event_name != 'push'
+        run: python -m airsoftcompare thumbs --max-minutes 45
 
       - name: Save database
         if: always() && github.event_name != 'push'
@@ -69,5 +73,11 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          preCommands: wrangler pages project create compairsoft --production-branch=main || true
-          command: pages deploy dist --project-name=compairsoft --branch=main --commit-dirty=true
+          # Small photo copies first (three projects: Pages allows 20 000 files each), then the site.
+          preCommands: |
+            for p in compairsoft compairsoft-img-0 compairsoft-img-1 compairsoft-img-2; do wrangler pages project create $p --production-branch=main || true; done
+          command: |
+            pages deploy dist-images/img-0 --project-name=compairsoft-img-0 --branch=main --commit-dirty=true
+            pages deploy dist-images/img-1 --project-name=compairsoft-img-1 --branch=main --commit-dirty=true
+            pages deploy dist-images/img-2 --project-name=compairsoft-img-2 --branch=main --commit-dirty=true
+            pages deploy dist --project-name=compairsoft --branch=main --commit-dirty=true

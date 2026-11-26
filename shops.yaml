@@ -14,6 +14,10 @@
 settings:
   site_url: https://www.compairsoft.eu   # used in the sitemap for search engines
   contact_email: contact@compairsoft.eu                       # shown on the privacy page; an address you read
+  image_hosts:                            # small photo copies, one Pages project each (20 000 files max per project)
+    - https://compairsoft-img-0.pages.dev
+    - https://compairsoft-img-1.pages.dev
+    - https://compairsoft-img-2.pages.dev
   database: airsoft.db
   base_currency: CZK            # all prices are converted to this for comparison
   exchange_rates:               # 1 unit of currency = N base_currency (update now and then)

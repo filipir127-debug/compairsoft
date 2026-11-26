@@ -161,3 +161,17 @@ def test_crawler_refuses_private_addresses():
     for url in ("http://127.0.0.1/x", "http://169.254.169.254/latest/meta-data/", "http://10.0.0.5/", "http://[::1]/", "file:///etc/passwd"):
         assert not public_host(url), url
     assert Fetcher("t", 0, 5, False).get("http://169.254.169.254/latest/meta-data/") is None
+
+
+def test_thumbnails_fit_450_and_flatten_transparency():
+    import io
+    from PIL import Image
+    from airsoftcompare.images import BUCKETS, bucket, make_thumb, thumb_name
+    src = io.BytesIO()
+    Image.new("RGBA", (1600, 800), (255, 0, 0, 0)).save(src, "PNG")
+    out = Image.open(io.BytesIO(make_thumb(src.getvalue())))
+    assert out.format == "WEBP" and out.size == (450, 225) and out.mode == "RGB"
+    assert out.getpixel((10, 10))[0] > 240  # transparent -> white, not black
+    assert make_thumb(b"not an image") is None
+    name = thumb_name("https://shop.cz/a.jpg")
+    assert name.endswith(".webp") and 0 <= bucket(name) < BUCKETS

@@ -20,6 +20,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
+from .images import export_buckets, published_thumbs, thumb_name
 from .sources.common import safe_url
 from .text import SYNONYMS, colors, normalize, strip_accents
 
@@ -73,9 +74,20 @@ def _brand(p: dict, known: dict[str, str]) -> str | None:
     return None
 
 
+_THUMBS: dict[str, str] = {}  # filled by export_site: original image URL hash name -> thumbnail URL
+
+
+def _image(url: str | None) -> str:
+    """Our small cached copy when there is one, else the shop's original."""
+    url = safe_url(url)
+    if not url:
+        return ""
+    return _THUMBS.get(thumb_name(url), url)
+
+
 def _card(p: dict, shops_of: dict, brand: str | None = None) -> dict:
     card = {"id": p["id"], "t": p["title"], "c": p["category"], "p": _num(p["min_price"]), "x": _num(p["max_price"]),
-            "s": p["shop_count"], "k": p["in_stock_count"], "i": safe_url(p["image"]) or "",
+            "s": p["shop_count"], "k": p["in_stock_count"], "i": _image(p["image"]),
             "h": sorted(shops_of.get(p["id"], ()))}
     if brand:
         card["b"] = brand
@@ -148,6 +160,8 @@ def export_site(cfg: dict, out: str | Path) -> None:
         shutil.rmtree(out)
     (out / "static").mkdir(parents=True)
 
+    _THUMBS.clear()
+    _THUMBS.update(published_thumbs(settings))
     products = [dict(r) for r in conn.execute("SELECT * FROM products")]
     if not products:
         raise SystemExit("No products in the database – refusing to publish an empty site.")
@@ -193,7 +207,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
     for p in products:
         pid = p["id"]
         shards[pid[:2]][pid] = {
-            "p": {**cards[pid], "b": p["brand"], "e": p["ean"]},
+            "p": {**cards[pid], "b": p["brand"], "e": p["ean"], "orig": safe_url(p["image"]) or ""},
             "o": [{"s": shop_name[o["shop_id"]], "t": o["title"], "u": safe_url(o["url"]) or "#", "v": _num(o["price_base"]),
                    "r": _num(o["price"]), "y": o["currency"], "k": o["in_stock"], "a": o["active"]}
                   for o in offers.get(pid, [])],
@@ -285,5 +299,8 @@ def export_site(cfg: dict, out: str | Path) -> None:
         f"  Content-Security-Policy: {CSP}\n"
         "/data/*\n  Cache-Control: public, max-age=600\n"
         "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
+    if settings.get("image_hosts"):  # always written, so the photo deploy steps find their folders
+        export_buckets(settings, out.parent / (out.name + "-images"))
+    log.info("Photos: %d products use a cached copy", sum(1 for c in cards.values() if c["i"] in set(_THUMBS.values())))
     files = sum(1 for f in out.rglob("*") if f.is_file())
     log.info("Exported %d products as %d files to %s", len(products), files, out)
