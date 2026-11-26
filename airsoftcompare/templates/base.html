@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Airsoft Compare{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="logo" href="/">🎯 Airsoft<span>Compare</span></a>
+    <form class="search" action="/" method="get">
+      <input type="search" name="q" value="{{ q or '' }}" placeholder="Search masks, magazines, red dots, EAN…" autocomplete="off">
+      {% if cat %}<input type="hidden" name="cat" value="{{ cat }}">{% endif %}
+      <button type="submit">Search</button>
+    </form>
+    <nav><a href="/shops">Shops</a></nav>
+  </div>
+</header>
+<main class="wrap">
+{% block content %}{% endblock %}
+</main>
+<footer class="wrap foot">Prices are read from each shop's public feed or product pages and may be out of date – always check the shop before buying.</footer>
+</body>
+</html>

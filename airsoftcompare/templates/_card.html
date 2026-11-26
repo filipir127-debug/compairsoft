@@ -1,0 +1,19 @@
+{% set c = CATEGORIES.get(p.category, CATEGORIES['other']) %}
+<a class="card" href="/product/{{ p.id }}">
+  <div class="thumb">
+    {% if p.image %}<img src="{{ p.image }}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
+    <span class="ph">{{ c[1] }}</span>
+  </div>
+  <div class="card-body">
+    <div class="cat">{{ c[0] }}{% if p.brand %} · {{ p.brand }}{% endif %}</div>
+    <div class="name">{{ p.title }}</div>
+    <div class="price-row">
+      <span class="price">{% if p.shop_count > 1 %}<small>from</small> {% endif %}{{ p.min_price|money }}</span>
+      <span class="shops-badge {% if p.shop_count > 1 %}multi{% endif %}">{{ p.shop_count }} shop{{ 's' if p.shop_count != 1 }}</span>
+    </div>
+    {% if p.shop_count > 1 and p.max_price > p.min_price %}
+      <div class="save">Save up to {{ (p.max_price - p.min_price)|money }}</div>
+    {% endif %}
+    {% if not p.in_stock_count %}<div class="oos">Not in stock anywhere</div>{% endif %}
+  </div>
+</a>

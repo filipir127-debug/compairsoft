@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Shops – Airsoft Compare{% endblock %}
+{% block content %}
+<h1>Shops</h1>
+<table class="offers">
+  <thead><tr><th>Shop</th><th>Source</th><th class="r">Offers</th><th class="r">Cheapest on</th><th>Last update</th><th>Status</th></tr></thead>
+  <tbody>
+  {% for s in shops %}
+    <tr>
+      <td class="shop"><a href="/?shop={{ s.id }}">{{ s.name }}</a>{% if s.url %}<div class="muted small"><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.url }}</a></div>{% endif %}</td>
+      <td>{{ s.type }}</td>
+      <td class="r">{{ s.offer_count }}</td>
+      <td class="r">{{ s.cheapest }}</td>
+      <td>{{ (s.last_update or '–')|replace('T', ' ') }}</td>
+      <td class="{% if s.last_status and s.last_status.startswith('error') %}err{% endif %}">{{ s.last_status or '–' }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6">No shops yet – add them to <code>shops.yaml</code>.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="muted">“Cheapest on” counts products that this shop sells for the lowest price among the shops that carry it.</p>
+{% endblock %}

@@ -1,0 +1,43 @@
+# Airsoft Compare – shop list
+#
+# Each shop is read in one of two ways:
+#
+#   type: feed      – the shop's product XML feed (Heureka, Zboží.cz or Google Merchant format).
+#                     Fast and complete: one download = whole catalogue. Best option.
+#   type: sitemap   – crawls product pages listed in the shop's sitemap and reads the
+#                     schema.org product data embedded in each page. Works for almost any
+#                     shop but is slow (one page per request_delay seconds).
+#
+# Not sure which works for a shop?  Run:   python -m airsoftcompare probe https://www.some-shop.cz
+# It tries the usual feed addresses and sample product pages, then prints a block to paste here.
+
+settings:
+  database: airsoft.db
+  base_currency: CZK            # all prices are converted to this for comparison
+  exchange_rates:               # 1 unit of currency = N base_currency (update now and then)
+    EUR: 25.0
+    PLN: 5.9
+  request_delay: 1.5            # seconds between requests to the same shop – be polite
+  respect_robots: true          # obey robots.txt when crawling pages
+  match_threshold: 90           # 0-100, lower = more aggressive cross-shop matching
+  recrawl_hours: 20             # sitemap shops: don't re-download pages fetched more recently
+  parallel_shops: 4             # shops processed at the same time
+
+shops:
+  # ---- Examples – replace with real shops (use `probe` to fill these in) ----
+
+  - name: Example feed shop
+    url: https://www.example-airsoft.cz
+    type: feed
+    feed_url: https://www.example-airsoft.cz/heureka.xml
+    enabled: false              # set to true (or delete the line) once the URL is real
+
+  - name: Example crawled shop
+    url: https://www.example-airsoft.sk
+    type: sitemap
+    # sitemap_url: https://www.example-airsoft.sk/sitemap.xml   # default: read from robots.txt
+    include: '/[^/]+\.html$'    # regex – only URLs that look like product pages
+    exclude: '/(blog|clanky|kontakt|kosik)/'
+    max_pages: 3000             # cap per run
+    currency: EUR               # used when a page/feed doesn't say
+    enabled: false

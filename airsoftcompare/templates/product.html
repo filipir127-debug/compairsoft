@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ p.title }} – Airsoft Compare{% endblock %}
+{% block content %}
+{% set c = CATEGORIES.get(p.category, CATEGORIES['other']) %}
+<p class="crumbs"><a href="/">All</a> › <a href="/?cat={{ p.category }}">{{ c[0] }}</a></p>
+
+<section class="product-head">
+  <div class="thumb big">
+    {% if p.image %}<img src="{{ p.image }}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
+    <span class="ph">{{ c[1] }}</span>
+  </div>
+  <div>
+    <h1>{{ p.title }}</h1>
+    <div class="muted">{% if p.brand %}{{ p.brand }} · {% endif %}{{ c[0] }}{% if p.ean %} · EAN {{ p.ean }}{% endif %}</div>
+    <div class="headline-price">
+      {{ p.min_price|money }}
+      {% if p.shop_count > 1 and p.max_price > p.min_price %}<span class="muted">– {{ p.max_price|money }}</span>{% endif %}
+    </div>
+    <div class="muted">Sold by {{ p.shop_count }} shop{{ 's' if p.shop_count != 1 }}, in stock at {{ p.in_stock_count }}</div>
+  </div>
+</section>
+
+<h2>Compare prices</h2>
+<table class="offers">
+  <thead><tr><th>Shop</th><th>Listing title</th><th>Stock</th><th class="r">Price</th><th></th></tr></thead>
+  <tbody>
+  {% for o in offers %}
+    <tr class="{% if loop.first and o.in_stock != 0 %}best{% endif %} {% if not o.active %}gone{% endif %}">
+      <td class="shop">{{ o.shop_name }}{% if loop.first and o.in_stock != 0 %}<span class="tag">Cheapest</span>{% endif %}</td>
+      <td class="title">{{ o.title }}</td>
+      <td>{% if not o.active %}<span class="st no">Removed</span>{% elif o.in_stock == 1 %}<span class="st yes">In stock</span>{% elif o.in_stock == 0 %}<span class="st no">Out of stock</span>{% else %}<span class="st">Unknown</span>{% endif %}</td>
+      <td class="r price">{{ o.price_base|money }}{% if o.currency != 'CZK' %}<div class="muted small">{{ '%.2f'|format(o.price) }} {{ o.currency }}</div>{% endif %}</td>
+      <td class="r"><a class="go" href="{{ o.url }}" target="_blank" rel="noopener nofollow">Go to shop ↗</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% if chart %}
+<h2>Price history</h2>
+<div class="chart">
+  <svg viewBox="0 0 {{ chart.w }} {{ chart.h }}" role="img" aria-label="Price history per shop">
+    {% for yy, label in chart.yticks %}
+      <line x1="{{ chart.L }}" x2="{{ chart.w - chart.R }}" y1="{{ yy }}" y2="{{ yy }}" class="grid-line"/>
+      <text x="{{ chart.L - 6 }}" y="{{ yy + 4 }}" text-anchor="end" class="axis">{{ label }}</text>
+    {% endfor %}
+    {% for xx, label in chart.xlabels %}
+      <text x="{{ xx }}" y="{{ chart.h - 6 }}" text-anchor="{{ 'start' if loop.first else 'end' }}" class="axis">{{ label }}</text>
+    {% endfor %}
+    {% for l in chart.lines %}
+      <polyline points="{{ l.points }}" fill="none" stroke="{{ l.color }}" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="{{ l.last[0] }}" cy="{{ l.last[1] }}" r="3.5" fill="{{ l.color }}"/>
+    {% endfor %}
+  </svg>
+  <div class="legend">{% for l in chart.lines %}<span><i style="background:{{ l.color }}"></i>{{ l.shop }}</span>{% endfor %}</div>
+</div>
+{% endif %}
+
+{% if similar %}
+<h2>Similar {{ c[0]|lower }}</h2>
+<div class="grid">{% for p in similar %}{% include "_card.html" %}{% endfor %}</div>
+{% endif %}
+{% endblock %}

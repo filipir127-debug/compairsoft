@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="cats">
+  <a class="chip {% if not cat %}on{% endif %}" href="{{ qs(cat='', page=1) }}">All <b>{{ counts.values()|sum }}</b></a>
+  {% for slug, (label, icon) in CATEGORIES.items() if counts.get(slug) %}
+    <a class="chip {% if cat == slug %}on{% endif %}" href="{{ qs(cat=slug, page=1) }}">{{ icon }} {{ label }} <b>{{ counts[slug] }}</b></a>
+  {% endfor %}
+</section>
+
+<div class="layout">
+  <aside class="filters">
+    <form method="get" action="/">
+      <input type="hidden" name="q" value="{{ q }}">
+      <input type="hidden" name="cat" value="{{ cat }}">
+      <label>Sort by
+        <select name="sort" onchange="this.form.submit()">
+          {% for k, label in [('relevance','Most compared'),('price_asc','Price: low → high'),('price_desc','Price: high → low'),('savings','Biggest price difference'),('name','Name')] %}
+            <option value="{{ k }}" {% if sort == k %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Shop
+        <select name="shop" onchange="this.form.submit()">
+          <option value="">All shops</option>
+          {% for s in shops %}<option value="{{ s.id }}" {% if shop == s.id %}selected{% endif %}>{{ s.name }}</option>{% endfor %}
+        </select>
+      </label>
+      <div class="range">
+        <label>Min price<input type="number" name="pmin" value="{{ pmin }}" min="0" inputmode="numeric"></label>
+        <label>Max price<input type="number" name="pmax" value="{{ pmax }}" min="0" inputmode="numeric"></label>
+      </div>
+      <label class="check"><input type="checkbox" name="stock" value="1" {% if stock %}checked{% endif %} onchange="this.form.submit()"> In stock only</label>
+      <label class="check"><input type="checkbox" name="multi" value="1" {% if multi %}checked{% endif %} onchange="this.form.submit()"> Sold in 2+ shops</label>
+      <button type="submit">Apply</button>
+    </form>
+    <div class="stats">
+      <div><b>{{ stats.products or 0 }}</b> products</div>
+      <div><b>{{ stats.compared or 0 }}</b> compared across shops</div>
+      <div><b>{{ offers_total }}</b> offers from <b>{{ shops|length }}</b> shops</div>
+    </div>
+  </aside>
+
+  <section class="results">
+    <div class="results-head">
+      <h1>{% if q %}“{{ q }}”{% elif cat %}{{ CATEGORIES[cat][0] }}{% else %}All products{% endif %}</h1>
+      <span class="muted">{{ total }} result{{ 's' if total != 1 }}</span>
+    </div>
+    {% if not products %}
+      <div class="empty">
+        {% if not shops %}
+          No data yet. Run <code>python -m airsoftcompare demo</code> for sample data, or add shops to <code>shops.yaml</code> and run <code>python -m airsoftcompare update</code>.
+        {% else %}Nothing matches these filters.{% endif %}
+      </div>
+    {% endif %}
+    <div class="grid">
+      {% for p in products %}{% include "_card.html" %}{% endfor %}
+    </div>
+    {% if pages > 1 %}
+    <nav class="pager">
+      {% if page > 1 %}<a href="{{ qs(page=page-1) }}">← Prev</a>{% endif %}
+      <span>Page {{ page }} / {{ pages }}</span>
+      {% if page < pages %}<a href="{{ qs(page=page+1) }}">Next →</a>{% endif %}
+    </nav>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
