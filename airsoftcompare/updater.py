@@ -27,7 +27,7 @@ def _shop_id(conn: sqlite3.Connection, shop: dict) -> int:
         conn.execute("INSERT INTO shops(name, url, type) VALUES (?,?,?) "
                      "ON CONFLICT(name) DO UPDATE SET url = excluded.url, type = excluded.type",
                      (shop["name"], shop.get("url"), shop.get("type")))
-    return conn.execute("SELECT id FROM shops WHERE name = ?", (shop["name"],)).fetchone()[0]
+        return conn.execute("SELECT id FROM shops WHERE name = ?", (shop["name"],)).fetchone()[0]
 
 
 def save_offer(conn: sqlite3.Connection, shop_id: int, o: Offer, rates: dict, day: str | None = None) -> None:
@@ -77,6 +77,7 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
             count += 1
             if count % 500 == 0:
                 log.info("%s: %d offers…", shop["name"], count)
+                _rematch(conn, settings)
 
         with _write_lock, conn:
             if shop.get("type") == "feed" and count:
@@ -99,13 +100,19 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
     return count, status
 
 
+def _rematch(conn: sqlite3.Connection, settings: dict) -> None:
+    with _write_lock:
+        n = rebuild_products(conn, settings["match_threshold"])
+    log.info("Matched offers into %d products.", n)
+
+
 def update_all(cfg: dict, only: list[str] | None = None) -> None:
     settings = cfg["settings"]
     conn = dbmod.connect(settings["database"])
     shops = [s for s in cfg["shops"] if not only or s["name"] in only]
     if not shops:
         log.warning("No enabled shops in config.")
+    _rematch(conn, settings)
     with ThreadPoolExecutor(max_workers=max(1, int(settings["parallel_shops"]))) as pool:
         list(pool.map(lambda s: update_shop(conn, s, settings), shops))
-    n = rebuild_products(conn, settings["match_threshold"])
-    log.info("Matched offers into %d products.", n)
+    _rematch(conn, settings)
