@@ -13,7 +13,7 @@
 
 settings:
   site_url: https://www.compairsoft.eu   # used in the sitemap for search engines
-  contact_email: ''                       # shown on the privacy page; an address you read
+  contact_email: 'contact@compairsoft.eu'                       # shown on the privacy page; an address you read
   database: airsoft.db
   base_currency: CZK            # all prices are converted to this for comparison
   exchange_rates:               # 1 unit of currency = N base_currency (update now and then)
