@@ -18,6 +18,7 @@ from .text import normalize
 
 log = logging.getLogger(__name__)
 _write_lock = threading.Lock()
+_warned_currencies: set[str] = set()
 
 
 def _now() -> str:
@@ -34,6 +35,13 @@ def _shop_id(conn: sqlite3.Connection, shop: dict) -> int:
 
 def save_offer(conn: sqlite3.Connection, shop_id: int, o: Offer, rates: dict, day: str | None = None) -> None:
     rate = rates.get(o.currency.upper())
+    cur = o.currency.upper()
+    if o.price is not None and not rate and cur not in _warned_currencies and len(_warned_currencies) < 50:
+        _warned_currencies.add(cur)
+        if re.fullmatch(r"[A-Z]{3}", cur):  # the value comes from the shop: don't echo junk into the log
+            log.warning("No exchange rate for %s in settings.exchange_rates; such offers are not compared.", cur)
+        else:
+            log.warning("Offer with an invalid currency code %r ignored in comparisons.", cur[:10])
     price_base = round(o.price * rate, 2) if (o.price is not None and rate) else None
     now = _now()
     with _write_lock, conn:
