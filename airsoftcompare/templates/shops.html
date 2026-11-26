@@ -11,7 +11,7 @@
         {% elif s.last_update %}<span class="pill good">Up to date</span>
         {% else %}<span class="pill">Loading…</span>{% endif %}
       </div>
-      {% if s.url %}<a class="sc-url" href="{{ s.url }}" target="_blank" rel="noopener">{{ s.url.split('//')[-1].rstrip('/') }}</a>{% endif %}
+      {% if s.url %}<a class="sc-url" href="{{ s.url|safe_url }}" target="_blank" rel="noopener">{{ s.url.split('//')[-1].rstrip('/') }}</a>{% endif %}
       <div class="sc-stats">
         <div><b>{{ s.offer_count or 0 }}</b><span>offers</span></div>
         <div><b>{{ s.cheapest }}</b><span>cheapest on</span></div>

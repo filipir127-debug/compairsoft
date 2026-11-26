@@ -45,7 +45,7 @@
         <input type="hidden" name="cat" value="{{ cat }}">
         <input type="hidden" name="sort" value="{{ sort }}">
         <div class="f-group">
-          <div class="f-title">Price (Kč)</div>
+          <div class="f-title">Price ({{ CURRENCY_LABEL }})</div>
           <div class="range">
             <input type="number" name="pmin" value="{{ pmin }}" min="0" inputmode="numeric" placeholder="from" aria-label="Minimum price">
             <span>–</span>
