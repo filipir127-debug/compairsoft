@@ -104,6 +104,58 @@ def _offer_from_jsonld(node: dict, page_url: str, default_currency: str) -> Offe
     )
 
 
+def _availability(doc, declared) -> bool | None:
+    found = parse_availability(declared)
+    if found is None:
+        # PrestaShop shows the main product's stock as text in #availability_value.
+        text = doc.xpath('normalize-space(//*[@id="availability_value"])')
+        found = parse_availability(text) if text else None
+    return found
+
+
+def _microdata_props(scope) -> dict[str, str]:
+    """itemprop values of one itemscope, skipping nested products (related-item carousels)."""
+    props: dict[str, str] = {}
+    for el in scope.iter():
+        if el is scope or not isinstance(el.tag, str) or not el.get("itemprop"):
+            continue
+        owner = el.getparent()
+        while owner is not None and owner is not scope and "Product" not in (owner.get("itemtype") or ""):
+            owner = owner.getparent()
+        if owner is not scope:
+            continue
+        value = el.get("content") or el.get("href") or el.get("src") or el.text_content()
+        for name in el.get("itemprop").split():
+            props.setdefault(name, " ".join(value.split()))
+    return props
+
+
+def _offer_from_microdata(doc, page_url: str, default_currency: str) -> Offer | None:
+    products = doc.xpath('//*[@itemscope][contains(@itemtype, "schema.org/Product")]')
+    if not products:
+        return None
+    # The page's own product holds the <h1>; others are related items.
+    main = next((p for p in products if p.xpath('.//h1')), products[0])
+    props = _microdata_props(main)
+    if not props.get("name") or "price" not in props:
+        return None
+    title = props["name"]
+    og = (doc.xpath('normalize-space(//meta[@property="og:title"]/@content)')
+          or " ".join((doc.findtext(".//title") or "").split()))
+    if og and title.lower() in og.lower():  # og:title often keeps brand / colour the name drops
+        title = og
+    return Offer(
+        url=page_url,
+        title=title,
+        price=parse_price(props["price"]),
+        currency=(props.get("priceCurrency") or parse_currency(props["price"], default_currency)).upper(),
+        in_stock=_availability(doc, props.get("availability")),
+        ean=clean_ean(props.get("gtin13") or props.get("gtin")),
+        brand=props.get("brand") or None,
+        image=props.get("image"),
+    )
+
+
 def extract_product(page: str | bytes, page_url: str, default_currency: str = "CZK") -> Offer | None:
     """Return the product on a page, or None when the page isn't a product page."""
     try:
@@ -130,6 +182,10 @@ def extract_product(page: str | bytes, page_url: str, default_currency: str = "C
                 if offer:
                     return offer
 
+    offer = _offer_from_microdata(doc, page_url, default_currency)
+    if offer:
+        return offer
+
     # Fallback: OpenGraph / microdata meta tags.
     def meta(*names):
         for n in names:
@@ -149,7 +205,7 @@ def extract_product(page: str | bytes, page_url: str, default_currency: str = "C
         price=parse_price(price_raw),
         currency=(meta("product:price:currency", "og:price:currency", "priceCurrency")
                   or parse_currency(price_raw, default_currency)).upper(),
-        in_stock=parse_availability(meta("product:availability", "og:availability", "availability")),
+        in_stock=_availability(doc, meta("product:availability", "og:availability", "availability")),
         ean=clean_ean(meta("product:ean", "gtin13", "gtin")),
         brand=meta("product:brand", "og:brand", "brand"),
         image=meta("og:image"),

@@ -36,8 +36,9 @@ shops:
   - name: Anareus
     url: https://www.anareus.cz
     type: sitemap
-    exclude: '/(blog|clanky|novinky|kontakt|kosik|obchodni-podminky|search|vyhledavani)'
-    max_pages: 4000
+    sitemap_url: https://www.anareus.cz/3_cs_0_sitemap.xml   # Czech only; gb/sk are copies
+    include: '/cs/[^/]+/\d+-[^/]+\.html$'                    # product pages: /cs/<category>/<id>-<name>.html
+    max_pages: 12000
 
   # ---- Examples ----
 

@@ -112,3 +112,18 @@ def test_microdata_availability_link():
     <link itemprop="availability" href="https://schema.org/InStock" /></span></body></html>"""
     o = extract_product(page, "https://shop.example/p")
     assert o.price == 79 and o.in_stock is True
+
+
+def test_microdata_ignores_related_products():
+    from airsoftcompare.sources.sitemap import extract_product
+    page = """<html><head><meta charset="utf-8"><meta property="og:title" content="Tlumič 32 × 150 mm – Černá"></head><body>
+    <div itemscope itemtype="https://schema.org/Product"><h1 itemprop="name">Tlumič 32 × 150 mm</h1>
+      <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+        <span itemprop="price" content="1190">1 190 Kč</span><meta itemprop="priceCurrency" content="CZK"></div>
+      <span id="availability_value">Není skladem</span>
+      <ul><li itemscope itemtype="https://schema.org/Product"><span itemprop="name">Related</span>
+        <div itemprop="offers" itemscope itemtype="https://schema.org/Offer"><span itemprop="price" content="98"></span>
+        <link itemprop="availability" href="https://schema.org/InStock"></div></li></ul>
+    </div></body></html>""".encode()
+    o = extract_product(page, "https://shop.example/p")
+    assert (o.title, o.price, o.in_stock) == ("Tlumič 32 × 150 mm – Černá", 1190, False)
