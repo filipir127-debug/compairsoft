@@ -134,6 +134,12 @@ def _group_images(products: list[dict], offers: dict) -> dict[str, str]:
     return out
 
 
+def _scramble(email: str) -> str:
+    """Keep the address out of the page source in plain text, so address-harvesting bots miss it."""
+    import base64
+    return base64.b64encode(email[::-1].encode()).decode() if email else ""
+
+
 def export_site(cfg: dict, out: str | Path) -> None:
     settings = cfg["settings"]
     conn = dbmod.connect(settings["database"])
@@ -246,7 +252,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
     site = {"CATEGORIES": CATEGORIES, "GROUPS": GROUPS, "GROUP_OF": GROUP_OF, "version": version, "ICONS": GROUP_ICONS,
             # Embedded in a <script type="application/json">: "</" must not end that element early.
             "config": json.dumps({"cats": CATEGORIES, "groups": GROUPS, "groupOf": GROUP_OF, "icons": GROUP_ICONS,
-                                  "currency": settings["base_currency"], "contact": settings.get("contact_email") or ""},
+                                  "currency": settings["base_currency"], "contact": _scramble(settings.get("contact_email") or "")},
                                  ensure_ascii=False).replace("</", "<\\/")}
     for page in ("index", "product", "shops", "privacy", "404"):
         (out / f"{page}.html").write_text(env.get_template(f"{page}.html").render(page=page, **site), encoding="utf-8")

@@ -37,7 +37,7 @@
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
-      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy",
+      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", showEmail: "Show email address",
     },
     cs: {
       "search.ph": "Hledat zbraně, zásobníky, kolimátory…", "search.btn": "Hledat", "nav.shops": "Obchody", loading: "Načítání…",
@@ -67,7 +67,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí",
+      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", showEmail: "Zobrazit e-mail",
     },
     sk: {
       "search.ph": "Hľadať zbrane, zásobníky, kolimátory…", "search.btn": "Hľadať", "nav.shops": "Obchody", loading: "Načítava sa…",
@@ -97,7 +97,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia",
+      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", showEmail: "Zobraziť e-mail",
     },
     de: {
       "search.ph": "Waffen, Magazine, Red Dots suchen…", "search.btn": "Suchen", "nav.shops": "Shops", loading: "Wird geladen…",
@@ -127,7 +127,7 @@
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
-      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz",
+      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", showEmail: "E-Mail-Adresse anzeigen",
     },
   };
   const CAT_NAMES = {
@@ -476,9 +476,14 @@
     document.title = `${title} – CompAirsoft`;
     markGroup(null);
     const linkify = (text) => esc(text).replace(/https:\/\/[^\s)]+/g, (u) => `<a href="${u}" rel="noopener" target="_blank">${u}</a>`);
-    const contact = SITE.contact ? `<h2>${esc(contactLbl)}</h2><p><a href="mailto:${esc(SITE.contact)}">${esc(SITE.contact)}</a></p>` : "";
+    const contact = SITE.contact ? `<h2>${esc(contactLbl)}</h2><p id="contact"><button type="button" class="btn btn-ghost" id="show-email">${t("showEmail")}</button></p>` : "";
     app.innerHTML = `<article class="prose"><h1>${esc(title)}</h1><p class="muted small">${esc(updated)}</p>
       ${sections.map(([h, txt]) => `<h2>${esc(h)}</h2><p>${linkify(txt)}</p>`).join("")}${contact}</article>`;
+    const btn = document.getElementById("show-email");
+    if (btn) btn.addEventListener("click", () => {
+      const mail = atob(SITE.contact).split("").reverse().join("");
+      document.getElementById("contact").innerHTML = `<a href="mailto:${esc(mail)}">${esc(mail)}</a>`;
+    });
   }
 
   // ---------------------------------------------------------------- router
