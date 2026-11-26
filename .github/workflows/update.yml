@@ -75,7 +75,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # Small photo copies first (three projects: Pages allows 20 000 files each), then the site.
           preCommands: |
-            for p in compairsoft compairsoft-img-0 compairsoft-img-1 compairsoft-img-2; do wrangler pages project create $p --production-branch=main || true; done
+            for p in compairsoft compairsoft-img-0 compairsoft-img-1 compairsoft-img-2; do npx wrangler pages project create $p --production-branch=main || true; done
           command: |
             pages deploy dist-images/img-0 --project-name=compairsoft-img-0 --branch=main --commit-dirty=true
             pages deploy dist-images/img-1 --project-name=compairsoft-img-1 --branch=main --commit-dirty=true
