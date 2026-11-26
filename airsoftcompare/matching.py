@@ -109,6 +109,11 @@ def rebuild_products(conn: sqlite3.Connection, threshold: int = 90) -> int:
 
     products, assignments = [], []
     for members in groups.values():
+        # One offer per shop: a shop listing the same item twice shows its best one.
+        best: dict[int, dict] = {}
+        for m in sorted(members, key=lambda m: (not m["in_stock"], m["price_base"])):
+            best.setdefault(m["shop_id"], m)
+        members = list(best.values())
         eans = sorted({m["ean"] for m in members if m["ean"]})
         anchor = f"ean:{eans[0]}" if eans else "t:" + min(m["norm_title"] for m in members)
         pid = hashlib.sha1(anchor.encode()).hexdigest()[:12]

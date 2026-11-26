@@ -10,7 +10,7 @@ import json
 import logging
 import re
 from typing import Callable, Iterable, Iterator
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 
 from lxml import etree, html
 
@@ -110,6 +110,11 @@ def extract_product(page: str | bytes, page_url: str, default_currency: str = "C
         doc = html.fromstring(page)
     except (etree.ParserError, ValueError):
         return None
+
+    # The same product is often reachable from several category paths; use the shop's canonical URL.
+    canonical = doc.xpath('//link[@rel="canonical"]/@href')
+    if canonical and urlsplit(canonical[0]).netloc == urlsplit(page_url).netloc:
+        page_url = canonical[0].strip()
 
     for script in doc.xpath('//script[@type="application/ld+json"]'):
         raw = (script.text or "").strip()

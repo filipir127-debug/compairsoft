@@ -78,7 +78,7 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
             o.title = suffix.sub("", o.title)
             save_offer(conn, shop_id, o, settings["exchange_rates"])
             count += 1
-            if count % 500 == 0:
+            if count % 100 == 0:
                 log.info("%s: %d offers…", shop["name"], count)
                 _rematch(conn, settings)
 
