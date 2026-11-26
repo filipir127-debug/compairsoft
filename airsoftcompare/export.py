@@ -172,7 +172,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
     for asset in ("style.css", "app.js"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
     shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
-    (out / "_redirects").write_text("/product/*  /product.html  200\n", encoding="utf-8")
+    (out / "_redirects").write_text("/product/*  /product  200\n", encoding="utf-8")
     (out / "_headers").write_text(
         "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
