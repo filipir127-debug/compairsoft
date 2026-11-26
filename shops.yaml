@@ -24,7 +24,21 @@ settings:
   parallel_shops: 4             # shops processed at the same time
 
 shops:
-  # ---- Examples – replace with real shops (use `probe` to fill these in) ----
+  # Crawled from their sitemaps. If a shop shares its Heureka feed URL, switch it to
+  # `type: feed` + `feed_url:` – a feed updates in seconds instead of an hour.
+  - name: AirsoftPro
+    url: https://www.airsoftpro.cz
+    type: sitemap
+    exclude: '/(blog|clanky|novinky|kontakt|kosik|obchodni-podminky|search|vyhledavani)'
+    max_pages: 4000
+
+  - name: Anareus
+    url: https://www.anareus.cz
+    type: sitemap
+    exclude: '/(blog|clanky|novinky|kontakt|kosik|obchodni-podminky|search|vyhledavani)'
+    max_pages: 4000
+
+  # ---- Examples ----
 
   - name: Example feed shop
     url: https://www.example-airsoft.cz

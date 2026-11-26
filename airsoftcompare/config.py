@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import yaml
@@ -22,6 +23,8 @@ def load(path: str | Path = "shops.yaml") -> dict:
     path = Path(path)
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     settings = {**DEFAULTS, **(data.get("settings") or {})}
+    if os.environ.get("AIRSOFT_DB"):
+        settings["database"] = os.environ["AIRSOFT_DB"]
     settings["exchange_rates"] = {**DEFAULTS["exchange_rates"], **(settings.get("exchange_rates") or {})}
     db = Path(settings["database"])
     if not db.is_absolute():

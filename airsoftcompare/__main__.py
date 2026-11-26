@@ -24,8 +24,10 @@ def main(argv: list[str] | None = None) -> None:
     up.add_argument("--every", type=float, metavar="HOURS", help="keep running, updating every N hours")
     sub.add_parser("rematch", help="re-run product matching only")
     sv = sub.add_parser("serve", help="run the website")
-    sv.add_argument("--host", default="127.0.0.1")
-    sv.add_argument("--port", type=int, default=8000)
+    sv.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))
+    sv.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8000)))
+    sv.add_argument("--update-every", type=float, metavar="HOURS",
+                    help="also download shop prices in the background every N hours")
     pr = sub.add_parser("probe", help="inspect a shop URL and suggest config")
     pr.add_argument("url")
     sub.add_parser("demo", help="load sample data from fictional shops")
@@ -77,6 +79,19 @@ def main(argv: list[str] | None = None) -> None:
     elif args.cmd == "serve":
         import uvicorn
         os.environ["AIRSOFT_CONFIG"] = os.path.abspath(args.config)
+        if args.update_every:
+            import threading
+            import time
+            from .updater import update_all
+
+            def loop():
+                while True:
+                    try:
+                        update_all(cfg)
+                    except Exception:
+                        logging.exception("Background update failed")
+                    time.sleep(args.update_every * 3600)
+            threading.Thread(target=loop, daemon=True).start()
         print(f"Open http://{'localhost' if args.host in ('127.0.0.1', '0.0.0.0') else args.host}:{args.port}")
         uvicorn.run("airsoftcompare.web:create_app", factory=True, host=args.host, port=args.port, log_level="warning")
 
