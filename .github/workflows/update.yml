@@ -2,7 +2,10 @@ name: Update prices and publish site
 
 on:
   schedule:
-    - cron: "23 2,14 * * *"          # twice a day (UTC)
+    # Five runs a day while the crawled shops fill up; each crawls up to ~4h50m, so this is nearly
+    # continuous. Pages read in the last 20 h are skipped, so once caught up a run takes minutes.
+    # Back to twice a day later:  - cron: "23 2,14 * * *"
+    - cron: "23 0,5,10,15,20 * * *"
   workflow_dispatch:
     inputs:
       crawl_minutes:
