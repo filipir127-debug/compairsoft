@@ -26,6 +26,21 @@ log = logging.getLogger(__name__)
 HERE = Path(__file__).parent
 HISTORY_DAYS = 180
 
+# The site loads only its own files: scripts, styles, self-hosted fonts and JSON. The one
+# exception is product images, which come from the shops over https. data: is for the emoji favicon.
+CONTENT_SECURITY_POLICY = "; ".join([
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self'",
+    "font-src 'self'",
+    "img-src 'self' https: data:",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+])
+
 
 def _num(v):
     return None if v is None else round(v, 2)
@@ -172,11 +187,14 @@ def export_site(cfg: dict, out: str | Path) -> None:
     for asset in ("style.css", "app.js"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
     shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
+    # Site config as a file rather than an inline <script>, so the CSP needs no 'unsafe-inline'.
+    (out / "static" / "site.js").write_text(f"window.SITE = {site['config']};\n", encoding="utf-8")
     (out / "_redirects").write_text("/product/*  /product.html  200\n", encoding="utf-8")
     (out / "_headers").write_text(
         "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
         "  Permissions-Policy: camera=(), microphone=(), geolocation=()\n"
+        f"  Content-Security-Policy: {CONTENT_SECURITY_POLICY}\n"
         "/data/*\n  Cache-Control: public, max-age=600\n"
         "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
     files = sum(1 for f in out.rglob("*") if f.is_file())
