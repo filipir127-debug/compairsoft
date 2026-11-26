@@ -21,11 +21,27 @@ settings:
   respect_robots: true          # obey robots.txt when crawling pages
   match_threshold: 90           # 0-100, lower = more aggressive cross-shop matching
   recrawl_hours: 20             # sitemap shops: don't re-download pages fetched more recently
-  parallel_shops: 4             # shops processed at the same time
+  parallel_shops: 12            # shops processed at the same time (each host is still rate-limited)
 
 shops:
-  # Crawled from their sitemaps. If a shop shares its Heureka feed URL, switch it to
-  # `type: feed` + `feed_url:` – a feed updates in seconds instead of an hour.
+  # ---- Heureka XML feeds: whole catalogue in one download ----
+  - name: Airsoft Online
+    url: https://www.airsoft-online.cz
+    type: feed
+    feed_url: https://www.airsoft-online.cz/heureka.xml
+
+  - name: AirsoftShop
+    url: https://airsoftshop.cz
+    type: feed
+    feed_url: https://airsoftshop.cz/heureka.xml
+
+  - name: AirsoftGuns
+    url: https://www.airsoftguns.cz
+    type: feed
+    feed_url: https://www.airsoftguns.cz/export/heureka.xml
+
+  # ---- Crawled from sitemaps (one page per request_delay). If a shop shares its
+  # Heureka feed URL, switch it to `type: feed` – it updates in seconds instead of hours.
   - name: AirsoftPro
     url: https://www.airsoftpro.cz
     type: sitemap
@@ -39,6 +55,48 @@ shops:
     sitemap_url: https://www.anareus.cz/3_cs_0_sitemap.xml   # Czech only; gb/sk are copies
     include: '/cs/[^/]+/\d+-[^/]+\.html$'                    # product pages: /cs/<category>/<id>-<name>.html
     max_pages: 12000
+
+  - name: Army Airsoft
+    url: https://www.army-airsoft.cz
+    type: sitemap
+    exclude: '/(znacka|blog|clanky|kontakt|kosik|obchodni-podminky)/'
+    title_strip: '\s+(?:Airsoft|Army shop)?\s*-\s*Army-Airsoft\.cz\s*$'
+    max_pages: 20000
+
+  - name: Airsoft Morava
+    url: https://www.airsoftmorava.cz
+    type: sitemap
+    exclude: '/(znacka|blog|clanky|kontakt|kosik|obchodni-podminky)/'
+    max_pages: 5000
+
+  - name: Fallens Airsoft
+    url: https://www.fallens-airsoft.cz
+    type: sitemap
+    exclude: '/cs/(news|contactus|blog|clanky)|nase-zkusenosti'
+    max_pages: 2000
+
+  - name: Colosus                 # also sells bows, knives, swords – those land in "Other"
+    url: https://www.colosus.cz
+    type: sitemap
+    exclude: 'obchodni-podminky|/zeta/'
+    max_pages: 12000
+
+  - name: Catus Airsoft
+    url: https://www.catus-airsoft.cz
+    type: sitemap
+    exclude: '/(blog|o-nas|doprava|platba|kontakt)'
+    max_pages: 22000
+
+  - name: Novritsch EU
+    url: https://eu.novritsch.com
+    type: sitemap
+    include: '/product/'
+    currency: EUR
+    max_pages: 2000
+
+  # Not added:
+  #  - actionshop.cz: product pages carry no machine-readable price/stock; ask them for a Heureka feed.
+  #  - evike-europe.com: refuses automated requests (HTTP 403).
 
   # ---- Examples ----
 

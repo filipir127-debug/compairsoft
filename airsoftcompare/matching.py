@@ -22,6 +22,9 @@ from rapidfuzz import fuzz, process
 from .text import colors, numbers
 
 
+MAX_PRICE_RATIO = 3.0
+
+
 class _UF:
     def __init__(self, n: int):
         self.p = list(range(n))
@@ -44,7 +47,11 @@ def _similarity(queries: list[str], choices: list[str], threshold: int) -> np.nd
     ("Specna Arms M4 mid-cap" vs "M4 mid-cap"). Uses two native rapidfuzz passes."""
     sort = process.cdist(queries, choices, scorer=fuzz.token_sort_ratio, workers=-1, dtype=np.uint8)
     subset = process.cdist(queries, choices, scorer=fuzz.token_set_ratio, workers=-1, dtype=np.uint8)
-    score = np.maximum(sort, subset.astype(np.int16) - 4).astype(np.uint8)
+    # A short title being a subset of a long one ("AK-74" vs "AK-74 fire selector") is not a match.
+    qn = np.array([len(t.split()) for t in queries])[:, None]
+    cn = np.array([len(t.split()) for t in choices])[None, :]
+    comparable = np.minimum(qn, cn) >= 0.6 * np.maximum(qn, cn)
+    score = np.maximum(sort, np.where(comparable, subset.astype(np.int16) - 4, 0)).astype(np.uint8)
     score[score < threshold] = 0
     return score
 
@@ -89,12 +96,22 @@ def cluster(offers: list[dict], threshold: int = 90, chunk: int = 2000) -> list[
                 if a < b and nums[a] == nums[b] and (not cols[a] or not cols[b] or cols[a] == cols[b]):
                     pairs[(roots[a], roots[b])] = int(m[a - start, b])
 
+    prices: dict[int, tuple[float, float]] = {}
+    for i, o in enumerate(offers):
+        r, p = uf.find(i), o.get("price_base") or 0
+        lo, hi = prices.get(r, (p, p))
+        prices[r] = (min(lo, p), max(hi, p))
+
     for (a, b), _ in sorted(pairs.items(), key=lambda kv: -kv[1]):
         ra, rb = uf.find(a), uf.find(b)
         if ra == rb or shops[ra] & shops[rb]:
             continue
+        lo, hi = min(prices[ra][0], prices[rb][0]), max(prices[ra][1], prices[rb][1])
+        if lo > 0 and hi > MAX_PRICE_RATIO * lo:  # a gun and its spare part are not the same product
+            continue
         r = uf.union(ra, rb)
         shops[r] = shops[ra] | shops[rb]
+        prices[r] = (lo, hi)
 
     return [uf.find(i) for i in range(n)]
 

@@ -65,12 +65,18 @@ def _to_offer(f: dict[str, str], default_currency: str) -> Offer | None:
 
 
 def parse_feed(data: bytes, default_currency: str = "CZK") -> Iterator[Offer]:
+    seen: dict[str, int] = {}
     for _, el in etree.iterparse(io.BytesIO(data), events=("end",), recover=True, huge_tree=True):
         if _local(el.tag) not in ITEM_TAGS:
             continue
-        offer = _to_offer(_fields(el), default_currency)
+        fields = _fields(el)
+        offer = _to_offer(fields, default_currency)
         el.clear()
         if offer:
+            # Variants (sizes, lengths) often share one product URL; keep them apart.
+            n = seen[offer.url] = seen.get(offer.url, 0) + 1
+            if n > 1:
+                offer.url += "#" + (fields.get("item_id") or fields.get("id") or str(n))
             yield offer
 
 

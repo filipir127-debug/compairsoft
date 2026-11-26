@@ -5,6 +5,7 @@ import logging
 import re
 import sqlite3
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 
@@ -78,8 +79,9 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
             o.title = suffix.sub("", o.title)
             save_offer(conn, shop_id, o, settings["exchange_rates"])
             count += 1
-            if count % 100 == 0:
+            if count % 500 == 0:
                 log.info("%s: %d offers…", shop["name"], count)
+            if time.monotonic() - _last_match[0] > REMATCH_EVERY:
                 _rematch(conn, settings)
 
         with _write_lock, conn:
@@ -104,7 +106,11 @@ def update_shop(conn: sqlite3.Connection, shop: dict, settings: dict) -> tuple[i
 
 
 def _suffix(shop: dict) -> re.Pattern:
-    return re.compile(rf"\s*[-|–]\s*{re.escape(shop['name'])}(\.[a-z]{{2,3}})?\s*$", re.I)
+    """Site clutter to cut from titles: " - ShopName.cz" plus the shop's own `title_strip` regex."""
+    parts = [rf"\s*[-|–]\s*{re.escape(shop['name'])}(\.[a-z]{{2,3}})?\s*$"]
+    if shop.get("title_strip"):
+        parts.insert(0, shop["title_strip"])
+    return re.compile("|".join(f"(?:{p})" for p in parts), re.I)
 
 
 def _refresh_titles(conn: sqlite3.Connection, shops: list[dict]) -> None:
@@ -119,8 +125,13 @@ def _refresh_titles(conn: sqlite3.Connection, shops: list[dict]) -> None:
         conn.executemany("UPDATE offers SET title = ?, norm_title = ?, category = ? WHERE id = ?", updates)
 
 
+REMATCH_EVERY = 15 * 60  # seconds; matching tens of thousands of offers takes a while
+_last_match = [0.0]
+
+
 def _rematch(conn: sqlite3.Connection, settings: dict) -> None:
     with _write_lock:
+        _last_match[0] = time.monotonic()
         n = rebuild_products(conn, settings["match_threshold"])
     log.info("Matched offers into %d products.", n)
 
