@@ -11,7 +11,7 @@
   const T = {
     en: {
       "search.ph": "Search guns, magazines, red dots…", "search.btn": "Search", "nav.shops": "Shops", loading: "Loading…",
-      "foot.about": "Tired of going to each individual site to check where prices are better? Now you don't have to! Everything at one place.", "foot.browse": "Browse", "foot.know": "Good to know",
+      "foot.about": "Tired of going to each individual site to check where prices are better? Now you don't have to!\nEverything at one place.", "foot.browse": "Browse", "foot.know": "Good to know",
       "foot.disclaimer": "Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.",
       updated: "Prices last updated {d}.", all: "All products", "sec.most": "Compared in the most shops", "sec.diff": "Biggest price differences",
       "nf.title": "Page not found", "nf.home": "Back to the homepage", home: "Home",
@@ -41,7 +41,7 @@
     },
     cs: {
       "search.ph": "Hledat zbraně, zásobníky, kolimátory…", "search.btn": "Hledat", "nav.shops": "Obchody", loading: "Načítání…",
-      "foot.about": "Už vás nebaví procházet každý obchod zvlášť, abyste zjistili, kde je to levnější? Teď už nemusíte! Všechno na jednom místě.", "foot.browse": "Procházet", "foot.know": "Dobré vědět",
+      "foot.about": "Už vás nebaví procházet každý obchod zvlášť, abyste zjistili, kde je to levnější? Teď už nemusíte!\nVšechno na jednom místě.", "foot.browse": "Procházet", "foot.know": "Dobré vědět",
       "foot.disclaimer": "Ceny čteme z veřejných feedů a stránek obchodů a nemusí být aktuální. Před nákupem vždy ověřte cenu v obchodě.",
       updated: "Ceny naposledy aktualizovány {d}.", all: "Všechny produkty", "sec.most": "Porovnáno v nejvíce obchodech", "sec.diff": "Největší rozdíly v cenách",
       "nf.title": "Stránka nenalezena", "nf.home": "Zpět na úvod", home: "Úvod",
@@ -71,7 +71,7 @@
     },
     sk: {
       "search.ph": "Hľadať zbrane, zásobníky, kolimátory…", "search.btn": "Hľadať", "nav.shops": "Obchody", loading: "Načítava sa…",
-      "foot.about": "Už vás nebaví prechádzať každý obchod zvlášť, aby ste zistili, kde je to lacnejšie? Teraz už nemusíte! Všetko na jednom mieste.", "foot.browse": "Prehliadať", "foot.know": "Dobré vedieť",
+      "foot.about": "Už vás nebaví prechádzať každý obchod zvlášť, aby ste zistili, kde je to lacnejšie? Teraz už nemusíte!\nVšetko na jednom mieste.", "foot.browse": "Prehliadať", "foot.know": "Dobré vedieť",
       "foot.disclaimer": "Ceny čítame z verejných feedov a stránok obchodov a nemusia byť aktuálne. Pred nákupom vždy overte cenu v obchode.",
       updated: "Ceny naposledy aktualizované {d}.", all: "Všetky produkty", "sec.most": "Porovnané v najviac obchodoch", "sec.diff": "Najväčšie rozdiely v cenách",
       "nf.title": "Stránka sa nenašla", "nf.home": "Späť na úvod", home: "Úvod",
@@ -101,7 +101,7 @@
     },
     de: {
       "search.ph": "Waffen, Magazine, Red Dots suchen…", "search.btn": "Suchen", "nav.shops": "Shops", loading: "Wird geladen…",
-      "foot.about": "Keine Lust mehr, jeden Shop einzeln zu besuchen, um zu sehen, wo es günstiger ist? Das musst du jetzt nicht mehr! Alles an einem Ort.", "foot.browse": "Stöbern", "foot.know": "Gut zu wissen",
+      "foot.about": "Keine Lust mehr, jeden Shop einzeln zu besuchen, um zu sehen, wo es günstiger ist? Das musst du jetzt nicht mehr!\nAlles an einem Ort.", "foot.browse": "Stöbern", "foot.know": "Gut zu wissen",
       "foot.disclaimer": "Die Preise stammen aus öffentlichen Feeds und Produktseiten der Shops und können veraltet sein. Bitte vor dem Kauf im Shop prüfen.",
       updated: "Preise zuletzt aktualisiert am {d}.", all: "Alle Produkte", "sec.most": "In den meisten Shops verglichen", "sec.diff": "Größte Preisunterschiede",
       "nf.title": "Seite nicht gefunden", "nf.home": "Zur Startseite", home: "Start",

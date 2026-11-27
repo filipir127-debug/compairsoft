@@ -434,3 +434,6 @@ html.js .intro { display: none; }
 .intro { max-width: 760px; padding: 24px 0 40px; line-height: 1.6; }
 .intro h1 { font-size: 30px; margin: 0 0 12px; } .intro h2 { font-size: 20px; margin: 26px 0 8px; }
 .intro-cats { padding-left: 20px; } .intro-cats li { margin: 4px 0; }
+
+/* footer pitch: the last sentence on its own line (a line break in the text) */
+.foot-about { white-space: pre-line; }
