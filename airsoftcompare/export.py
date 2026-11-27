@@ -386,7 +386,14 @@ def export_site(cfg: dict, out: str | Path) -> None:
         '<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "".join(f"<sitemap><loc>{site}/sitemap-{n}.xml</loc><lastmod>{today}</lastmod></sitemap>\n" for n in range(1, len(chunks) + 1))
         + "</sitemapindex>\n", encoding="utf-8")
-    (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site}/sitemap.xml\n", encoding="utf-8")
+    # Crawlers (Google renders the app and follows every filter link) skip filter combinations
+    # ("/?cat=guns&brand=…&page=3": an "&") and search results; categories and products stay open.
+    (out / "robots.txt").write_text(
+        "User-agent: *\n"
+        "Disallow: /*&\n"
+        "Disallow: /*?q=\n"
+        "Allow: /\n"
+        f"\nSitemap: {site}/sitemap.xml\n", encoding="utf-8")
     (out / "_redirects").write_text("/product/*  /product  200\n", encoding="utf-8")
     (out / "_headers").write_text(
         "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"

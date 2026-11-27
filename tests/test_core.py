@@ -420,3 +420,27 @@ def test_pages_carry_what_search_engines_and_ai_crawlers_read(tmp_path):
     assert 'rel="canonical"' not in home   # one file serves every category; the app sets it per page
     assert "https://www.example.cz/about" in (d / "sitemap-1.xml").read_text()
     assert (d / "og-image.png").exists() and (d / "favicon.ico").exists()
+
+
+def test_robots_txt_keeps_crawlers_out_of_filter_combinations(tmp_path):
+    import re
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.export import export_site
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    dbfile = tmp_path / "t.db"
+    conn = dbmod.connect(str(dbfile))
+    sid = _shop_id(conn, {"name": "Shop", "url": "https://x.cz", "type": "feed"})
+    save_offer(conn, sid, Offer(url="https://x.cz/m4", title="M4 mid-cap zásobník 120 ran", price=200, currency="CZK",
+                                in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
+    rebuild_products(conn)
+    export_site({"settings": {"database": str(dbfile), "base_currency": "CZK"}, "shops": [{"name": "Shop"}]}, tmp_path / "dist")
+    rules = [l.split(":", 1)[1].strip() for l in (tmp_path / "dist/robots.txt").read_text().splitlines() if l.startswith("Disallow:")]
+    # Google's matching: "*" is any characters, the rule is a prefix of the path plus query
+    blocked = lambda url: any(re.match(re.escape(r).replace(r"\*", ".*"), url) for r in rules)
+    for url in ("/?cat=guns&brand=ASG", "/?cat=pistols&power=gas&page=3", "/?q=glock", "/?all=1&sort=price_asc"):
+        assert blocked(url), url
+    for url in ("/", "/?cat=guns", "/?cat=airguns", "/product/1449ef11bd3d", "/shops", "/about",
+                "/data/g/weapons.json", "/static/app.js?v=202611271657", "/sitemap.xml"):
+        assert not blocked(url), url
