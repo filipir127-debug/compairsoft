@@ -47,7 +47,7 @@
       "nf.title": "Stránka nenalezena", "nf.home": "Zpět na úvod", home: "Úvod",
       "hero.title": "Najděte nejlevnější airsoftové vybavení", "hero.text": "Porovnáváme <b>{offers}</b> nabídek z <b>{shops}</b> airsoftových obchodů, abyste nemuseli procházet každý zvlášť.",
       "stat.products": "produktů", "stat.compared": "porovnáno mezi obchody", "stat.shops": "obchodů", categories: "Kategorie",
-      nprod: "{n} produktů", nprod1: "1 produkt", browseAll: "Zobrazit všech {n} produktů", showAll: "Zobrazit vše ›",
+      nprod: "{n} produktů", nprod1: "1 produkt", nprod2: "{n} produkty", browseAll: "Zobrazit všech {n} produktů", showAll: "Zobrazit vše ›",
       filters: "Filtry", price: "Cena", from: "od", to: "do", avail: "Dostupnost", inStockOnly: "Pouze skladem", clear: "Zrušit filtry",
       showMore: "Zobrazit více", showLess: "Zobrazit méně", any: "Libovolně", allOf: "Vše", results: "Zobrazit {n} produktů",
       "sort.relevance": "Nejvíce porovnávané", "sort.price_asc": "Nejlevnější", "sort.price_desc": "Nejdražší", "sort.savings": "Největší úspora", "sort.name": "Název",
@@ -77,7 +77,7 @@
       "nf.title": "Stránka sa nenašla", "nf.home": "Späť na úvod", home: "Úvod",
       "hero.title": "Nájdite najlacnejšie airsoftové vybavenie", "hero.text": "Porovnávame <b>{offers}</b> ponúk z <b>{shops}</b> airsoftových obchodov, aby ste nemuseli prechádzať každý zvlášť.",
       "stat.products": "produktov", "stat.compared": "porovnaných medzi obchodmi", "stat.shops": "obchodov", categories: "Kategórie",
-      nprod: "{n} produktov", nprod1: "1 produkt", browseAll: "Zobraziť všetkých {n} produktov", showAll: "Zobraziť všetko ›",
+      nprod: "{n} produktov", nprod1: "1 produkt", nprod2: "{n} produkty", browseAll: "Zobraziť všetkých {n} produktov", showAll: "Zobraziť všetko ›",
       filters: "Filtre", price: "Cena", from: "od", to: "do", avail: "Dostupnosť", inStockOnly: "Iba skladom", clear: "Zrušiť filtre",
       showMore: "Zobraziť viac", showLess: "Zobraziť menej", any: "Ľubovoľne", allOf: "Všetko", results: "Zobraziť {n} produktov",
       "sort.relevance": "Najviac porovnávané", "sort.price_asc": "Najlacnejšie", "sort.price_desc": "Najdrahšie", "sort.savings": "Najväčšia úspora", "sort.name": "Názov",
@@ -161,7 +161,8 @@
     return s;
   };
   const catName = (slug) => (CAT_NAMES[slug] || CAT_NAMES.other)[["en", "cs", "sk", "de"].indexOf(lang)];
-  const nprod = (n) => (n === 1 ? t("nprod1") : t("nprod", { n: fmt(n) }));
+  // Czech and Slovak: 1 produkt, 2–4 produkty, 5+ produktů / produktov
+  const nprod = (n) => (n === 1 ? t("nprod1") : n >= 2 && n <= 4 && T[lang].nprod2 ? t("nprod2", { n: fmt(n) }) : t("nprod", { n: fmt(n) }));
 
   // ---------------------------------------------------------------- helpers
   // Links and images come from shop data: only absolute http(s) URLs (no javascript:, data:…).
