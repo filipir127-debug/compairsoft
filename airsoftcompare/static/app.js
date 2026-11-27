@@ -355,8 +355,10 @@
     const facetBox = (name, key, label) => {
       const cnt = facetCounts[name];
       if (!cnt.size || (cnt.size === 1 && !chosen[name].size && name !== "shop")) return "";
-      const vals = [...cnt.entries()].sort((a, b) => (chosen[name].has(b[0]) - chosen[name].has(a[0])) || b[1] - a[1]);
       const lbl = FACETS.find((f) => f[0] === name)[3] || ((v) => shopName[v] || v);
+      // A–Z by the shown label; numbers by value ("0,20 g" before "0,25 g", "2" before "10").
+      const collator = new Intl.Collator(LOCALES[lang] || "en-GB", { numeric: true, sensitivity: "base" });
+      const vals = [...cnt.entries()].sort((a, b) => collator.compare(lbl(a[0]), lbl(b[0])));
       const rows = vals.map(([v, n], i) => {
         const on = chosen[name].has(v);
         const next = new Set(chosen[name]); on ? next.delete(v) : next.add(v);
