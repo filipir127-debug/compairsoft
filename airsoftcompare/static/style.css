@@ -303,3 +303,5 @@ img { max-width: 100%; }
 .lb-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,.12); color: #fff; border: 0; border-radius: 10px; padding: 8px; cursor: pointer; }
 .lb-close .ic { width: 22px; height: 22px; }
 .home-start .catbar { max-height: 0; opacity: 0; border-bottom-width: 0; transition: none; }
+.sprite { display: none; }
+.legend .sw { margin-right: 6px; vertical-align: middle; }

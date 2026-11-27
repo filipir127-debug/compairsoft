@@ -158,6 +158,14 @@
   const nprod = (n) => (n === 1 ? t("nprod1") : t("nprod", { n: fmt(n) }));
 
   // ---------------------------------------------------------------- helpers
+  // Links and images come from shop data: only absolute http(s) URLs (no javascript:, data:…).
+  // The export checks them too; this second guard also covers JSON left over in caches.
+  const safeUrl = (u) => {
+    try {
+      const x = new URL(String(u ?? ""));
+      return x.protocol === "http:" || x.protocol === "https:" ? x.href : "";
+    } catch { return ""; }
+  };
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const cache = {};
   const json = (u) => (cache[u] ||= fetch(`${u}?v=${V}`).then((r) => { if (!r.ok) throw new Error(`${u}: ${r.status}`); return r.json(); }));
@@ -179,6 +187,7 @@
   };
   // Only categories the site defines; anything else from the address bar is ignored.
   const knownCat = (v) => (v && (GROUPS[v] || CATS[v]) ? v : "");
+  const catHref = (c) => (knownCat(c) ? "/?cat=" + encodeURIComponent(c) : "/?all=1");
   const list = (p, k) => (p.get(k) || "").split(",").filter(Boolean);
 
   // ---------------------------------------------------------------- shell: language, theme
@@ -206,7 +215,7 @@
     const save = p.s > 1 && p.x > p.p ? `<span class="badge-save">−${Math.round((1 - p.p / p.x) * 100)} %</span>` : "";
     const stock = p.k ? `<div class="stock yes">${p.s > 1 ? t("inStockOf", { k: p.k, s: p.s }) : t("inStock")}</div>` : `<div class="stock no">${t("outOfStock")}</div>`;
     return `<a class="card" href="/product/${p.id}">
-      <div class="thumb">${groupIcon(p.c)}${p.i ? `<img src="${esc(p.i)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}${save}</div>
+      <div class="thumb">${groupIcon(p.c)}${safeUrl(p.i) ? `<img src="${esc(safeUrl(p.i))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}${save}</div>
       <div class="card-body">
         ${p.b ? `<div class="card-brand">${esc(p.b)}</div>` : ""}<div class="name">${esc(p.t)}</div>${stock}
         <div class="price-row"><div class="price">${p.s > 1 ? `<small>${t("fromP")}</small> ` : ""}${money(p.p)}</div></div>
@@ -350,7 +359,7 @@
     const open = innerWidth >= 900 ? "open" : "";
     app.innerHTML = `<div class="layout">
       <aside class="filters"><details class="filters-box" ${open}><summary>${icon("sliders-horizontal")} ${t("filters")}</summary>
-        ${active ? `<a class="clear" href="${c ? url({}).split("?")[0] + "?cat=" + encodeURIComponent(c) : "/?all=1"}">${icon("x")} ${t("clear")}</a>` : ""}
+        ${active ? `<a class="clear" href="${catHref(c)}">${icon("x")} ${t("clear")}</a>` : ""}
         <form method="get" action="/" class="f-group">${["q", "cat", "sort", "stock", "minshops", "save", ...FACETS.map((f) => f[1])].map(keep).join("")}<input type="hidden" name="all" value="1">
           <div class="f-title">${t("price")} (${CUR === "CZK" ? "Kč" : CUR})</div><div class="range">
             <input type="number" name="pmin" value="${isNaN(pmin) ? "" : pmin}" min="0" inputmode="numeric" placeholder="${t("from")}" aria-label="${t("price")} ${t("from")}"><span>–</span>
@@ -395,7 +404,7 @@
         ${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" class="grid-line"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" class="axis">${money(v)}</text>`).join("")}
         <text x="${L}" y="${H - 6}" class="axis">${days[0]}</text><text x="${W - R}" y="${H - 6}" text-anchor="end" class="axis">${days[days.length - 1]}</text>
         ${lines.map((l) => `<path d="${l.d}" fill="none" stroke="${l.color}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="${l.cx}" cy="${l.cy}" r="4" fill="${l.color}"/>`).join("")}
-      </svg><div class="legend">${lines.map((l) => `<span><i style="background:${l.color}"></i>${esc(l.s)}</span>`).join("")}</div></div>`;
+      </svg><div class="legend">${lines.map((l) => `<span><svg class="sw" width="14" height="4" aria-hidden="true"><rect width="14" height="4" rx="2" fill="${l.color}"/></svg>${esc(l.s)}</span>`).join("")}</div></div>`;
   }
 
   async function product() {
@@ -418,11 +427,11 @@
       return `<div class="offer ${best ? "best" : ""} ${o.a ? "" : "gone"}">
         <div class="o-shop"><b>${esc(o.s)}</b>${best && d.o.length > 1 ? `<span class="tag">${t("cheapest")}</span>` : ""}<div class="o-title">${esc(o.t)}</div></div>
         <div class="o-stock">${st}</div><div class="o-price">${money(o.v)}${foreign}</div>
-        <a class="btn btn-shop" href="${esc(o.u)}" target="_blank" rel="noopener noreferrer nofollow">${t("goShop")}</a></div>`;
+        <a class="btn btn-shop" href="${esc(safeUrl(o.u) || "#")}" target="_blank" rel="noopener noreferrer nofollow">${t("goShop")}</a></div>`;
     }).join("");
     app.innerHTML = `
       <nav class="crumbs"><a href="/">${t("home")}</a><span>›</span><a href="/?cat=${g}">${esc(catName(g))}</a>${GROUPS[g][2].length > 1 ? `<span>›</span><a href="/?cat=${p.c}">${esc(catName(p.c))}</a>` : ""}</nav>
-      <section class="pd"><div class="pd-img">${groupIcon(p.c)}${p.i ? `<button type="button" class="zoom" data-orig="${esc(p.orig || p.i)}" aria-label="${t("zoom")}"><img src="${esc(p.i)}" alt="${esc(p.t)}" referrerpolicy="no-referrer"><span class="zoom-hint">${icon("search")}</span></button>` : ""}</div>
+      <section class="pd"><div class="pd-img">${groupIcon(p.c)}${safeUrl(p.i) ? `<button type="button" class="zoom" data-orig="${esc(safeUrl(p.orig) || safeUrl(p.i))}" aria-label="${t("zoom")}"><img src="${esc(safeUrl(p.i))}" alt="${esc(p.t)}" referrerpolicy="no-referrer"><span class="zoom-hint">${icon("search")}</span></button>` : ""}</div>
         <div class="pd-info"><h1>${esc(p.t)}</h1>
           <div class="pd-meta">${p.b ? `<span>${t("brand")}: <b>${esc(p.b)}</b></span>` : ""}<span>${t("category")}: <a href="/?cat=${p.c}">${esc(catName(p.c))}</a></span>${p.e ? `<span>EAN: ${esc(p.e)}</span>` : ""}</div>
           <div class="pd-buy"><div>
@@ -443,7 +452,7 @@
       <div class="shop-grid">${m.shops.map((s) => `<div class="shop-card">
         <div class="sc-head"><a class="sc-name" href="/?shop=${s.id}&all=1">${esc(s.name)}</a>${
           s.status && s.status.startsWith("error") ? `<span class="pill bad">${t("failed")}</span>` : s.updated ? `<span class="pill good">${t("upToDate")}</span>` : `<span class="pill">${t("pending")}</span>`}</div>
-        ${s.url ? `<a class="sc-url" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url.split("//").pop().replace(/\/$/, ""))}</a>` : ""}
+        ${safeUrl(s.url) ? `<a class="sc-url" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer nofollow">${esc(s.url.split("//").pop().replace(/\/$/, ""))}</a>` : ""}
         <div class="sc-stats"><div><b>${fmt(s.offers || 0)}</b><span>${t("offersLbl")}</span></div><div><b>${fmt(s.cheapest)}</b><span>${t("cheapestOn")}</span></div></div>
         <div class="sc-foot">${t("updatedLbl", { d: esc((s.updated || "–").replace("T", " ")) })} · ${s.type === "feed" ? t("feed") : t("crawled")}</div>
         <a class="btn btn-ghost" href="/?shop=${s.id}&all=1">${t("showProducts")}</a></div>`).join("")}</div>
@@ -490,7 +499,7 @@
     const [title, updated, sections, contactLbl] = PRIVACY[lang] || PRIVACY.en;
     document.title = `${title} – CompAirsoft`;
     markGroup(null);
-    const linkify = (text) => esc(text).replace(/https:\/\/[^\s)]+/g, (u) => `<a href="${u}" rel="noopener" target="_blank">${u}</a>`);
+    const linkify = (text) => esc(text).replace(/https:\/\/[^\s)]+/g, (u) => `<a href="${esc(safeUrl(u.replaceAll("&amp;", "&")))}" rel="noopener noreferrer" target="_blank">${u}</a>`);
     const contact = SITE.contact ? `<h2>${esc(contactLbl)}</h2><p id="contact"><button type="button" class="btn btn-ghost" id="show-email">${t("showEmail")}</button></p>` : "";
     app.innerHTML = `<article class="prose"><h1>${esc(title)}</h1><p class="muted small">${esc(updated)}</p>
       ${sections.map(([h, txt]) => `<h2>${esc(h)}</h2><p>${linkify(txt)}</p>`).join("")}${contact}</article>`;
@@ -551,7 +560,7 @@
     if (z) {
       const box = document.createElement("div");
       box.className = "lightbox";
-      box.innerHTML = `<button type="button" class="lb-close" aria-label="×">${icon("x")}</button><img src="${esc(z.dataset.orig)}" alt="" referrerpolicy="no-referrer">`;
+      box.innerHTML = `<button type="button" class="lb-close" aria-label="×">${icon("x")}</button><img src="${esc(safeUrl(z.dataset.orig))}" alt="" referrerpolicy="no-referrer">`;
       const close = () => { box.remove(); document.removeEventListener("keydown", onKey); };
       const onKey = (ev) => { if (ev.key === "Escape") close(); };
       box.addEventListener("click", close);

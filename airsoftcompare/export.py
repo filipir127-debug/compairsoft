@@ -125,7 +125,7 @@ def _similar(products: list[dict]) -> dict[str, list[str]]:
 # No inline scripts anywhere: only our own files run. Product photos come from the shops (https only);
 # Cloudflare Web Analytics is allowed in case it is switched on in the dashboard.
 CSP = ("default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; "
-       "style-src-attr 'unsafe-inline'; img-src 'self' https: data:; font-src 'self'; "
+       "img-src 'self' https: data:; font-src 'self'; "
        "connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'none'; "
        "frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests")
 
