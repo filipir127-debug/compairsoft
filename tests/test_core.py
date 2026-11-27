@@ -389,3 +389,34 @@ def test_html_pages_are_not_rewritten_by_cloudflare(tmp_path):
         block = rules.split(f"\n{path}\n", 1)[1].split("\n/", 1)[0]
         assert "no-transform" in block, path
     assert "no-transform" not in rules.split("\n/data/*\n", 1)[1]
+
+
+def test_pages_carry_what_search_engines_and_ai_crawlers_read(tmp_path):
+    import json, re
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.export import export_site
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    dbfile = tmp_path / "t.db"
+    conn = dbmod.connect(str(dbfile))
+    sid = _shop_id(conn, {"name": "Shop", "url": "https://x.cz", "type": "feed"})
+    save_offer(conn, sid, Offer(url="https://x.cz/m4", title="M4 mid-cap zásobník 120 ran", price=200, currency="CZK",
+                                in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
+    rebuild_products(conn)
+    export_site({"settings": {"database": str(dbfile), "base_currency": "CZK", "site_url": "https://www.example.cz"},
+                 "shops": [{"name": "Shop"}]}, tmp_path / "dist")
+    d = tmp_path / "dist"
+    home = (d / "index.html").read_text()
+    text = re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style|svg)[\s\S]*?</\1>", "", home))
+    assert "<h1>" in home and len(text.split()) > 150          # readable without JavaScript
+    assert 'property="og:image" content="https://www.example.cz/og-image.png"' in home
+    for page in ("index", "about"):
+        html = (d / f"{page}.html").read_text()
+        data = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S).group(1))
+        assert {"Organization"} <= {x["@type"] for x in data["@graph"]}
+    assert '<link rel="canonical" href="https://www.example.cz/about">' in (d / "about.html").read_text()
+    assert '<link rel="canonical" href="https://www.example.cz/shops">' in (d / "shops.html").read_text()
+    assert 'rel="canonical"' not in home   # one file serves every category; the app sets it per page
+    assert "https://www.example.cz/about" in (d / "sitemap-1.xml").read_text()
+    assert (d / "og-image.png").exists() and (d / "favicon.ico").exists()

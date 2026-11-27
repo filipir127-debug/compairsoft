@@ -1,1 +1,21 @@
 {% extends "base.html" %}
+{% block title %}CompAirsoft – compare airsoft prices across Czech shops{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ jsonld_home|safe }}</script>{% endblock %}
+{% block content %}
+{#- What a visitor or crawler sees before the app has loaded; the app replaces it. -#}
+<article class="intro">
+  <h1>Find the cheapest airsoft gear</h1>
+  <p>We compare prices of airsoft guns, magazines, BBs, optics, clothing and more across Czech airsoft shops in one place.</p>
+  <p>Tired of going to each individual site to check where prices are better? Now you don't have to! Everything at one place.
+    For every product you see the offers of all shops side by side, cheapest first, with stock and price history.</p>
+  <h2>Categories</h2>
+  <ul class="intro-cats">
+  {% for g, (label, icon, subs) in GROUPS.items() %}
+    <li><a href="/?cat={{ g }}">{{ label }}</a>{% if subs|length > 1 %}: {% for c in subs %}<a href="/?cat={{ c }}">{{ CATEGORIES[c][0] }}</a>{{ ", " if not loop.last }}{% endfor %}{% endif %}</li>
+  {% endfor %}
+  </ul>
+  {% if shop_names %}<h2>Shops we compare</h2>
+  <p>{{ shop_names|join(", ") }}.</p>{% endif %}
+  <p><a href="/shops">All shops</a> · <a href="/about">About &amp; contact</a></p>
+</article>
+{% endblock %}

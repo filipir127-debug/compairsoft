@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}About &amp; contact – CompAirsoft{% endblock %}
+{% block og_title %}About CompAirsoft{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}/about">{% endblock %}
+{% block og_url %}<meta property="og:url" content="{{ site_url }}/about">{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ jsonld_org|safe }}</script>{% endblock %}
+{% block content %}
+{#- English for crawlers and the first paint; the app shows it in the visitor's language. -#}
+<article class="prose">
+  <h1>About CompAirsoft</h1>
+  <h2>What this is</h2>
+  <p>CompAirsoft compares the prices of airsoft guns, magazines, BBs, optics, tactical gear and clothing across Czech airsoft shops.
+    Instead of opening every shop separately, you see all offers for a product side by side, the cheapest first.</p>
+  <h2>Where the prices come from</h2>
+  <p>We read each shop's public product feed or product pages several times a day. Prices, stock and product names come
+    straight from the shops, so they can be a few hours old. Always check the price in the shop before you buy.</p>
+  <h2>We don't sell anything</h2>
+  <p>CompAirsoft is not a shop. An offer takes you straight to the shop's own page; we don't take orders or payments.
+    No shop pays for its position: offers are sorted by price.</p>
+  {% if shop_names %}<h2>Shops we compare</h2>
+  <p>{{ shop_names|join(", ") }}. See <a href="/shops">all shops</a>.</p>{% endif %}
+  <h2>Contact</h2>
+  <p>A wrong price, a missing product, or a shop you'd like to see here? Write to us. Turn on JavaScript to see the address.</p>
+</article>
+{% endblock %}

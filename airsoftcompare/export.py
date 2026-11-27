@@ -346,12 +346,25 @@ def export_site(cfg: dict, out: str | Path) -> None:
     # HTML shells and assets
     version = datetime.now().strftime("%Y%m%d%H%M")
     env = Environment(loader=FileSystemLoader(HERE / "site"), autoescape=True)
-    site = {"CATEGORIES": CATEGORIES, "GROUPS": GROUPS, "GROUP_OF": GROUP_OF, "version": version, "ICONS": GROUP_ICONS,
+    site_url = settings.get("site_url", "https://www.compairsoft.eu").rstrip("/")
+    org = {"@type": "Organization", "@id": f"{site_url}/#org", "name": "CompAirsoft", "url": f"{site_url}/",
+           "logo": f"{site_url}/icon-512.png",
+           "description": "Price comparison of airsoft guns, magazines, BBs, optics, clothing and more across Czech airsoft shops.",
+           "contactPoint": {"@type": "ContactPoint", "contactType": "customer support", "url": f"{site_url}/about"}}
+    website = {"@type": "WebSite", "@id": f"{site_url}/#site", "name": "CompAirsoft", "url": f"{site_url}/", "publisher": {"@id": f"{site_url}/#org"},
+               "potentialAction": {"@type": "SearchAction", "target": {"@type": "EntryPoint", "urlTemplate": f"{site_url}/?q={{search_term_string}}"},
+                                   "query-input": "required name=search_term_string"}}
+    about = {"@type": "AboutPage", "url": f"{site_url}/about", "name": "About CompAirsoft", "about": {"@id": f"{site_url}/#org"}}
+    ld = lambda *items: json.dumps({"@context": "https://schema.org", "@graph": list(items)}, ensure_ascii=False).replace("</", "<\\/")
+    site = {"site_url": site_url, "shop_names": sorted((s["name"] for s in shops), key=str.lower),
+            "jsonld_home": ld(website, org), "jsonld_org": ld(about, org),
+            "CATEGORIES": CATEGORIES, "GROUPS": GROUPS, "GROUP_OF": GROUP_OF, "version": version, "ICONS": GROUP_ICONS,
             # Embedded in a <script type="application/json">: "</" must not end that element early.
             "config": json.dumps({"cats": CATEGORIES, "groups": GROUPS, "groupOf": GROUP_OF, "icons": GROUP_ICONS,
-                                  "currency": settings["base_currency"], "contact": _scramble(settings.get("contact_email") or "")},
+                                  "currency": settings["base_currency"], "contact": _scramble(settings.get("contact_email") or ""),
+                                  "site": site_url},
                                  ensure_ascii=False).replace("</", "<\\/")}
-    for page in ("index", "product", "shops", "privacy", "404"):
+    for page in ("index", "product", "shops", "privacy", "about", "404"):
         (out / f"{page}.html").write_text(env.get_template(f"{page}.html").render(page=page, **site), encoding="utf-8")
     for asset in ("style.css", "app.js", "init.js", "LICENSE-Lucide.txt"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
@@ -361,7 +374,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
     # Search engines: every category and product page, on the canonical host.
     site = settings.get("site_url", "https://www.compairsoft.eu").rstrip("/")
     today = date.today().isoformat()
-    urls = [f"{site}/", f"{site}/shops", f"{site}/privacy"] + [f"{site}/?cat={c}" for c in list(GROUPS) + sorted(counts)]
+    urls = [f"{site}/", f"{site}/shops", f"{site}/about", f"{site}/privacy"] + [f"{site}/?cat={c}" for c in list(GROUPS) + sorted(counts)]
     urls += [f"{site}/product/{p['id']}" for p in sorted(products, key=lambda p: -p["shop_count"])]
     chunks = [urls[i:i + 40000] for i in range(0, len(urls), 40000)]
     for n, chunk in enumerate(chunks, 1):
@@ -385,7 +398,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
         # HTML pages: "no-transform" stops Cloudflare from inserting its JavaScript Detections script,
         # an inline script the CSP above would block (a console error on every page).
         + "".join(f"{path}\n  Cache-Control: public, max-age=0, must-revalidate, no-transform\n"
-                  for path in ("/", "/index.html", "/product", "/product/*", "/shops", "/privacy", "/404.html"))
+                  for path in ("/", "/index.html", "/product", "/product/*", "/shops", "/privacy", "/about", "/404.html"))
         + "/data/*\n  Cache-Control: public, max-age=600\n"
         "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
     if settings.get("image_hosts"):  # always written, so the photo deploy steps find their folders

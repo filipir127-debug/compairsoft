@@ -3,6 +3,7 @@
   var d = document.documentElement, t = null, l = null;
   try { t = localStorage.getItem("theme"); l = localStorage.getItem("lang"); } catch (e) { /* storage blocked */ }
   if (t === "light" || t === "dark") d.dataset.theme = t;
+  d.classList.add("js");  // the app draws the page; static fallback content stays hidden
   var nav = (navigator.language || "en").slice(0, 2).toLowerCase();
   // Homepage: the category bar starts hidden (it slides in once the category tiles scroll away).
   if (location.pathname === "/" && !location.search) d.classList.add("home-start");

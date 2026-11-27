@@ -428,3 +428,9 @@ img { max-width: 100%; }
   :root:not([data-theme="light"]) .dual input[type=range]::-webkit-slider-thumb { background: var(--link); box-shadow: 0 0 0 1px var(--link); }
   :root:not([data-theme="light"]) .dual input[type=range]::-moz-range-thumb { background: var(--link); box-shadow: 0 0 0 1px var(--link); }
 }
+
+/* Static homepage text for crawlers and visitors without JavaScript; the app replaces it. */
+html.js .intro { display: none; }
+.intro { max-width: 760px; padding: 24px 0 40px; line-height: 1.6; }
+.intro h1 { font-size: 30px; margin: 0 0 12px; } .intro h2 { font-size: 20px; margin: 26px 0 8px; }
+.intro-cats { padding-left: 20px; } .intro-cats li { margin: 4px 0; }
