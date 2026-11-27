@@ -467,3 +467,8 @@ def test_search_matches_whole_model_names():
     got = json.loads(subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True).stdout)
     for (w, s, want), g in zip(cases, got):
         assert g == want, f"{w!r} in {s!r}: {g}"
+
+
+def test_airsoft_bbs_called_pellets_stay_bbs():
+    assert categorize("Airsoftové kuličky G&G Perfect pellets 0,28g, 3300bb") == "bbs"
+    assert categorize("Diabolo JSB Exact Jumbo RS 500ks cal.5,52mm") == "airguns"

@@ -544,7 +544,8 @@
     const nice = (x) => { const e = 10 ** Math.floor(Math.log10(Math.max(1, x))); return [1, 2, 2.5, 5, 10].map((k) => k * e).find((v) => v >= x); };
     const sorted = prices.slice().sort((a, b) => a - b), qv = (f) => sorted[Math.floor((sorted.length - 1) * f)] || 0;
     const bands = sorted.length > 20 ? [...new Set([0.25, 0.5, 0.75].map((f) => nice(qv(f))))] : [];
-    const photoOf = (sub) => { const x = items.find((y) => y.c === sub && safeUrl(y.i)) || base.find((y) => y.c === sub && safeUrl(y.i)); return x ? safeUrl(x.i) : ""; };
+    // fixed per category (chosen at export), so the tiles don't change with filters
+    const photoOf = (sub) => safeUrl((m.catImages || {})[sub]) || "";
     const qimg = (img) => `<span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[group], "ic")}</span>`;
     let subTiles = group && GROUPS[group][2].length > 1 ? GROUPS[group][2].filter((sub) => m.counts[sub]).map((sub) =>
       `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">${qimg(photoOf(sub))}${esc(catName(sub))}</a>`).join("") : "";
@@ -557,7 +558,9 @@
       const [, key, , label] = FACETS.find((f) => f[0] === level);
       const tag = { power: "pw:", platform: "pl:", airgun: "ag:", caliber: "cal:" }[level];
       const shownLabel = level === "power" ? (v) => t("tile." + v) : label;
-      const best = (v) => { let b = null; for (const y of base) if (passes(y, level) && (y.a || []).includes(tag + v) && safeUrl(y.i) && (!b || y.s > b.s)) b = y; return b ? safeUrl(b.i) : ""; };
+      // photo from the whole category, not the filtered results, so it stays the same
+      const pool = itemsCache.items.filter((y) => y.c === c);
+      const best = (v) => { let b = null; for (const y of pool) if ((y.a || []).includes(tag + v) && safeUrl(y.i) && (!b || y.s > b.s || (y.s === b.s && y.p > b.p))) b = y; return b ? safeUrl(b.i) : ""; };
       subTiles = DRILL_VALUES[level].filter((v) => facetCounts[level].get(v)).map((v) => {
         const on = one(level) === v;
         return `<a class="qtile ${on ? "on" : ""}" href="${url({ [key]: on ? "" : v, page: "" })}">${qimg(best(v))}${esc(shownLabel(v))}</a>`;

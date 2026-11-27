@@ -215,6 +215,17 @@ def _group_images(products: list[dict], offers: dict) -> dict[str, str]:
     return out
 
 
+def _category_images(products: list[dict]) -> dict[str, str]:
+    """One fixed photo per subcategory for its tile (same choice as _group_images: widely compared,
+    in stock, pricier - for "Rifles" a rifle, not a spring), so tiles don't change with filters."""
+    best: dict[str, dict] = {}
+    key = lambda p: (min(p["shop_count"], 3), p["in_stock_count"] > 0, p["min_price"] or 0)
+    for p in products:
+        if safe_url(p["image"]) and (p["category"] not in best or key(p) > key(best[p["category"]])):
+            best[p["category"]] = p
+    return {c: _image(p["image"]) for c, p in best.items()}
+
+
 def _scramble(email: str) -> str:
     """Keep the address out of the page source in plain text, so address-harvesting bots miss it."""
     import base64
@@ -337,6 +348,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "rates": {c: rates[c] for c in SHOWN if c in rates},
         "rates_date": rates_day,
         "images": _group_images(products, offers),
+        "catImages": _category_images(products),
         "sections": sections,
         "syn": synonyms,
         **meta_defs(),  # filter parameters: definitions, tabs ("paramSections"), per-category lists

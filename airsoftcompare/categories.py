@@ -46,7 +46,7 @@ RULES: list[tuple[str, str, str, str]] = [
     ("shotguns", "Shotguns", "💨", r"\b(brokovnic\w*|shotgun\w*)\b"),
     # Not airsoft, but sold by the same shops; named so a gun model in the name can't claim them.
     # Not airsoft, but sold by the same shops; named so a gun model in the name can't claim them.
-    ("airguns", "Airguns", "🎯", r"\b(vzduchov\w*|diabol\w*|airgun\w*|air ?rifle\w*|air ?pistol\w*|pellet\w*|broky)\b"),
+    ("airguns", "Airguns", "🎯", r"\b(vzduchov\w*|diabol\w*|airgun\w*|air ?rifle\w*|air ?pistol\w*|broky)\b"),
     ("melee", "Melee", "🗡️", r"\b(nuz|noze|nozem|nozu|knife|knives|katan\w*|maceta|macet\w*|machete\w*|sekyr\w*|sekerk\w*|"
                             r"tomahawk\w*|bajonet\w*|dyk[ay]|dagger\w*|karambit\w*|obusek|obusk\w*|boxer|mec|mece|sword\w*|"
                             r"ocilk\w*|brousek|brousk\w*|pochv\w*)\b"),
