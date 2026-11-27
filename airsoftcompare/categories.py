@@ -55,7 +55,7 @@ WEAK: list[tuple[str, str]] = [
     ("pistols", r"\b(glock\w*|g17|hi-?capa|m?1911\w*|desert ?eagle|usp|p226|beretta|m9a?1?|m92\w*|cz ?75\w*|cz ?p-?(0[79]|10)\w*|aep)\b"),
     ("snipers", r"\b(vsr\w*|l96\w*|m24|m40\w*|srs ?a\d\w*|desert tech|ssg\d*|mb\d{2,}\w*|svd|mosin\w*|kar ?98\w*)\b"),
     ("shotguns", r"\b(m870|m3 ?super|super 90|spas\w*|aa-?12)\b"),
-    ("guns", r"\b(lmg|cm\.?\d{3}\w*|arp ?\d+\w*|gbb|m4\w*|m16\w*|ak-?\d*\w*|mp5\w*|g36\w*|scar\w*|hk416|416|ump\w*|vss|aug|famas|fa-mas|p90|mp7\w*|g3\w*|pdw)\b"),
+    ("guns", r"\b(lmg|cm\.?\d{3}\w*|cm ?16\w*|gr ?16\w*|tr ?16\w*|arp ?\d+\w*|gbb|m4\w*|m16\w*|ak-?\d*\w*|mp5\w*|g36\w*|scar\w*|hk416|416|ump\w*|vss|aug|famas|fa-mas|p90|mp7\w*|g3\w*|pdw)\b"),
     ("helmets", r"\b(fast|mich)\b"),
     ("guns", r"\b(aeg|gbbr|karabin\w*)\b"),
     ("comms", r"\b(baofeng|midland|motorola|kenwood|peltor|comtac|sordin|earmor|uv-?5r\w*|uv-?82)\b"),
