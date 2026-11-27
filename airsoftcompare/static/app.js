@@ -37,7 +37,7 @@
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
-      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", onlyDiscount: "Discounted 10 % or more", soldIn2: "Sold in 2+ shops", availAll: "All products", availStock: "In stock anywhere", moreN: "{n} more", lessBtn: "Show less", priceUpTo: "Up to {v}", removeAll: "Clear all", origName: "Original name", ratesNote: "Prices in {c} are converted from CZK at the Czech National Bank rate of {d}.", zoom: "Show the original photo", showEmail: "Show email address",
+      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", origName: "Original name", ratesNote: "Prices in {c} are converted from CZK at the Czech National Bank rate of {d}.", zoom: "Show the original photo", showEmail: "Show email address",
     },
     cs: {
       "search.ph": "Hledat zbraně, zásobníky, kolimátory…", "search.btn": "Hledat", "nav.shops": "Obchody", loading: "Načítání…",
@@ -67,7 +67,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", onlyDiscount: "Se slevou 10 % a více", soldIn2: "Prodáváno ve 2+ obchodech", availAll: "Všechno zboží", availStock: "Skladem kdekoliv", moreN: "Dalších {n}", lessBtn: "Zobrazit méně", priceUpTo: "Do {v}", removeAll: "Zrušit vše", origName: "Původní název", ratesNote: "Ceny v {c} jsou přepočtené z Kč kurzem ČNB ze dne {d}.", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
+      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", origName: "Původní název", ratesNote: "Ceny v {c} jsou přepočtené z Kč kurzem ČNB ze dne {d}.", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
     },
     sk: {
       "search.ph": "Hľadať zbrane, zásobníky, kolimátory…", "search.btn": "Hľadať", "nav.shops": "Obchody", loading: "Načítava sa…",
@@ -97,7 +97,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", onlyDiscount: "So zľavou 10 % a viac", soldIn2: "Predávané v 2+ obchodoch", availAll: "Všetok tovar", availStock: "Skladom kdekoľvek", moreN: "Ďalších {n}", lessBtn: "Zobraziť menej", priceUpTo: "Do {v}", removeAll: "Zrušiť všetko", origName: "Pôvodný názov", ratesNote: "Ceny v {c} sú prepočítané z Kč kurzom ČNB zo dňa {d}.", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
+      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", origName: "Pôvodný názov", ratesNote: "Ceny v {c} sú prepočítané z Kč kurzom ČNB zo dňa {d}.", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
     },
     de: {
       "search.ph": "Waffen, Magazine, Red Dots suchen…", "search.btn": "Suchen", "nav.shops": "Shops", loading: "Wird geladen…",
@@ -127,7 +127,7 @@
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
-      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", onlyDiscount: "Mit Rabatt ab 10 %", soldIn2: "In 2+ Shops erhältlich", availAll: "Alle Artikel", availStock: "Irgendwo auf Lager", moreN: "{n} weitere", lessBtn: "Weniger anzeigen", priceUpTo: "Bis {v}", removeAll: "Alle entfernen", origName: "Originalname", ratesNote: "Preise in {c} sind aus CZK zum Kurs der Tschechischen Nationalbank vom {d} umgerechnet.", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
+      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", origName: "Originalname", ratesNote: "Preise in {c} sind aus CZK zum Kurs der Tschechischen Nationalbank vom {d} umgerechnet.", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
     },
   };
   const CAT_NAMES = {
@@ -178,9 +178,12 @@
     || ({ sk: "EUR", de: "EUR" }[document.documentElement.lang] || BASE);
   const rate = () => RATES[cur] || 1;
   const toCur = (v) => v / rate();
-  const fmtCur = (x) => (cur === "CZK" ? fmt(x) + " Kč"
-    : x.toLocaleString(LOCALES[lang] || "en-GB", { style: "currency", currency: cur, maximumFractionDigits: x >= 1000 ? 0 : 2 }));
-  const money = (v) => (v == null ? "–" : fmtCur(toCur(v)));
+  const money = (v) => {
+    if (v == null) return "–";
+    const x = toCur(v);
+    if (cur === "CZK") return fmt(x) + " Kč";
+    return x.toLocaleString(LOCALES[lang] || "en-GB", { style: "currency", currency: cur, maximumFractionDigits: x >= 1000 ? 0 : 2 });
+  };
   const icon = (name, cls = "ic") => `<svg class="${cls}"><use href="#i-${name}"/></svg>`;
   const groupIcon = (c) => icon(ICONS[GROUP_OF[c] || c] || "image", "ph");
   const P = () => new URLSearchParams(location.search);
@@ -328,8 +331,6 @@
     if (stock) base = base.filter((x) => x.k > 0);
     if (minShops) base = base.filter((x) => x.s >= minShops);
     if (minSave) base = base.filter((x) => x.s > 1 && x.x > 0 && (1 - x.p / x.x) * 100 >= minSave);
-    const prices = base.map((x) => toCur(x.p)).filter((v) => v > 0);
-    const lo = prices.length ? Math.floor(Math.min(...prices)) : 0, hi = prices.length ? Math.ceil(Math.max(...prices)) : 0;
     if (!isNaN(pmin)) base = base.filter((x) => toCur(x.p) >= pmin);
     if (!isNaN(pmax)) base = base.filter((x) => toCur(x.p) <= pmax);
 
@@ -351,9 +352,7 @@
     const shown = items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     const shopName = Object.fromEntries(m.shops.map((s) => [String(s.id), s.name]));
 
-    // ---- sidebar, in the style of alza.cz: plain sections, checkbox lists with counts, price slider
-    const VISIBLE = 5;
-    const facetBox = (name, key) => {
+    const facetBox = (name, key, label) => {
       const cnt = facetCounts[name];
       if (!cnt.size || (cnt.size === 1 && !chosen[name].size && name !== "shop")) return "";
       const lbl = FACETS.find((f) => f[0] === name)[3] || ((v) => shopName[v] || v);
@@ -363,98 +362,45 @@
       const rows = vals.map(([v, n], i) => {
         const on = chosen[name].has(v);
         const next = new Set(chosen[name]); on ? next.delete(v) : next.add(v);
-        return `<a class="opt ${on ? "on" : ""} ${i >= VISIBLE && !on ? "extra" : ""}" href="${url({ [key]: [...next].join(","), page: "" })}">
-          <span class="box"></span><span class="opt-l">${esc(lbl(v))} <span class="opt-n">(${fmt(n)})</span></span></a>`;
+        return `<a class="opt ${on ? "on" : ""} ${i >= 6 && !on ? "extra" : ""}" href="${url({ [key]: [...next].join(","), page: "" })}">
+          <span class="box"></span><span class="opt-l">${esc(lbl(v))}</span><span class="opt-n">${fmt(n)}</span></a>`;
       }).join("");
-      const hidden = vals.filter(([v], i) => i >= VISIBLE && !chosen[name].has(v)).length;
-      const more = hidden ? `<button type="button" class="more-btn" data-more data-less="${t("lessBtn")}">${t("moreN", { n: hidden })}</button>` : "";
-      return `<div class="f-sec" data-facet="${name}"><h3>${t("f." + name)}</h3><div class="opts">${rows}</div>${more}</div>`;
+      const more = vals.length > 6 ? `<button type="button" class="more-btn" data-more>${t("showMore")}</button>` : "";
+      return `<div class="f-group" data-facet="${name}"><div class="f-title">${t("f." + name)}</div><div class="opts">${rows}</div>${more}</div>`;
     };
-    const check = (on, over, label) => `<a class="opt ${on ? "on" : ""}" href="${url(over)}"><span class="box"></span><span class="opt-l">${label}</span></a>`;
-    const radio = (on, over, label) => `<a class="opt radio ${on ? "on" : ""}" href="${url(over)}"><span class="box"></span><span class="opt-l">${label}</span></a>`;
-    const step = (() => { const r = Math.max(1, hi - lo) / 200, e = 10 ** Math.floor(Math.log10(r)); return [1, 2, 5, 10].map((k) => k * e).find((x) => x >= r) || 1; })();
-    const from = isNaN(pmin) ? lo : Math.max(lo, Math.min(hi, pmin)), to = isNaN(pmax) ? hi : Math.max(lo, Math.min(hi, pmax));
-    const priceBox = hi > lo ? `<div class="f-sec price-filter" data-lo="${lo}" data-hi="${hi}">
-        <h3>${t("price")} <span class="muted">(${cur === "CZK" ? "Kč" : cur})</span></h3>
-        <div class="dual"><div class="dual-track"><span class="dual-fill"></span></div>
-          <input type="range" class="r-min" min="${lo}" max="${hi}" step="${step}" value="${from}" aria-label="${t("price")} ${t("from")}">
-          <input type="range" class="r-max" min="${lo}" max="${hi}" step="${step}" value="${to}" aria-label="${t("price")} ${t("to")}"></div>
-        <div class="price-inputs"><input type="number" class="n-min" value="${Math.round(from)}" min="${lo}" max="${hi}" inputmode="numeric" aria-label="${t("price")} ${t("from")}">
-          <span>–</span><input type="number" class="n-max" value="${Math.round(to)}" min="${lo}" max="${hi}" inputmode="numeric" aria-label="${t("price")} ${t("to")}"></div></div>` : "";
-
-    // active filters as removable chips, like alza.cz
-    const chips = [];
-    if (q) chips.push([`“${esc(q)}”`, { q: "", page: "" }]);
-    if (!isNaN(pmin) || !isNaN(pmax)) chips.push([`${t("price")}: ${isNaN(pmin) ? ((x) => x[0].toLowerCase() + x.slice(1))(t("priceUpTo", { v: fmtCur(pmax) }))
-      : isNaN(pmax) ? `${t("fromP")} ${fmtCur(pmin)}` : `${fmtCur(pmin)} – ${fmtCur(pmax)}`}`, { pmin: "", pmax: "", page: "" }]);
-    if (stock) chips.push([t("availStock"), { stock: "", page: "" }]);
-    if (minSave) chips.push([t("onlyDiscount"), { save: "", page: "" }]);
-    if (minShops) chips.push([t("soldIn2"), { minshops: "", multi: "", page: "" }]);
-    for (const [n, k, , lb] of FACETS) for (const v of chosen[n]) {
-      const rest = [...chosen[n]].filter((x) => x !== v);
-      chips.push([esc((lb || ((x) => shopName[x] || x))(v)), { [k]: rest.join(","), page: "" }]);
-    }
-
-    // quick tiles above the results: subcategories with a photo, then price bands
-    const nice = (x) => { const e = 10 ** Math.floor(Math.log10(Math.max(1, x))); return [1, 2, 2.5, 5, 10].map((k) => k * e).find((v) => v >= x); };
-    const sorted = prices.slice().sort((a, b) => a - b), qv = (f) => sorted[Math.floor((sorted.length - 1) * f)] || 0;
-    const bands = sorted.length > 20 ? [...new Set([0.25, 0.5, 0.75].map((f) => nice(qv(f))))] : [];
-    const photoOf = (sub) => { const x = items.find((y) => y.c === sub && safeUrl(y.i)) || base.find((y) => y.c === sub && safeUrl(y.i)); return x ? safeUrl(x.i) : ""; };
-    const subTiles = group && GROUPS[group][2].length > 1 ? GROUPS[group][2].filter((sub) => m.counts[sub]).map((sub) => {
-      const img = photoOf(sub);
-      return `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">
-        <span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[group], "ic")}</span>${esc(catName(sub))}</a>`;
-    }).join("") : "";
-    const priceTiles = bands.map((v) => `<a class="qtile ${pmax === v && isNaN(pmin) ? "on" : ""}" href="${url({ pmin: "", pmax: v, page: "" })}">
-        <span class="qimg qprice">${icon("layers", "ic")}</span>${t("priceUpTo", { v: fmtCur(v) })}</a>`).join("");
+    const radio = (key, cur, options, label) => `<div class="f-group"><div class="f-title">${label}</div><div class="opts">${options.map(([v, l]) =>
+      `<a class="opt radio ${String(cur) === String(v) ? "on" : ""}" href="${url({ [key]: v || "", multi: "", page: "" })}"><span class="box"></span><span class="opt-l">${l}</span></a>`).join("")}</div></div>`;
+    const active = ["q", "stock", "minshops", "multi", "save", "pmin", "pmax", ...FACETS.map((f) => f[1])].some((k) => p.get(k));
 
     const title = q ? `“${esc(q)}”` : c ? esc(catName(c)) : t("all");
     document.title = `${q || (c ? catName(c) : t("all"))} – CompAirsoft`;
+    const subs = group && GROUPS[group][2].length > 1 ? `<nav class="subcats" aria-label="${esc(catName(group))}">
+      <a href="${url({ cat: group, page: "" })}" class="${c === group ? "on" : ""}">${t("allOf")}</a>
+      ${GROUPS[group][2].filter((s) => m.counts[s]).map((s) => `<a href="${url({ cat: s, page: "" })}" class="${c === s ? "on" : ""}">${esc(catName(s))} <b>${fmt(m.counts[s])}</b></a>`).join("")}</nav>` : "";
+    const keep = (k) => p.get(k) ? `<input type="hidden" name="${k}" value="${esc(p.get(k))}">` : "";
     const open = innerWidth >= 900 ? "open" : "";
-    app.innerHTML = `${group ? `<nav class="crumbs"><a href="/">${t("home")}</a><span>›</span><a href="/?cat=${group}">${esc(catName(group))}</a>${c && c !== group ? `<span>›</span><span>${esc(catName(c))}</span>` : ""}</nav>` : ""}
-      <div class="layout">
+    app.innerHTML = `<div class="layout">
       <aside class="filters"><details class="filters-box" ${open}><summary>${icon("sliders-horizontal")} ${t("filters")}</summary>
-        ${priceBox}
-        <div class="f-sec">${check(minSave >= 10, { save: minSave ? "" : 10, page: "" }, t("onlyDiscount"))}
-          ${check(minShops >= 2, { minshops: minShops ? "" : 2, multi: "", page: "" }, t("soldIn2"))}</div>
-        <div class="f-sec"><h3>${t("avail")}</h3><div class="opts">
-          ${radio(!stock, { stock: "", page: "" }, t("availAll"))}${radio(stock, { stock: "1", page: "" }, t("availStock"))}</div></div>
+        ${active ? `<a class="clear" href="${catHref(c)}">${icon("x")} ${t("clear")}</a>` : ""}
+        <form method="get" action="/" class="f-group">${["q", "cat", "sort", "stock", "minshops", "save", ...FACETS.map((f) => f[1])].map(keep).join("")}<input type="hidden" name="all" value="1">
+          <div class="f-title">${t("price")} (${cur === "CZK" ? "Kč" : cur})</div><div class="range">
+            <input type="number" name="pmin" value="${isNaN(pmin) ? "" : pmin}" min="0" inputmode="numeric" placeholder="${t("from")}" aria-label="${t("price")} ${t("from")}"><span>–</span>
+            <input type="number" name="pmax" value="${isNaN(pmax) ? "" : pmax}" min="0" inputmode="numeric" placeholder="${t("to")}" aria-label="${t("price")} ${t("to")}">
+            <button class="btn btn-small" type="submit" aria-label="OK">OK</button></div></form>
+        <div class="f-group"><div class="f-title">${t("avail")}</div><div class="opts">
+          <a class="opt ${stock ? "on" : ""}" href="${url({ stock: stock ? "" : "1", page: "" })}"><span class="box"></span><span class="opt-l">${t("inStockOnly")}</span></a></div></div>
+        ${radio("minshops", minShops || "", [["", t("any")], [2, t("shopsPlus", { n: 2 })], [3, t("shopsPlus", { n: 3 })], [4, t("shopsPlus", { n: 4 })]], t("f.minshops"))}
+        ${radio("save", minSave || "", [["", t("any")], [10, "10 %"], [20, "20 %"], [30, "30 %"]], t("f.save"))}
         ${FACETS.map(([n, k]) => facetBox(n, k)).join("")}
       </details></aside>
       <section class="results">
-        <div class="results-head"><h1>${title}</h1></div>
-        ${subTiles || priceTiles ? `<div class="qtiles">${subTiles}${priceTiles}</div>` : ""}
-        ${chips.length ? `<div class="chips">${chips.map(([l, over]) => `<a class="chip" href="${url(over)}">${l} ${icon("x")}</a>`).join("")}<a class="chip-clear" href="${catHref(c)}">${t("removeAll")}</a></div>` : ""}
-        <div class="count">${nprod(total)}</div>
+        <div class="results-head"><h1>${title}</h1><span class="muted">${nprod(total)}</span></div>
+        ${subs}
         <nav class="sort-tabs">${["relevance", "price_asc", "price_desc", "savings", "name"].map((k) => `<a href="${url({ sort: k, page: "" })}" class="${sort === k ? "on" : ""}">${t("sort." + k)}</a>`).join("")}</nav>
         ${total ? `<div class="grid">${shown.map(card).join("")}</div>` : `<div class="empty">${t("nothing")}</div>`}
         ${pages > 1 ? `<nav class="pager">${page > 1 ? `<a href="${url({ page: page - 1 })}">${t("prev")}</a>` : ""}
           <span>${t("pageOf", { p: page, n: pages })}</span>${page < pages ? `<a href="${url({ page: page + 1 })}">${t("next")}</a>` : ""}</nav>` : ""}
       </section></div>`;
-    priceSlider();
-  }
-
-  // Price slider: drag updates the boxes live, releasing (or editing a box) applies the filter.
-  function priceSlider() {
-    const box = app.querySelector(".price-filter");
-    if (!box) return;
-    const [rMin, rMax, nMin, nMax] = [".r-min", ".r-max", ".n-min", ".n-max"].map((sel) => box.querySelector(sel));
-    const lo = +box.dataset.lo, hi = +box.dataset.hi;
-    const paint = () => {
-      const a = (+rMin.value - lo) / (hi - lo) * 100, b = (+rMax.value - lo) / (hi - lo) * 100;
-      box.querySelector(".dual-fill").style.cssText = `left:${a}%;right:${100 - b}%`;
-    };
-    const apply = () => {
-      let a = Math.round(+nMin.value), b = Math.round(+nMax.value);
-      if (a > b) [a, b] = [b, a];
-      const href = url({ pmin: a > lo ? a : "", pmax: b < hi ? b : "", page: "" });
-      history.pushState(null, "", href); route();
-    };
-    rMin.addEventListener("input", () => { if (+rMin.value > +rMax.value) rMin.value = rMax.value; nMin.value = Math.round(+rMin.value); paint(); });
-    rMax.addEventListener("input", () => { if (+rMax.value < +rMin.value) rMax.value = rMin.value; nMax.value = Math.round(+rMax.value); paint(); });
-    rMin.addEventListener("change", apply); rMax.addEventListener("change", apply);
-    nMin.addEventListener("change", apply); nMax.addEventListener("change", apply);
-    paint();
   }
 
   // ---------------------------------------------------------------- product
@@ -617,12 +563,7 @@
   if (page === "index") {
     document.addEventListener("click", (e) => {
       const more = e.target.closest("[data-more]");
-      if (more) {
-        const g = more.closest(".f-sec, .f-group"); g.classList.toggle("expanded");
-        if (!more.dataset.more2) more.dataset.more2 = more.textContent;
-        more.textContent = g.classList.contains("expanded") ? (more.dataset.less || t("showLess")) : more.dataset.more2;
-        return;
-      }
+      if (more) { const g = more.closest(".f-group"); g.classList.toggle("expanded"); more.textContent = g.classList.contains("expanded") ? t("showLess") : t("showMore"); return; }
       const a = e.target.closest("a[href]");
       if (!a || e.ctrlKey || e.metaKey || e.shiftKey || a.target) return;
       const href = a.getAttribute("href");
