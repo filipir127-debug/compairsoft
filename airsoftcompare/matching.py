@@ -116,7 +116,7 @@ def cluster(offers: list[dict], threshold: int = 90, chunk: int = 2000) -> list[
     return [uf.find(i) for i in range(n)]
 
 
-PART_PRICE = {"guns": 400, "pistols": 250, "snipers": 700, "shotguns": 500}  # CZK
+PART_PRICE = {"guns": 400, "smgs": 400, "pistols": 250, "snipers": 700, "shotguns": 500}  # CZK
 
 
 def _product_category(members: list[dict]) -> str:

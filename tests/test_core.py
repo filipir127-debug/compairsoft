@@ -246,3 +246,28 @@ def test_every_subcategory_is_in_exactly_one_group():
     from airsoftcompare.categories import CATEGORIES, GROUPS
     subs = [c for _, _, cs in GROUPS.values() for c in cs]
     assert sorted(subs) == sorted(CATEGORIES) and len(subs) == len(set(subs))
+
+
+@pytest.mark.parametrize("title, expected", [
+    ("Airsoftový samopal CZ Scorpion EVO 3 A1 - černý, ASG", "smgs"),
+    ("H&K MP5KA4 PDW, Tokyo Marui", "smgs"),
+    ("CYMA Airsoftový samopal Thompson M1928A1 - celokov", "smgs"),
+    ("Airsoftová zbraň AK-74M - celokov, sklápěcí pažba, ICS", "guns"),
+    ("Airsoftový kulomet FN M249 - černý, ABS, CyberGun", "guns"),
+    ("Granátomet M203 krátký na RIS lištu", "grenades"),
+    ("G&G CM16 SRS (M)", "guns"),
+])
+def test_gun_types(title, expected):
+    assert categorize(title) == expected
+
+
+def test_gun_power_and_platform_tags():
+    from airsoftcompare.export import _attrs
+    tags = lambda t, c, p=5000: set(_attrs(t, c, p))
+    assert {"pw:electric", "pl:ak"} <= tags("Airsoftová zbraň AK74M - LCT", "guns")      # AEG unless said otherwise
+    assert {"pw:gas", "pl:m4"} <= tags("WE GBB M4 CQB", "guns")
+    assert "pl:m4" not in tags("Odstřelovací puška SA-S02 CORE™ SAG M40", "snipers")
+    assert {"pl:ww2", "pl:mp5"}.isdisjoint(tags("Glock 17", "pistols"))
+    assert "pw:spring" in tags("Glock 25, kov, Galaxy", "pistols", 470)            # cheap pistol: spring
+    assert "pw:gas" in tags("Hi-Capa 5.1, WE", "pistols", 2500)
+    assert {"pl:ww2", "pl:mg"} <= tags("Airsoftový kulomet MG42 - celokov", "guns")

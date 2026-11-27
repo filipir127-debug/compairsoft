@@ -40,22 +40,53 @@ def _num(v):
 
 _POWER = [("hpa", r"\bhpa\b"), ("co2", r"\bco2\b"),
           ("gas", r"\b(gbbr?|gnb|plyn\w*|green ?gas|gas ?blow\w*)\b"),
-          ("electric", r"\b(aeg|aep|ebb|etu|bldc|mosfet|elektri\w*|electric\w*)\b"),
+          ("electric", r"\b(aeg|aep|ebb|etu|bldc|mosfet|elektri\w*|electric\w*|aster\w*|titan|eye ?trace|ecu|gate)\b"),
           ("spring", r"\b(manual\w*|manualn\w*|pruzin\w*|spring\w*|bolt ?action)\b")]
+# Gun platforms, shown as the last step of the Guns menu (Guns > Rifles > AEG > AK). A gun can have two
+# (an RPK is an AK and a machine gun; an MP40 is an MP and WWII).
+_PLATFORM = [
+    ("ak", r"\b(ak|akm\w*|aks\w*|ak-?\d+\w*|rpk\w*|lck-?\d+\w*|kala[sš]h?nikov\w*|saiga\w*|vepr\w*|sa-j\d+\w*)\b"),
+    ("m4", r"\b(m4(?!\d)\w*|m16\w*|ar-?15\w*|hk ?416\w*|416\w*|mk ?18\w*|cqbr|m733|m727|m933|sr-?16\w*|sr-?25\w*|ar-?10|"
+           r"cm16\w*|gr16\w*|arp ?556|lt-?\d{2}\w*|sa-[abcefh]\d+\w*|urgi|m110\w*)\b"),
+    ("mp5", r"\bmp-?5\w*"),
+    ("ww2", r"\b(ww ?ii|ww ?2|thompson|m1a1|mp-?40|stg ?44|kar ?98\w*|garand|m1 carbine|ppsh\w*|pps-?43|sten|mosin\w*|"
+            r"mg ?42|mg ?34|type ?(38|96|99|100)|lee[- ]enfield|enfield|svt-?40|dp-?28|m1903|springfield|m1918|"
+            r"grease gun|m3a1|g43|mas ?36|carcano|tokarev|nagant|2\.? ?sv\w* val\w*)\b"),
+    ("bullpup", r"\b(bullpup|aug\w*|famas|fa-mas|p90|ps90|l85\w*|sa ?80|tavor|tar-?21|x95|f2000|qbz\w*|groza|oc-?14|"
+                r"a-?91|rdb|vhs|ksg|srs ?a\d|desert tech)\b"),
+    ("mg", r"\b(kulomet\w*|machine ?gun\w*|lmg|m249|minimi|m60(?!\d)\w*|mk ?4[68]|m240\w*|pkm|pkp|rpk\w*|mg ?42|mg ?34|mg ?36|"
+           r"negev|m134|minigun|vulcan|stoner|ultimax|maxim|zb ?26|dp-?28|type ?96|m1919|ameli)\b"),
+]
+GUN_TYPES = {"pistols", "guns", "smgs", "shotguns", "snipers"}
 _METAL = r"\b(kov\w*|celokov\w*|full ?metal|metal\w*|ocel\w*|steel|hlinik\w*|alu\w*|cnc)\b"
 _PLASTIC = r"\b(abs|plast\w*|nylon\w*|polymer\w*)\b"
 _CAP = r"\b(mid|hi|high|low|real)[ -]?cap\b"
 _BB_WEIGHT = r"\b0[,.](\d{2})\d? ?g\b"
 
 
-def _attrs(title: str, category: str) -> list[str]:
+def _power(t: str, category: str, price: float | None) -> str | None:
+    """Power source from the name; otherwise what that kind of gun almost always is (shops rarely
+    write "AEG" on an AEG), so every gun shows up under one of the AEG / GBB / CO2 / Spring tiles."""
+    found = next((name for name, rx in _POWER if re.search(rx, t)), None)
+    if found or category not in GUN_TYPES:
+        return found
+    if category in ("guns", "smgs"):
+        return "electric"
+    if category == "pistols":
+        return "spring" if price and price < 800 else "gas"
+    return "spring"  # snipers, shotguns
+
+
+def _attrs(title: str, category: str, price: float | None = None) -> list[str]:
     """Filterable tags derived from the title: colour, power source, material, capacity, BB weight."""
     t = strip_accents(title.lower())
     tags = [f"col:{c}" for c in sorted(colors(normalize(title)))]
     if GROUP_OF.get(category) == "weapons":
-        power = next((name for name, rx in _POWER if re.search(rx, t)), None)
+        power = _power(t, category, price)
         if power:
             tags.append(f"pw:{power}")
+        if category in GUN_TYPES:
+            tags += [f"pl:{name}" for name, rx in _PLATFORM if re.search(rx, t)]
         if re.search(_METAL, t):
             tags.append("mt:metal")
         elif re.search(_PLASTIC, t):
@@ -94,7 +125,7 @@ def _card(p: dict, shops_of: dict, brand: str | None = None) -> dict:
             "h": sorted(shops_of.get(p["id"], ()))}
     if brand:
         card["b"] = brand
-    if tags := _attrs(p["title"], p["category"]):
+    if tags := _attrs(p["title"], p["category"], p["min_price"]):
         card["a"] = tags
     return card
 

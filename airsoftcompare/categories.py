@@ -39,21 +39,21 @@ RULES: list[tuple[str, str, str, str]] = [
                           r"maso|masem|polevk\w*|omack\w*|kase|rizot\w*|testovin\w*|nakyp\w*|gulas\w*|zemlovk\w*|"
                           r"samoohrev\w*|emergency water|baleni vody)\b"),
     ("parts", "Parts & upgrades", "⚙️", r"\b(hop-?up\w*|gumic\w*|telo|tela|zapadk\w*|miridl\w*|iron ?sight\w*|pist|pistu|pistem|pisty|pazb\w*|predpazb\w*|rukojet\w*|grip\w*|krytk\w*|spoust\w*|dorazec\w*|vack\w*|adapter\w*|podavac\w*|natahovac\w*|ramink\w*|upgrade\w*|ris|rail\w*|lista|listy|lisht\w*|montaz\w*|mount\w*|kabelaz\w*|wiring|stock|handguard|tlumic\w*|suppressor\w*|silencer\w*|flash ?hider\w*|kompenzator\w*|bipod\w*|dvojnoz\w*|udrzb\w*|cistic\w*|cisteni|sprej\w*|olej\w*|silikon\w*|lube|valec\w*|valc\w*|cylinder\w*|dil|dilu|dily|dilem|nahradn\w*|kulis\w*|prepinac\w*|selector\w*|lozisk\w*|bearing\w*|bushing\w*|gearbox\w*|mechabox\w*|piest\w*|piston\w*|pruzin\w*|spring\w*|hlav\w*|barrel\w*|motor\w*|mosfet\w*|gumick\w*|bucking\w*|nozzle\w*|tryska|trysk[yau]\w*|cylind\w*|ozuben\w*|gears?|valve\w*|ventil\w*|tappet\w*|trigger\w*|nub|o-?ring\w*|o-?krouz\w*|krouz\w*|tesnen\w*|gate|hpa engine|polarstar|zaver\w*|zachyt\w*|patk[ay]\w*|usti|klapk\w*|trn|buffer ?tube|cover|magwell|svetlovodn\w*|srouby|sroub\w*|charging handle|handle\w*|musk[ay]|cep|cepy|udernik\w*|licnic\w*)\b"),
-    ("grenades", "Grenades & pyro", "💥", r"\b(granat\w*|grenade\w*|min[ay]|pyro\w*|dymovnic\w*|smoke)\b"),
+    ("grenades", "Pyro & grenade launchers", "💥", r"\b(granat\w*|grenade\w*|min[ay]|pyro\w*|dymovnic\w*|smoke)\b"),
     ("clothing", "Clothing & boots", "👕", r"\b(nasivk\w*|patch\w*|velcro|morale|kalhot\w*|bluz\w*|uniform\w*|kosil\w*|combat ?(shirt|pants)|pants|jacket\w*|bund\w*|cepic\w*|cap|boot\w*|boty|obuv\w*|ghillie|kuklic\w*|kukl[ay]|balaclava|nakolen\w*|naloketn\w*|knee ?pads?|chranic\w* (kolen|loktu)|mikin\w*|hoodie|satek|satk[ayu]|shemag\w*|klobouk\w*|ksiltovk\w*|trick[oa]|triko|t-?shirt|shirt|spodk\w*|ponozk\w*|kombinez\w*|natelnik\w*|brigadyrk\w*|hejkal\w*|oblek\w*)\b"),
-    ("pistols", "Pistols & revolvers", "🔫", r"\b(pistol\w*|revolver\w*)\b"),
-    ("snipers", "Sniper rifles", "🎯", r"\b(sniper\w*|odstrelov\w*|bolt ?action)\b"),
+    ("pistols", "Pistols", "🔫", r"\b(pistol\w*|revolver\w*)\b"),
+    ("snipers", "Snipers", "🎯", r"\b(sniper\w*|odstrelov\w*|bolt ?action)\b"),
     ("shotguns", "Shotguns", "💨", r"\b(brokovnic\w*|shotgun\w*)\b"),
     # Not airsoft, but sold by the same shops; named so a gun model in the name can't claim them.
     ("other", "Other", "🧩", r"\b(nuz|noze|nozem|katan\w*|maceta|macet\w*|kus[ei]|luk|luky|lukem|sipk\w*|terc\w*|"
                             r"vzduchovk\w*|diabolk\w*|diabolo|paracord|karimatk\w*|sekyr\w*|tetiv\w*)\b"),
-    ("guns", "Rifles & SMGs", "🪖", r"\b(kulomet\w*|machine ?gun\w*|zbran\w*|samopal\w*|smg|pusk[ayu]|puskou|rifle\w*|carbine\w*)\b"),
+    ("guns", "Rifles", "🪖", r"\b(kulomet\w*|machine ?gun\w*|zbran\w*|samopal\w*|smg|pusk[ayu]|puskou|rifle\w*|carbine\w*)\b"),
 ]
 
 # Weak hints, used only when the name has no product word: gun models also name their parts.
 WEAK: list[tuple[str, str]] = [
     ("pistols", r"\b(glock\w*|g17|hi-?capa|m?1911\w*|desert ?eagle|usp|p226|beretta|m9a?1?|m92\w*|cz ?75\w*|cz ?p-?(0[79]|10)\w*|aep)\b"),
-    ("snipers", r"\b(vsr\w*|l96\w*|m24|m40\w*|srs|ssg\d*|mb\d{2,}\w*|svd|mosin\w*|kar ?98\w*)\b"),
+    ("snipers", r"\b(vsr\w*|l96\w*|m24|m40\w*|srs ?a\d\w*|desert tech|ssg\d*|mb\d{2,}\w*|svd|mosin\w*|kar ?98\w*)\b"),
     ("shotguns", r"\b(m870|m3 ?super|super 90|spas\w*|aa-?12)\b"),
     ("guns", r"\b(lmg|cm\.?\d{3}\w*|arp ?\d+\w*|gbb|m4\w*|m16\w*|ak-?\d*\w*|mp5\w*|g36\w*|scar\w*|hk416|416|ump\w*|vss|aug|famas|fa-mas|p90|mp7\w*|g3\w*|pdw)\b"),
     ("helmets", r"\b(fast|mich)\b"),
@@ -64,11 +64,12 @@ WEAK: list[tuple[str, str]] = [
 ]
 
 CATEGORIES = {slug: (label, icon) for slug, label, icon, _ in RULES if slug != "other"}
+CATEGORIES["smgs"] = ("SMGs", "🔫")  # split off "guns" after matching, see _SMG
 CATEGORIES["other"] = ("Other", "🧩")
 
 # Top-level groups shown in the menu; each opens into its subcategories.
 GROUPS: dict[str, tuple[str, str, list[str]]] = {
-    "weapons": ("Guns", "🔫", ["guns", "pistols", "snipers", "shotguns"]),
+    "weapons": ("Guns", "🔫", ["pistols", "guns", "smgs", "shotguns", "snipers", "grenades"]),
     "ammo": ("Magazines, BBs & gas", "📦", ["magazines", "bbs", "gas"]),
     "sights": ("Optics & lights", "🔭", ["optics", "lights"]),
     "upgrades": ("Parts & accessories", "⚙️", ["parts", "batteries", "chargers"]),
@@ -77,13 +78,13 @@ GROUPS: dict[str, tuple[str, str, list[str]]] = {
     "apparel": ("Clothing & boots", "👕", ["clothing"]),
     "radios": ("Radios & headsets", "📻", ["comms"]),
     "food": ("Food", "🥫", ["food"]),
-    "misc": ("Other", "🧩", ["grenades", "other"]),
+    "misc": ("Other", "🧩", ["other"]),
 }
 GROUP_OF = {sub: g for g, (_, _, subs) in GROUPS.items() for sub in subs}
 
 _COMPILED = [(slug, re.compile(rx)) for slug, _, _, rx in RULES]
 _WEAK = [(slug, re.compile(rx)) for slug, rx in WEAK]
-GUN_TYPES = {"guns", "pistols", "snipers", "shotguns"}
+GUN_TYPES = {"guns", "smgs", "pistols", "snipers", "shotguns"}
 # Where the head of a name ends: a preposition, a dash, a plus, a comma or a bracket.
 _HEAD_END = re.compile(r"\s(pro|pre|na|k|ke|do|s|se|z|ze|od|for|with|to|fits?|incl\w*|vcetne|w/)\s|\s[-–+|/]\s|,\s|\(")
 # Czech adjective endings (accents stripped): "zásobníková", "nabíjecí", "bateriového".
@@ -93,6 +94,10 @@ _ADJ = re.compile(r"\w+(ov(y|a|e|i|eho|emu|ych|ym|ymi|ou)|n(i|iho|imu|ich|im|imi
 _MODIFIER = re.compile(r"li-?po[ln]?|lipo|nimh|li-?ion|li-?fe|holo\w*|laser\w*")
 _RADIO_HINT = re.compile(r"\b(vysilac\w*|radiostanic\w*|pmr|baofeng|midland|motorola|kenwood|uv-?5r\w*|uv-?82|"
                          r"headset\w*|sluchat\w*|chranic\w* sluchu|earmor|peltor|comtac|sordin|handsfree)\b")
+# Submachine guns among "guns" (rifles): by type word or by model.
+_SMG = re.compile(r"\b(samopal\w*|smg|submachine\w*|machine pistol|mp-?5\w*|mp-?7\w*|mp-?9\w*|mpx|mp-?x|ump\w*|p90|ps90|"
+                  r"vector|kriss|scorpion|skorpion|vz\.? ?61|evo ?3|uzi|thompson|ppsh\w*|pps-?43|mp-?40|sten|mac-?1[01]|m11|"
+                  r"ingram|pp-?19\w*|bizon|pp-?2000|ppk-?20|vityaz|apc ?9\w*|tmp|mp ?18|veresk|m3a1|grease gun|pdw\w*)\b")
 _CZECH = re.compile(r"[áčďéěíňóřšťúůýžľĺŕô]")
 _HOLSTER_HINT = re.compile(r"\b(pistol\w*|revolver\w*|serpa|safariland|blackhawk|glock\w*|sig|p226|p320|1911|"
                            r"cz ?75|p-?0[79]|p-?10|beretta|m9|m92\w*|usp|walther|p99|hi-?capa)\b")
@@ -152,7 +157,9 @@ def _classify(text: str) -> tuple[str | None, bool]:
         found = _weak(head) or _strong(t, czech) or _weak(t)
     if found == "pouches" and re.search(r"\bpouzdr", t) and _HOLSTER_HINT.search(t):
         found = "holsters"  # "Pouzdro Blackhawk SERPA pro Glock 17"
-    if found in ("batteries", "chargers", "parts", "guns") and _RADIO_HINT.search(t):
+    if found == "guns" and _is_smg(t):
+        found = "smgs"
+    if found in ("batteries", "chargers", "parts", "guns", "smgs") and _RADIO_HINT.search(t):
         found = "comms"  # "Baterie BL-5 pro rádiostanici Baofeng UV-5R", "Handsfree MA 31-L, Midland"
     return found, sure
 
@@ -176,9 +183,14 @@ def categorize(title: str, shop_category: str | None = None) -> str:
     """The product name decides when it names the product; otherwise the shop's own category
     path is asked before loose hints like a gun model or "CO2"."""
     found, sure = _classify(title)
-    if sure:
-        return found
-    shop_says = _match_path(shop_category) if shop_category else None
-    if shop_says and (not found or found in GUN_TYPES | {"gas", "bbs"} or shop_says not in GUN_TYPES):
-        return shop_says
+    if not sure:
+        shop_says = _match_path(shop_category) if shop_category else None
+        if shop_says and (not found or found in GUN_TYPES | {"gas", "bbs"} or shop_says not in GUN_TYPES):
+            found = shop_says
+    if found == "guns" and _is_smg(_norm(title)):
+        found = "smgs"
     return found or "other"
+
+
+def _is_smg(t: str) -> bool:
+    return bool(_SMG.search(t)) and not re.search(r"\b(kulomet\w*|machine ?gun\w*|pusk[ay])\b", t)

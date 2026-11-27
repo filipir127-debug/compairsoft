@@ -33,7 +33,7 @@
       loadError: "Couldn't load the data. Please refresh the page.",
       "f.minshops": "Sold in", "f.save": "Saving at least", "f.brand": "Brand", "f.color": "Colour", "f.power": "Power source", "f.material": "Material",
       "f.cap": "Magazine type", "f.bbw": "BB weight", "f.shop": "Shop", shopsPlus: "{n}+ shops",
-      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual",
+      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Spring", "tile.hpa": "HPA", "f.platform": "Platform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "WWII", "pl.bullpup": "Bullpup", "pl.mg": "Machine guns",
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
@@ -63,7 +63,7 @@
       loadError: "Data se nepodařilo načíst. Obnovte prosím stránku.",
       "f.minshops": "Prodává", "f.save": "Úspora alespoň", "f.brand": "Značka", "f.color": "Barva", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníku", "f.bbw": "Gramáž kuliček", "f.shop": "Obchod", shopsPlus: "{n}+ obchodů",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. světová válka", "pl.bullpup": "Bullpup", "pl.mg": "Kulomety",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -93,7 +93,7 @@
       loadError: "Dáta sa nepodarilo načítať. Obnovte prosím stránku.",
       "f.minshops": "Predáva", "f.save": "Úspora aspoň", "f.brand": "Značka", "f.color": "Farba", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníka", "f.bbw": "Gramáž guličiek", "f.shop": "Obchod", shopsPlus: "{n}+ obchodov",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. svetová vojna", "pl.bullpup": "Bullpup", "pl.mg": "Guľomety",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -123,7 +123,7 @@
       loadError: "Daten konnten nicht geladen werden. Bitte Seite neu laden.",
       "f.minshops": "Erhältlich in", "f.save": "Ersparnis mindestens", "f.brand": "Marke", "f.color": "Farbe", "f.power": "Antrieb", "f.material": "Material",
       "f.cap": "Magazintyp", "f.bbw": "BB-Gewicht", "f.shop": "Shop", shopsPlus: "{n}+ Shops",
-      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell",
+      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Federdruck", "tile.hpa": "HPA", "f.platform": "Plattform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "Zweiter Weltkrieg", "pl.bullpup": "Bullpup", "pl.mg": "Maschinengewehre",
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
@@ -137,8 +137,8 @@
     gear: ["Tactical gear", "Taktická výstroj", "Taktická výstroj", "Taktische Ausrüstung"], protection: ["Protection", "Ochrana", "Ochrana", "Schutz"],
     apparel: ["Clothing & boots", "Oblečení a obuv", "Oblečenie a obuv", "Kleidung & Schuhe"], misc: ["Other", "Ostatní", "Ostatné", "Sonstiges"],
     radios: ["Radios & headsets", "Vysílačky a headsety", "Vysielačky a headsety", "Funk & Headsets"], food: ["Food", "Jídlo", "Jedlo", "Essen"],
-    guns: ["Rifles & SMGs", "Útočné pušky a samopaly", "Útočné pušky a samopaly", "Gewehre & MPs"], pistols: ["Pistols & revolvers", "Pistole a revolvery", "Pištole a revolvery", "Pistolen & Revolver"],
-    snipers: ["Sniper rifles", "Odstřelovací pušky", "Odstreľovacie pušky", "Scharfschützengewehre"], shotguns: ["Shotguns", "Brokovnice", "Brokovnice", "Schrotflinten"],
+    guns: ["Rifles", "Pušky", "Pušky", "Gewehre"], smgs: ["SMGs", "Samopaly", "Samopaly", "Maschinenpistolen"], pistols: ["Pistols", "Pistole", "Pištole", "Pistolen"],
+    snipers: ["Snipers", "Odstřelovací pušky", "Odstreľovacie pušky", "Scharfschützengewehre"], shotguns: ["Shotguns", "Brokovnice", "Brokovnice", "Schrotflinten"],
     magazines: ["Magazines", "Zásobníky", "Zásobníky", "Magazine"], bbs: ["BBs", "Kuličky", "Guličky", "BBs"], gas: ["Gas & CO2", "Plyn a CO2", "Plyn a CO2", "Gas & CO2"],
     optics: ["Optics & red dots", "Optika a kolimátory", "Optika a kolimátory", "Optiken & Red Dots"], lights: ["Lights & lasers", "Svítilny a lasery", "Svietidlá a lasery", "Lampen & Laser"],
     parts: ["Parts & upgrades", "Díly a upgrady", "Diely a upgrady", "Teile & Tuning"], batteries: ["Batteries", "Baterie", "Batérie", "Akkus"], chargers: ["Chargers", "Nabíječky", "Nabíjačky", "Ladegeräte"],
@@ -146,7 +146,7 @@
     holsters: ["Holsters", "Pouzdra", "Puzdrá", "Holster"], slings: ["Slings", "Popruhy", "Popruhy", "Tragegurte"],
     masks: ["Masks", "Masky", "Masky", "Masken"], eyewear: ["Goggles & glasses", "Brýle", "Okuliare", "Schutzbrillen"], helmets: ["Helmets", "Helmy", "Prilby", "Helme"], gloves: ["Gloves", "Rukavice", "Rukavice", "Handschuhe"],
     clothing: ["Clothing & boots", "Oblečení a obuv", "Oblečenie a obuv", "Kleidung & Schuhe"],
-    comms: ["Radios & headsets", "Vysílačky a headsety", "Vysielačky a headsety", "Funk & Headsets"], grenades: ["Grenades & pyro", "Granáty a pyro", "Granáty a pyro", "Granaten & Pyro"],
+    comms: ["Radios & headsets", "Vysílačky a headsety", "Vysielačky a headsety", "Funk & Headsets"], grenades: ["Pyro & grenade launchers", "Pyro a granátomety", "Pyro a granátomety", "Pyro & Granatwerfer"],
     food: ["Food", "Jídlo", "Jedlo", "Essen"],
     other: ["Other", "Ostatní", "Ostatné", "Sonstiges"],
   };
@@ -284,9 +284,13 @@
   }
   const tagVals = (prefix) => (p) => (p.a || []).filter((x) => x.startsWith(prefix)).map((x) => x.slice(prefix.length));
   // name, url param, values of a product, label of a value
+  const DRILL_TYPES = ["pistols", "guns", "smgs", "shotguns", "snipers"];
+  const DRILL_POWERS = ["electric", "gas", "co2", "spring"];
+  const DRILL_PLATFORMS = ["ak", "m4", "mp5", "ww2", "bullpup", "mg"];
   const FACETS = [
     ["brand", "brand", (p) => (p.b ? [p.b] : []), (v) => v],
     ["power", "power", tagVals("pw:"), (v) => t("pw." + v)],
+    ["platform", "plat", tagVals("pl:"), (v) => t("pl." + v)],
     ["material", "material", tagVals("mt:"), (v) => t("mt." + v)],
     ["cap", "cap", tagVals("cap:"), (v) => t("cap." + v)],
     ["bbw", "bbw", tagVals("bbw:"), (v) => v.replace(".", ",") + " g"],
@@ -402,18 +406,35 @@
     const sorted = prices.slice().sort((a, b) => a - b), qv = (f) => sorted[Math.floor((sorted.length - 1) * f)] || 0;
     const bands = sorted.length > 20 ? [...new Set([0.25, 0.5, 0.75].map((f) => nice(qv(f))))] : [];
     const photoOf = (sub) => { const x = items.find((y) => y.c === sub && safeUrl(y.i)) || base.find((y) => y.c === sub && safeUrl(y.i)); return x ? safeUrl(x.i) : ""; };
-    const subTiles = group && GROUPS[group][2].length > 1 ? GROUPS[group][2].filter((sub) => m.counts[sub]).map((sub) => {
-      const img = photoOf(sub);
-      return `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">
-        <span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[group], "ic")}</span>${esc(catName(sub))}</a>`;
-    }).join("") : "";
+    const qimg = (img) => `<span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[group], "ic")}</span>`;
+    let subTiles = group && GROUPS[group][2].length > 1 ? GROUPS[group][2].filter((sub) => m.counts[sub]).map((sub) =>
+      `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">${qimg(photoOf(sub))}${esc(catName(sub))}</a>`).join("") : "";
+    // Guns go one step deeper per click: type > power (AEG, GBB, CO2, spring) > platform (AK, M4, …).
+    const pwOne = chosen.power.size === 1 ? [...chosen.power][0] : "";
+    if (DRILL_TYPES.includes(c)) {
+      const [name, key, vals, label] = pwOne ? ["platform", "plat", DRILL_PLATFORMS, (v) => t("pl." + v)] : ["power", "power", DRILL_POWERS, (v) => t("tile." + v)];
+      const tag = (name === "power" ? "pw:" : "pl:");
+      const best = (v) => { let b = null; for (const y of base) if (passes(y, name) && (y.a || []).includes(tag + v) && safeUrl(y.i) && (!b || y.s > b.s)) b = y; return b ? safeUrl(b.i) : ""; };
+      subTiles = vals.filter((v) => facetCounts[name].get(v)).map((v) => {
+        const on = chosen[name].size === 1 && chosen[name].has(v);
+        return `<a class="qtile ${on ? "on" : ""}" href="${url({ [key]: on ? "" : v, page: "" })}">${qimg(best(v))}${esc(label(v))}</a>`;
+      }).join("");
+    }
     const priceTiles = bands.map((v) => `<a class="qtile ${pmax === v && isNaN(pmin) ? "on" : ""}" href="${url({ pmin: "", pmax: v, page: "" })}">
         <span class="qimg qprice">${icon("layers", "ic")}</span>${t("priceUpTo", { v: fmtCur(v) })}</a>`).join("");
 
-    const title = q ? `“${esc(q)}”` : c ? esc(catName(c)) : t("all");
-    document.title = `${q || (c ? catName(c) : t("all"))} – CompAirsoft`;
+    const steps = [];
+    if (c && c !== group) steps.push([catName(c), { power: "", plat: "", page: "" }]);
+    if (DRILL_TYPES.includes(c) && pwOne) {
+      steps.push([t("tile." + pwOne), { plat: "", page: "" }]);
+      if (chosen.platform.size === 1) steps.push([t("pl." + [...chosen.platform][0]), {}]);
+    }
+    const named = c ? [catName(c), ...steps.slice(1).map(([l]) => l)].join(" · ") : t("all");
+    const title = q ? `“${esc(q)}”` : esc(named);
+    document.title = `${q || named} – CompAirsoft`;
     const open = innerWidth >= 900 ? "open" : "";
-    app.innerHTML = `${group ? `<nav class="crumbs"><a href="/">${t("home")}</a><span>›</span><a href="/?cat=${group}">${esc(catName(group))}</a>${c && c !== group ? `<span>›</span><span>${esc(catName(c))}</span>` : ""}</nav>` : ""}
+    const crumbs = steps.map(([l, h], i) => `<span>›</span>${i < steps.length - 1 ? `<a href="${url(h)}">${esc(l)}</a>` : `<span>${esc(l)}</span>`}`).join("");
+    app.innerHTML = `${group ? `<nav class="crumbs"><a href="/">${t("home")}</a><span>›</span><a href="/?cat=${group}">${esc(catName(group))}</a>${crumbs}</nav>` : ""}
       <div class="layout">
       <aside class="filters"><details class="filters-box" ${open}><summary>${icon("sliders-horizontal")} ${t("filters")}</summary>
         ${priceBox}
