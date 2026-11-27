@@ -380,7 +380,11 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "  Strict-Transport-Security: max-age=31536000; includeSubDomains\n"
         "  Cross-Origin-Opener-Policy: same-origin\n"
         f"  Content-Security-Policy: {CSP}\n"
-        "/data/*\n  Cache-Control: public, max-age=600\n"
+        # HTML pages: "no-transform" stops Cloudflare from inserting its JavaScript Detections script,
+        # an inline script the CSP above would block (a console error on every page).
+        + "".join(f"{path}\n  Cache-Control: public, max-age=0, must-revalidate, no-transform\n"
+                  for path in ("/", "/index.html", "/product", "/product/*", "/shops", "/privacy", "/404.html"))
+        + "/data/*\n  Cache-Control: public, max-age=600\n"
         "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
     if settings.get("image_hosts"):  # always written, so the photo deploy steps find their folders
         export_buckets(settings, out.parent / (out.name + "-images"))

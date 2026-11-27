@@ -368,3 +368,24 @@ def test_every_category_has_filter_definitions():
     urls = [d.get("u", k) for k, d in m["params"].items()]
     reserved = {"q", "cat", "shop", "stock", "multi", "minshops", "save", "pmin", "pmax", "all", "page", "sort", "brand"}
     assert len(urls) == len(set(urls)) and not reserved & set(urls)
+
+
+def test_html_pages_are_not_rewritten_by_cloudflare(tmp_path):
+    """Cloudflare injects an inline script into HTML unless told "no-transform"; our CSP would block it."""
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.export import export_site
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    dbfile = tmp_path / "t.db"
+    conn = dbmod.connect(str(dbfile))
+    sid = _shop_id(conn, {"name": "Shop", "url": "https://x.cz", "type": "feed"})
+    save_offer(conn, sid, Offer(url="https://x.cz/m4", title="M4 mid-cap zásobník 120 ran", price=200, currency="CZK",
+                                in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
+    rebuild_products(conn)
+    export_site({"settings": {"database": str(dbfile), "base_currency": "CZK"}, "shops": [{"name": "Shop"}]}, tmp_path / "dist")
+    rules = (tmp_path / "dist/_headers").read_text()
+    for path in ("/", "/product/*", "/shops", "/privacy"):
+        block = rules.split(f"\n{path}\n", 1)[1].split("\n/", 1)[0]
+        assert "no-transform" in block, path
+    assert "no-transform" not in rules.split("\n/data/*\n", 1)[1]
