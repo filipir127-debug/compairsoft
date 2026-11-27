@@ -72,8 +72,9 @@ img { max-width: 100%; }
 .catbar { background: var(--panel); border-bottom: 1px solid var(--line); color: var(--ink); }
 .catbar-inner { display: flex; justify-content: space-between; gap: 2px; overflow-x: auto; scrollbar-width: none; }
 .catbar-inner::-webkit-scrollbar { display: none; }
-.catbar a { color: var(--ink); white-space: nowrap; padding: 11px 12px; font-size: 14px; font-weight: 500; border-bottom: 3px solid transparent; display: flex; gap: 7px; align-items: center; }
-.catbar a .ic { color: var(--muted); width: 17px; height: 17px; } .catbar a.on .ic { color: var(--cta); }
+.catbar a { color: var(--ink); white-space: nowrap; padding: 11px 10px; font-size: 14px; font-weight: 500; border-bottom: 3px solid transparent; display: flex; gap: 7px; align-items: center; }
+/* Ten groups only fit in one row as text; the tiles on the homepage carry the pictures. */
+.catbar a .ic { display: none; }
 .catbar a:hover { text-decoration: none; background: var(--soft); }
 .catbar a.on { border-bottom-color: var(--cta); font-weight: 700; }
 

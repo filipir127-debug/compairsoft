@@ -33,7 +33,11 @@ RULES: list[tuple[str, str, str, str]] = [
     ("gloves", "Gloves", "🧤", r"\b(rukavic\w*|glove\w*)\b"),
     ("slings", "Slings", "➰", r"\b(popruh\w*|sling\w*|remen\w*)\b"),
     ("lights", "Lights & lasers", "🔦", r"\b(svitiln\w*|flashlight\w*|weapon ?light|laser\w*|peq|baterk\w*|lucern\w*|celovk\w*|svetl[oa]|svetlem)\b"),
-    ("comms", "Radios & headsets", "📻", r"\b(vysilac\w*|radio\w*|headset\w*|sluchatk\w*|ptt|pmr|radiostanic\w*|nahlavn\w* soupra\w*|chranic\w* sluchu)\b"),
+    ("comms", "Radios & headsets", "📻", r"\b(vysilac\w*|radio\w*|headset\w*|sluchat\w*|ptt|pmr|radiostanic\w*|nahlavn\w* soupra\w*|"
+                                       r"chranic\w* sluchu|handsfree|hands-free|mikrofon\w*|anten\w*|spunt\w* do usi|walkie)\b"),
+    ("food", "Food", "🥫", r"\b(potravin\w*|jidl[oaeu]|jidlem|ration\w*|food\w*|mre|adventure menu|jerky|snack\w*|salami|"
+                          r"maso|masem|polevk\w*|omack\w*|kase|rizot\w*|testovin\w*|nakyp\w*|gulas\w*|zemlovk\w*|"
+                          r"samoohrev\w*|emergency water|baleni vody)\b"),
     ("parts", "Parts & upgrades", "⚙️", r"\b(hop-?up\w*|gumic\w*|telo|tela|zapadk\w*|miridl\w*|iron ?sight\w*|pist|pistu|pistem|pisty|pazb\w*|predpazb\w*|rukojet\w*|grip\w*|krytk\w*|spoust\w*|dorazec\w*|vack\w*|adapter\w*|podavac\w*|natahovac\w*|ramink\w*|upgrade\w*|ris|rail\w*|lista|listy|lisht\w*|montaz\w*|mount\w*|kabelaz\w*|wiring|stock|handguard|tlumic\w*|suppressor\w*|silencer\w*|flash ?hider\w*|kompenzator\w*|bipod\w*|dvojnoz\w*|udrzb\w*|cistic\w*|cisteni|sprej\w*|olej\w*|silikon\w*|lube|valec\w*|valc\w*|cylinder\w*|dil|dilu|dily|dilem|nahradn\w*|kulis\w*|prepinac\w*|selector\w*|lozisk\w*|bearing\w*|bushing\w*|gearbox\w*|mechabox\w*|piest\w*|piston\w*|pruzin\w*|spring\w*|hlav\w*|barrel\w*|motor\w*|mosfet\w*|gumick\w*|bucking\w*|nozzle\w*|tryska|trysk[yau]\w*|cylind\w*|ozuben\w*|gears?|valve\w*|ventil\w*|tappet\w*|trigger\w*|nub|o-?ring\w*|o-?krouz\w*|krouz\w*|tesnen\w*|gate|hpa engine|polarstar|zaver\w*|zachyt\w*|patk[ay]\w*|usti|klapk\w*|trn|buffer ?tube|cover|magwell|svetlovodn\w*|srouby|sroub\w*|charging handle|handle\w*|musk[ay]|cep|cepy|udernik\w*|licnic\w*)\b"),
     ("grenades", "Grenades & pyro", "💥", r"\b(granat\w*|grenade\w*|min[ay]|pyro\w*|dymovnic\w*|smoke)\b"),
     ("clothing", "Clothing & boots", "👕", r"\b(nasivk\w*|patch\w*|velcro|morale|kalhot\w*|bluz\w*|uniform\w*|kosil\w*|combat ?(shirt|pants)|pants|jacket\w*|bund\w*|cepic\w*|cap|boot\w*|boty|obuv\w*|ghillie|kuklic\w*|kukl[ay]|balaclava|nakolen\w*|naloketn\w*|knee ?pads?|chranic\w* (kolen|loktu)|mikin\w*|hoodie|satek|satk[ayu]|shemag\w*|klobouk\w*|ksiltovk\w*|trick[oa]|triko|t-?shirt|shirt|spodk\w*|ponozk\w*|kombinez\w*|natelnik\w*|brigadyrk\w*|hejkal\w*|oblek\w*)\b"),
@@ -54,6 +58,7 @@ WEAK: list[tuple[str, str]] = [
     ("guns", r"\b(lmg|cm\.?\d{3}\w*|arp ?\d+\w*|gbb|m4\w*|m16\w*|ak-?\d*\w*|mp5\w*|g36\w*|scar\w*|hk416|416|ump\w*|vss|aug|famas|fa-mas|p90|mp7\w*|g3\w*|pdw)\b"),
     ("helmets", r"\b(fast|mich)\b"),
     ("guns", r"\b(aeg|gbbr|karabin\w*)\b"),
+    ("comms", r"\b(baofeng|midland|motorola|kenwood|peltor|comtac|sordin|earmor|uv-?5r\w*|uv-?82)\b"),
     ("bbs", r"\b(bbs?)\b(?! ?proof)"),
     ("gas", r"\b(green ?gas|red ?gas|top ?gas|black ?gas|co2)\b"),
 ]
@@ -70,7 +75,9 @@ GROUPS: dict[str, tuple[str, str, list[str]]] = {
     "gear": ("Tactical gear", "🦺", ["vests", "pouches", "holsters", "slings"]),
     "protection": ("Protection", "🥽", ["masks", "eyewear", "helmets", "gloves"]),
     "apparel": ("Clothing & boots", "👕", ["clothing"]),
-    "misc": ("Other", "🧩", ["comms", "grenades", "other"]),
+    "radios": ("Radios & headsets", "📻", ["comms"]),
+    "food": ("Food", "🥫", ["food"]),
+    "misc": ("Other", "🧩", ["grenades", "other"]),
 }
 GROUP_OF = {sub: g for g, (_, _, subs) in GROUPS.items() for sub in subs}
 
@@ -84,6 +91,8 @@ _ADJ = re.compile(r"\w+(ov(y|a|e|i|eho|emu|ych|ym|ymi|ou)|n(i|iho|imu|ich|im|imi
                   r"|ck(y|e|eho|ych|ym|ou)|ci(ho|mu|ch|m|mi)?)")
 # Words that describe rather than name the product; like adjectives, they give way to a later noun.
 _MODIFIER = re.compile(r"li-?po[ln]?|lipo|nimh|li-?ion|li-?fe|holo\w*|laser\w*")
+_RADIO_HINT = re.compile(r"\b(vysilac\w*|radiostanic\w*|pmr|baofeng|midland|motorola|kenwood|uv-?5r\w*|uv-?82|"
+                         r"headset\w*|sluchat\w*|chranic\w* sluchu|earmor|peltor|comtac|sordin|handsfree)\b")
 _CZECH = re.compile(r"[áčďéěíňóřšťúůýžľĺŕô]")
 _HOLSTER_HINT = re.compile(r"\b(pistol\w*|revolver\w*|serpa|safariland|blackhawk|glock\w*|sig|p226|p320|1911|"
                            r"cz ?75|p-?0[79]|p-?10|beretta|m9|m92\w*|usp|walther|p99|hi-?capa)\b")
@@ -143,6 +152,8 @@ def _classify(text: str) -> tuple[str | None, bool]:
         found = _weak(head) or _strong(t, czech) or _weak(t)
     if found == "pouches" and re.search(r"\bpouzdr", t) and _HOLSTER_HINT.search(t):
         found = "holsters"  # "Pouzdro Blackhawk SERPA pro Glock 17"
+    if found in ("batteries", "chargers", "parts", "guns") and _RADIO_HINT.search(t):
+        found = "comms"  # "Baterie BL-5 pro rádiostanici Baofeng UV-5R", "Handsfree MA 31-L, Midland"
     return found, sure
 
 

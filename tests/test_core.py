@@ -208,6 +208,16 @@ def test_parse_cnb_rates():
     ("Magazine pouch M4", "pouches"),
     ("Odstřelovací puška VSR-10 Pro Sniper Version, Tokyo Marui", "snipers"),
     ("Univerzální Karabina Grmloc 5cm - písková DE, FMA", "pouches"),
+    # food and radios have their own top-level groups
+    ("Potravinová dávka Pro Ration FULL-DAY (celodenní) - Menu 1, Adventure Menu", "food"),
+    ("Plátek sýrové pizzy (US MRE Menu 11)", "food"),
+    ("Sušené hovězí maso Original - 25g, Indiana Jerky", "food"),
+    ("Diabolo Gamo Magnum Energy 250ks cal.4,5mm", "other"),
+    ("Handsfree A21M, Midland", "comms"),
+    ("Baterie BL-5 pro rádiostanici Baofeng UV-5R - Baofeng", "comms"),
+    ("Špunty do uší MaxDefense M02, EARMOR", "comms"),
+    ("Set špuntů pro airsoftové granáty 40mm - 10ks, Specna Arms", "grenades"),
+    ("Otevřená sumka MOLLE na vysílačku / radiostanici - černá, Mil-Tec", "pouches"),
 ])
 def test_categorize_real_names(title, expected):
     assert categorize(title) == expected
@@ -230,3 +240,9 @@ def test_translation_locker_keeps_english_words_and_splits_colours():
     assert "zásobníková sumka" in kept and "M4/AR15" in kept and "Gear" in kept and "piesková" in kept
     text, kept = lk.lock("Tactical gear set", use_glossary=False, lang="de")
     assert "Tactical" not in kept and "Zahnradsatz" in kept
+
+
+def test_every_subcategory_is_in_exactly_one_group():
+    from airsoftcompare.categories import CATEGORIES, GROUPS
+    subs = [c for _, _, cs in GROUPS.values() for c in cs]
+    assert sorted(subs) == sorted(CATEGORIES) and len(subs) == len(set(subs))

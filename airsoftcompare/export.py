@@ -30,7 +30,8 @@ log = logging.getLogger(__name__)
 HERE = Path(__file__).parent
 HISTORY_DAYS = 180
 GROUP_ICONS = {"weapons": "crosshair", "ammo": "layers", "sights": "telescope", "upgrades": "cog",
-               "gear": "backpack", "protection": "shield", "apparel": "shirt", "misc": "layout-grid"}
+               "gear": "backpack", "protection": "shield", "apparel": "shirt", "radios": "radio",
+               "food": "utensils", "misc": "layout-grid"}
 
 
 def _num(v):
@@ -132,7 +133,8 @@ CSP = ("default-src 'self'; script-src 'self' https://static.cloudflareinsights.
        "frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests")
 
 TILE_SUBCATEGORY = {"weapons": "guns", "ammo": "magazines", "sights": "optics", "upgrades": "parts",
-                    "gear": "vests", "protection": "helmets", "apparel": "clothing", "misc": "grenades"}
+                    "gear": "vests", "protection": "helmets", "apparel": "clothing",
+                    "radios": "comms", "food": "food", "misc": "grenades"}
 
 
 def _group_images(products: list[dict], offers: dict) -> dict[str, str]:

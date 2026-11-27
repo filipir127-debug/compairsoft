@@ -136,6 +136,7 @@
     sights: ["Optics & lights", "Optika a svítilny", "Optika a svietidlá", "Optik & Licht"], upgrades: ["Parts & accessories", "Díly a příslušenství", "Diely a príslušenstvo", "Teile & Zubehör"],
     gear: ["Tactical gear", "Taktická výstroj", "Taktická výstroj", "Taktische Ausrüstung"], protection: ["Protection", "Ochrana", "Ochrana", "Schutz"],
     apparel: ["Clothing & boots", "Oblečení a obuv", "Oblečenie a obuv", "Kleidung & Schuhe"], misc: ["Other", "Ostatní", "Ostatné", "Sonstiges"],
+    radios: ["Radios & headsets", "Vysílačky a headsety", "Vysielačky a headsety", "Funk & Headsets"], food: ["Food", "Jídlo", "Jedlo", "Essen"],
     guns: ["Rifles & SMGs", "Útočné pušky a samopaly", "Útočné pušky a samopaly", "Gewehre & MPs"], pistols: ["Pistols & revolvers", "Pistole a revolvery", "Pištole a revolvery", "Pistolen & Revolver"],
     snipers: ["Sniper rifles", "Odstřelovací pušky", "Odstreľovacie pušky", "Scharfschützengewehre"], shotguns: ["Shotguns", "Brokovnice", "Brokovnice", "Schrotflinten"],
     magazines: ["Magazines", "Zásobníky", "Zásobníky", "Magazine"], bbs: ["BBs", "Kuličky", "Guličky", "BBs"], gas: ["Gas & CO2", "Plyn a CO2", "Plyn a CO2", "Gas & CO2"],
@@ -146,6 +147,7 @@
     masks: ["Masks", "Masky", "Masky", "Masken"], eyewear: ["Goggles & glasses", "Brýle", "Okuliare", "Schutzbrillen"], helmets: ["Helmets", "Helmy", "Prilby", "Helme"], gloves: ["Gloves", "Rukavice", "Rukavice", "Handschuhe"],
     clothing: ["Clothing & boots", "Oblečení a obuv", "Oblečenie a obuv", "Kleidung & Schuhe"],
     comms: ["Radios & headsets", "Vysílačky a headsety", "Vysielačky a headsety", "Funk & Headsets"], grenades: ["Grenades & pyro", "Granáty a pyro", "Granáty a pyro", "Granaten & Pyro"],
+    food: ["Food", "Jídlo", "Jedlo", "Essen"],
     other: ["Other", "Ostatní", "Ostatné", "Sonstiges"],
   };
   let lang = LANGS.includes(document.documentElement.lang) ? document.documentElement.lang : "en";
