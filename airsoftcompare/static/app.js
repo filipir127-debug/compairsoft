@@ -204,6 +204,11 @@
   const cache = {};
   const json = (u) => (cache[u] ||= fetch(`${u}?v=${V}`).then((r) => { if (!r.ok) throw new Error(`${u}: ${r.status}`); return r.json(); }));
   const fold = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  // Dates are always DD.MM.YYYY (with HH:MM when the value has a time), whatever the language.
+  const fmtDate = (v) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}:\d{2}))?/.exec(v || "");
+    return m ? `${m[3]}.${m[2]}.${m[1]}${m[4] ? " " + m[4] : ""}` : v;
+  };
   const fmt = (n) => Math.round(n).toLocaleString("cs-CZ").replace(/\s/g, " ");
   // Prices are stored in the base currency (CZK) and converted for display at the ČNB daily rate.
   const LOCALES = { cs: "cs-CZ", sk: "sk-SK", en: "en-GB", de: "de-DE" };
@@ -285,6 +290,12 @@
     }, { threshold: 0 });
     tilesObserver.observe(target);
   }
+  // Some category tiles have several pictures; one is picked at random per visit.
+  const ILLU = {
+    weapons: ["weapons", "weapons-ak", "weapons-smg", "weapons-pistol", "weapons-sniper", "weapons-shotgun"],
+    protection: ["protection", "protection-goggles", "protection-glasses", "protection-mask", "protection-glove", "protection-headset"],
+  };
+  const ILLU_PICK = Object.fromEntries(Object.entries(ILLU).map(([g, l]) => [g, l[Math.floor(Math.random() * l.length)]]));
   function home(m) {
     markGroup(null);
     if (TR_LANGS.includes(lang) && m.tr) Object.assign(TR, m.tr[lang] || {});
@@ -295,7 +306,7 @@
 
       const links = subs.length > 1 ? `<div class="tile-subs">${subs.filter((s) => m.counts[s]).map((s) => `<a href="/?cat=${s}">${esc(catName(s))}</a>`).join("")}</div>` : "";
       return `<div class="tile"><a class="tile-main" href="/?cat=${g}">
-<span class="tile-img"><svg class="illu" viewBox="0 0 160 90" aria-hidden="true"><use href="#cat-${g}"/></svg></span>
+<span class="tile-img"><svg class="illu" viewBox="0 0 160 90" aria-hidden="true"><use href="#cat-${ILLU_PICK[g] || g}"/></svg></span>
           <span class="tile-text"><span class="tile-name">${esc(catName(g))}</span><span class="tile-n">${nprod(total)}</span></span></a>${links}</div>`;
     }).join("");
     const titles = { "Compared in the most shops": t("sec.most"), "Biggest price differences": t("sec.diff") };
@@ -712,7 +723,7 @@
     const ticks = [0, 1, 2, 3].map((k) => lo + (hi - lo) * k / 3);
     return `<h2 class="sec-title">${t("priceHist")}</h2><div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t("priceHist")}">
         ${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" class="grid-line"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" class="axis">${money(v)}</text>`).join("")}
-        <text x="${L}" y="${H - 6}" class="axis">${days[0]}</text><text x="${W - R}" y="${H - 6}" text-anchor="end" class="axis">${days[days.length - 1]}</text>
+        <text x="${L}" y="${H - 6}" class="axis">${fmtDate(days[0])}</text><text x="${W - R}" y="${H - 6}" text-anchor="end" class="axis">${fmtDate(days[days.length - 1])}</text>
         ${lines.map((l) => `<path d="${l.d}" fill="none" stroke="${l.color}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="${l.cx}" cy="${l.cy}" r="4" fill="${l.color}"/>`).join("")}
       </svg><div class="legend">${lines.map((l) => `<span><svg class="sw" width="14" height="4" aria-hidden="true"><rect width="14" height="4" rx="2" fill="${l.color}"/></svg>${esc(l.s)}</span>`).join("")}</div></div>`;
   }
@@ -767,7 +778,7 @@
           s.status && s.status.startsWith("error") ? `<span class="pill bad">${t("failed")}</span>` : s.updated ? `<span class="pill good">${t("upToDate")}</span>` : `<span class="pill">${t("pending")}</span>`}</div>
         ${safeUrl(s.url) ? `<a class="sc-url" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer nofollow">${esc(s.url.split("//").pop().replace(/\/$/, ""))}</a>` : ""}
         <div class="sc-stats"><div><b>${fmt(s.offers || 0)}</b><span>${t("offersLbl")}</span></div><div><b>${fmt(s.cheapest)}</b><span>${t("cheapestOn")}</span></div></div>
-        <div class="sc-foot">${t("updatedLbl", { d: esc((s.updated || "–").replace("T", " ")) })} · ${s.type === "feed" ? t("feed") : t("crawled")}</div>
+        <div class="sc-foot">${t("updatedLbl", { d: esc(s.updated ? fmtDate(s.updated) : "–") })} · ${s.type === "feed" ? t("feed") : t("crawled")}</div>
         <a class="btn btn-ghost" href="/?shop=${s.id}&all=1">${t("showProducts")}</a></div>`).join("")}</div>
       <p class="muted small">${t("cheapestNote")}</p>`;
   }
@@ -775,7 +786,7 @@
 
   // ---------------------------------------------------------------- privacy
   const PRIVACY = {
-    en: ["Privacy", "Last updated: 26 November 2026",
+    en: ["Privacy", "Last updated: 26.11.2026",
       [["What we collect", "Nothing about you personally. CompAirsoft has no user accounts, uses no cookies and runs no analytics, advertising or tracking scripts."],
        ["Stored in your browser", "Your choice of language and dark/light mode is saved in your browser's local storage so the site remembers it. It never leaves your device; you can delete it by clearing the site data in your browser."],
        ["Hosting (Cloudflare)", "The site is delivered by Cloudflare, Inc. To deliver it and protect it against attacks, Cloudflare processes technical data of each request, such as your IP address, browser type and the page requested. Legal basis: legitimate interest in running a secure website (Art. 6(1)(f) GDPR). See Cloudflare's privacy policy: https://www.cloudflare.com/privacypolicy/"],
@@ -783,7 +794,7 @@
        ["Fonts and icons", "Fonts and icons are served from this website itself; nothing is loaded from Google or other font services."],
        ["Your rights", "Under the GDPR you may ask for access to, correction or deletion of personal data, object to processing, and complain to a data protection authority (in the Czech Republic: Úřad pro ochranu osobních údajů, www.uoou.cz). As we store no personal data ourselves, requests about request logs are best directed to Cloudflare."]],
       "Contact"],
-    cs: ["Ochrana soukromí", "Poslední aktualizace: 26. listopadu 2026",
+    cs: ["Ochrana soukromí", "Poslední aktualizace: 26.11.2026",
       [["Co shromažďujeme", "O vás osobně nic. CompAirsoft nemá uživatelské účty, nepoužívá cookies a nespouští žádné analytické, reklamní ani sledovací skripty."],
        ["Uloženo ve vašem prohlížeči", "Zvolený jazyk a tmavý/světlý režim se ukládají do místního úložiště vašeho prohlížeče, aby si je web pamatoval. Nikdy neopouštějí vaše zařízení; smažete je vymazáním dat webu v prohlížeči."],
        ["Hosting (Cloudflare)", "Web doručuje společnost Cloudflare, Inc. Aby ho mohla doručit a chránit před útoky, zpracovává technické údaje každého požadavku, např. vaši IP adresu, typ prohlížeče a požadovanou stránku. Právní základ: oprávněný zájem na provozu bezpečného webu (čl. 6 odst. 1 písm. f) GDPR). Zásady ochrany soukromí Cloudflare: https://www.cloudflare.com/privacypolicy/"],
@@ -791,7 +802,7 @@
        ["Písma a ikony", "Písma a ikony poskytuje přímo tento web; nic se nenačítá od Googlu ani jiných služeb."],
        ["Vaše práva", "Podle GDPR můžete požádat o přístup k osobním údajům, jejich opravu či výmaz, vznést námitku proti zpracování a podat stížnost u dozorového úřadu (v ČR: Úřad pro ochranu osobních údajů, www.uoou.cz). Protože sami žádné osobní údaje neukládáme, žádosti týkající se záznamů o požadavcích směřujte na Cloudflare."]],
       "Kontakt"],
-    sk: ["Ochrana súkromia", "Posledná aktualizácia: 26. novembra 2026",
+    sk: ["Ochrana súkromia", "Posledná aktualizácia: 26.11.2026",
       [["Čo zhromažďujeme", "O vás osobne nič. CompAirsoft nemá používateľské účty, nepoužíva cookies a nespúšťa žiadne analytické, reklamné ani sledovacie skripty."],
        ["Uložené vo vašom prehliadači", "Zvolený jazyk a tmavý/svetlý režim sa ukladajú do lokálneho úložiska vášho prehliadača, aby si ich web pamätal. Nikdy neopúšťajú vaše zariadenie; vymažete ich vymazaním údajov webu v prehliadači."],
        ["Hosting (Cloudflare)", "Web doručuje spoločnosť Cloudflare, Inc. Aby ho mohla doručiť a chrániť pred útokmi, spracúva technické údaje každej požiadavky, napr. vašu IP adresu, typ prehliadača a požadovanú stránku. Právny základ: oprávnený záujem na prevádzke bezpečného webu (čl. 6 ods. 1 písm. f) GDPR). Zásady ochrany súkromia Cloudflare: https://www.cloudflare.com/privacypolicy/"],
@@ -799,7 +810,7 @@
        ["Písma a ikony", "Písma a ikony poskytuje priamo tento web; nič sa nenačítava od Googlu ani iných služieb."],
        ["Vaše práva", "Podľa GDPR môžete požiadať o prístup k osobným údajom, ich opravu či vymazanie, namietať proti spracúvaniu a podať sťažnosť dozornému orgánu (na Slovensku: Úrad na ochranu osobných údajov SR, v ČR: ÚOOÚ). Keďže sami žiadne osobné údaje neukladáme, žiadosti týkajúce sa záznamov o požiadavkách smerujte na Cloudflare."]],
       "Kontakt"],
-    de: ["Datenschutz", "Stand: 26. November 2026",
+    de: ["Datenschutz", "Stand: 26.11.2026",
       [["Was wir erheben", "Nichts über dich persönlich. CompAirsoft hat keine Benutzerkonten, verwendet keine Cookies und keine Analyse-, Werbe- oder Tracking-Skripte."],
        ["In deinem Browser gespeichert", "Deine Sprache und der Dunkel-/Hellmodus werden im lokalen Speicher deines Browsers gespeichert, damit die Seite sie sich merkt. Sie verlassen nie dein Gerät; du kannst sie löschen, indem du die Websitedaten im Browser löschst."],
        ["Hosting (Cloudflare)", "Die Seite wird von Cloudflare, Inc. ausgeliefert. Um sie auszuliefern und vor Angriffen zu schützen, verarbeitet Cloudflare technische Daten jeder Anfrage, z. B. deine IP-Adresse, den Browsertyp und die aufgerufene Seite. Rechtsgrundlage: berechtigtes Interesse am Betrieb einer sicheren Website (Art. 6 Abs. 1 lit. f DSGVO). Datenschutzerklärung von Cloudflare: https://www.cloudflare.com/privacypolicy/"],
@@ -833,8 +844,8 @@
       RATES = { [BASE]: 1, ...(m.rates || {}) };
       if (!RATES[cur]) cur = BASE;
       document.getElementById("cur").value = cur;
-      document.getElementById("updated").textContent = t("updated", { d: m.generated.replace("T", " ") })
-        + (cur !== BASE && m.rates_date ? " " + t("ratesNote", { c: cur, d: m.rates_date }) : "");
+      document.getElementById("updated").textContent = t("updated", { d: fmtDate(m.generated) })
+        + (cur !== BASE && m.rates_date ? " " + t("ratesNote", { c: cur, d: fmtDate(m.rates_date) }) : "");
       catbarFollow(null);
       if (page === "product") return await product();
       if (page === "shops") return shopsPage(m);
