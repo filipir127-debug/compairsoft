@@ -12,11 +12,11 @@ on:
         description: "Minutes to spend crawling shop pages (0 = only re-read feeds)"
         default: "290"
   push:
-    branches: [master]
+    branches: [master, "preview/**"]   # preview/* branches publish to a separate preview address
     paths: ["airsoftcompare/**", "shops.yaml", "requirements.txt", ".github/workflows/update.yml"]
 
 concurrency:
-  group: update-and-publish
+  group: update-and-publish-${{ github.ref }}   # previews don't wait for (or hold up) the live site
   cancel-in-progress: false
 
 permissions:
@@ -73,6 +73,7 @@ jobs:
         run: mkdir -p data && python -m airsoftcompare export dist
 
       - name: Publish to Cloudflare Pages
+        if: github.ref == 'refs/heads/master'
         uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd  # v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -85,3 +86,13 @@ jobs:
             pages deploy dist-images/img-1 --project-name=compairsoft-img-1 --branch=main --commit-dirty=true
             pages deploy dist-images/img-2 --project-name=compairsoft-img-2 --branch=main --commit-dirty=true
             pages deploy dist --project-name=compairsoft --branch=main --commit-dirty=true
+
+      # A preview/* branch goes to its own address (https://<branch>.compairsoft.pages.dev);
+      # the live site and the photo projects are left alone.
+      - name: Publish preview
+        if: startsWith(github.ref, 'refs/heads/preview/')
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd  # v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=compairsoft --branch=${{ github.ref_name }} --commit-dirty=true
