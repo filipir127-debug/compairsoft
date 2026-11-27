@@ -292,7 +292,7 @@
     ["shop", "shop", (p) => p.h.map(String), null],
   ];
   let itemsCache = { key: null, items: [] };
-  const TR_LANGS = ["en", "de"];
+  const TR_LANGS = ["en", "de", "sk"];
   let TR = {};  // product id -> name in the current language (machine translation)
   const nameOf = (p) => TR[p.id] || p.t;
   async function loadItems(group) {

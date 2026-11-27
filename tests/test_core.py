@@ -1,3 +1,4 @@
+import pytest
 from airsoftcompare.categories import categorize
 from airsoftcompare.matching import cluster
 from airsoftcompare.sources.common import clean_ean, parse_availability, parse_price
@@ -181,3 +182,51 @@ def test_parse_cnb_rates():
     from airsoftcompare.rates import parse_cnb
     day, rates = parse_cnb("26.11.2026 #227\nzemě|měna|množství|kód|kurz\nEMU|euro|1|EUR|24,455\nMaďarsko|forint|100|HUF|6,570\n")
     assert day == "26.11.2026" and rates["EUR"] == 24.455 and abs(rates["HUF"] - 0.0657) < 1e-9 and rates["CZK"] == 1.0
+
+
+@pytest.mark.parametrize("title, expected", [
+    # real names that used to land in the wrong category
+    ("Skládací odhazovací vak na zásobníky - Amber, Novritsch", "pouches"),
+    ("Zásobník AK, 150 BB, US Palm, černý, Cyma", "magazines"),
+    ("Záchyt dna zásobníku pro WE R17, díl č.66 - WE", "parts"),
+    ("Kompletní set nabíjecí trysky pro WE R17, 19, 33 - díl č.47", "parts"),
+    ("Inteligentní Li-Pol nabíječka Compact B3AC, Turnigy", "chargers"),
+    ("Krytka bateriového prostoru pažby LMT Crane - černá, E&C", "parts"),
+    ("Airsoftová pistole CZ 75 SP-01 Shadow - CO2, GNB, ASG", "pistols"),
+    ("Airsoft sniper MB4405D + optika a dvojnožka - černá - WELL", "snipers"),
+    ("G&G Airsoftová zbraň CM16 SRL, Sportline, elektronická spoušť", "guns"),
+    ("Fleece čepice Pískova - MFH Maskáče", "clothing"),
+    ("Zásobníková Molle sumka pro 2x pistole - VZ.95, MFH", "pouches"),
+    ("Ocelová kuličková ložiska 7mm, AirsoftPro", "parts"),
+    ("Pouzdro Blackhawk SERPA CQC pro Glock 17", "holsters"),
+    ("Pouzdro na pušku Gamo 130cm černo-zelené", "pouches"),
+    ("Boty Sniper Pro s YKK zipem - Coyote", "clothing"),
+    ("Taktické rukavice Fast Fit® - Coyote Brown, Mechanix", "gloves"),
+    ("PMR M24-S, set, Midland", "comms"),
+    ("SSG96 Trigger Box", "parts"),
+    ("Glock 17 Gen 5 FS MOS, Black, GBB, Umarex", "pistols"),
+    ("Magazine pouch M4", "pouches"),
+    ("Odstřelovací puška VSR-10 Pro Sniper Version, Tokyo Marui", "snipers"),
+    ("Univerzální Karabina Grmloc 5cm - písková DE, FMA", "pouches"),
+])
+def test_categorize_real_names(title, expected):
+    assert categorize(title) == expected
+
+
+def test_shop_path_beats_weak_hints():
+    # "M4" alone in a name is a hint; the shop filing it under parts decides
+    assert categorize("M4 tělo spodní", "Airsoft | Náhradní díly") == "parts"
+    assert categorize("Ruger Super Hawk CO2", "Airsoftové zbraně | Pistole") == "pistols"
+
+
+def test_translation_locker_keeps_english_words_and_splits_colours():
+    from airsoftcompare.translate import _Locker
+    lk = _Locker({"Tokyo Marui"})
+    text, kept = lk.lock("Odstřelovací puška VSR-10 - desert, Tokyo Marui", use_glossary=True)
+    assert "desert" in kept and "sniper rifle" in kept and "Tokyo Marui" in kept and "desert" not in text
+    text, kept = lk.lock("Pistole M1911 - černá/stříbrná, S&T Armament", use_glossary=True)
+    assert "black" in kept and "Armament" in kept and "S&T" in kept
+    text, kept = lk.lock("Magazine pouch for M4/AR15 - tan, Emerson Gear", use_glossary=False, lang="sk")
+    assert "zásobníková sumka" in kept and "M4/AR15" in kept and "Gear" in kept and "piesková" in kept
+    text, kept = lk.lock("Tactical gear set", use_glossary=False, lang="de")
+    assert "Tactical" not in kept and "Zahnradsatz" in kept

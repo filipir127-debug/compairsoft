@@ -116,6 +116,9 @@ def cluster(offers: list[dict], threshold: int = 90, chunk: int = 2000) -> list[
     return [uf.find(i) for i in range(n)]
 
 
+PART_PRICE = {"guns": 400, "pistols": 250, "snipers": 700, "shotguns": 500}  # CZK
+
+
 def _product_category(members: list[dict]) -> str:
     """Most common category among the shops; specific ones beat catch-alls ("pistols" over "guns")."""
     votes = Counter(m["category"] for m in members)
@@ -123,8 +126,9 @@ def _product_category(members: list[dict]) -> str:
         if len(votes) > 1:
             votes.pop(weak, None)
     found = votes.most_common(1)[0][0] if votes else "other"
-    if found == "guns" and max(m["price_base"] for m in members) < 400:
-        return "parts"  # no airsoft rifle costs this little; "M4"/"AK" in a part's name fooled the rules
+    # No real gun costs this little: "M4", "Glock" or "VSR" in a part's name fooled the rules.
+    if max(m["price_base"] for m in members) < PART_PRICE.get(found, 0):
+        return "parts"
     return found
 
 

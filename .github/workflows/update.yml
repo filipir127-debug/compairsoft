@@ -69,6 +69,16 @@ jobs:
           path: data/
           key: airsoft-db-${{ github.run_id }}
 
+      # A code push publishes from the cached database; re-sort it with the pushed category rules
+      # first (not saved: the next scheduled run does that itself).
+      - name: Re-sort categories
+        if: github.event_name == 'push'
+        run: mkdir -p data && python -m airsoftcompare rematch
+
+      - name: Translate a sample for the preview
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/preview/')
+        run: python -m airsoftcompare translate --max-minutes 12
+
       - name: Build site
         run: mkdir -p data && python -m airsoftcompare export dist
 
