@@ -33,7 +33,7 @@
       loadError: "Couldn't load the data. Please refresh the page.",
       "f.minshops": "Sold in", "f.save": "Saving at least", "f.brand": "Brand", "f.color": "Colour", "f.power": "Power source", "f.material": "Material",
       "f.cap": "Magazine type", "f.bbw": "BB weight", "f.shop": "Shop", shopsPlus: "{n}+ shops",
-      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Spring", "tile.hpa": "HPA", "f.platform": "Platform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "WWII", "pl.bullpup": "Bullpup", "pl.mg": "Machine guns", "ag.rifle": "Rifles", "ag.pistol": "Pistols", "ag.pellets": "Diabolos", "f.airgun": "Type", "f.caliber": "Calibre",
+      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual", "allParams": "All parameters", "clearParams": "Clear selected parameters", "close": "Close", "showN": "Show {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Spring", "tile.hpa": "HPA", "f.platform": "Platform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "WWII", "pl.bullpup": "Bullpup", "pl.mg": "Machine guns", "ag.rifle": "Rifles", "ag.pistol": "Pistols", "ag.pellets": "Diabolos", "f.airgun": "Type", "f.caliber": "Calibre",
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
@@ -63,7 +63,7 @@
       loadError: "Data se nepodařilo načíst. Obnovte prosím stránku.",
       "f.minshops": "Prodává", "f.save": "Úspora alespoň", "f.brand": "Značka", "f.color": "Barva", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníku", "f.bbw": "Gramáž kuliček", "f.shop": "Obchod", shopsPlus: "{n}+ obchodů",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. světová válka", "pl.bullpup": "Bullpup", "pl.mg": "Kulomety", "ag.rifle": "Pušky", "ag.pistol": "Pistole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Ráže",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální", "allParams": "Všechny parametry", "clearParams": "Zrušit vybrané parametry", "close": "Zavřít", "showN": "Zobrazit {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. světová válka", "pl.bullpup": "Bullpup", "pl.mg": "Kulomety", "ag.rifle": "Pušky", "ag.pistol": "Pistole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Ráže",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -93,7 +93,7 @@
       loadError: "Dáta sa nepodarilo načítať. Obnovte prosím stránku.",
       "f.minshops": "Predáva", "f.save": "Úspora aspoň", "f.brand": "Značka", "f.color": "Farba", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníka", "f.bbw": "Gramáž guličiek", "f.shop": "Obchod", shopsPlus: "{n}+ obchodov",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. svetová vojna", "pl.bullpup": "Bullpup", "pl.mg": "Guľomety", "ag.rifle": "Pušky", "ag.pistol": "Pištole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Kaliber",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny", "allParams": "Všetky parametre", "clearParams": "Zrušiť vybrané parametre", "close": "Zavrieť", "showN": "Zobraziť {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. svetová vojna", "pl.bullpup": "Bullpup", "pl.mg": "Guľomety", "ag.rifle": "Pušky", "ag.pistol": "Pištole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Kaliber",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -123,7 +123,7 @@
       loadError: "Daten konnten nicht geladen werden. Bitte Seite neu laden.",
       "f.minshops": "Erhältlich in", "f.save": "Ersparnis mindestens", "f.brand": "Marke", "f.color": "Farbe", "f.power": "Antrieb", "f.material": "Material",
       "f.cap": "Magazintyp", "f.bbw": "BB-Gewicht", "f.shop": "Shop", shopsPlus: "{n}+ Shops",
-      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Federdruck", "tile.hpa": "HPA", "f.platform": "Plattform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "Zweiter Weltkrieg", "pl.bullpup": "Bullpup", "pl.mg": "Maschinengewehre", "ag.rifle": "Gewehre", "ag.pistol": "Pistolen", "ag.pellets": "Diabolos", "f.airgun": "Typ", "f.caliber": "Kaliber",
+      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell", "allParams": "Alle Parameter", "clearParams": "Ausgewählte Parameter löschen", "close": "Schließen", "showN": "{n} anzeigen", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Federdruck", "tile.hpa": "HPA", "f.platform": "Plattform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "Zweiter Weltkrieg", "pl.bullpup": "Bullpup", "pl.mg": "Maschinengewehre", "ag.rifle": "Gewehre", "ag.pistol": "Pistolen", "ag.pellets": "Diabolos", "f.airgun": "Typ", "f.caliber": "Kaliber",
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
@@ -293,18 +293,34 @@
   const DRILL_PLATFORMS = ["ak", "m4", "mp5", "ww2", "bullpup", "mg"];
   const DRILL_VALUES = { power: DRILL_POWERS, platform: DRILL_PLATFORMS, airgun: ["rifle", "pistol", "pellets"],
     caliber: ["4.5", "5.0", "5.5", "6.35", "7.62", "9"] };
-  const FACETS = [
-    ["brand", "brand", (p) => (p.b ? [p.b] : []), (v) => v],
-    ["power", "power", tagVals("pw:"), (v) => t("pw." + v)],
-    ["platform", "plat", tagVals("pl:"), (v) => t("pl." + v)],
-    ["airgun", "ag", tagVals("ag:"), (v) => t("ag." + v)],
-    ["caliber", "cal", tagVals("cal:"), (v) => (lang === "en" ? v : v.replace(".", ",") + " ") + "mm"],
-    ["material", "material", tagVals("mt:"), (v) => t("mt." + v)],
-    ["cap", "cap", tagVals("cap:"), (v) => t("cap." + v)],
-    ["bbw", "bbw", tagVals("bbw:"), (v) => v.replace(".", ",") + " g"],
-    ["color", "color", tagVals("col:"), (v) => t("col." + v) !== "col." + v ? t("col." + v) : v[0].toUpperCase() + v.slice(1)],
-    ["shop", "shop", (p) => p.h.map(String), null],
-  ];
+  // Filter parameters come from meta.json (airsoftcompare/params.py): definitions, tabs and which
+  // category uses which. A facet is [id, url key, values of a product, label of a value, kind].
+  let PARAMS = {}, PSECT = {}, CATP = {};
+  const LI = () => Math.max(0, ["en", "cs", "sk", "de"].indexOf(lang));
+  const pName = (id) => (PARAMS[id] ? PARAMS[id].l[LI()] : t("f." + id));
+  const pUrl = (id) => (PARAMS[id] && PARAMS[id].u) || id;
+  const pLabel = (id) => (v) => {
+    const d = PARAMS[id] || {};
+    if (d.v && d.v[v]) return d.v[v][LI()];
+    if (d.vp && t(d.vp + v) !== d.vp + v) return t(d.vp + v);
+    if (d.f === "g") return v.replace(".", ",") + " g";
+    if (d.f === "mm") return (lang === "en" ? v : v.replace(".", ",") + " ") + "mm";
+    return id === "color" ? v[0].toUpperCase() + v.slice(1) : v;
+  };
+  const facetOf = (id) => {
+    const d = PARAMS[id];
+    if (d.k === "range") return [id, pUrl(id), (p) => (p.n && p.n[id] != null ? [p.n[id]] : []), null, "range"];
+    return [id, pUrl(id), tagVals((d.t || id) + ":"), d.k === "bool" ? () => pName(id) : pLabel(id), d.k];
+  };
+  const BRAND = ["brand", "brand", (p) => (p.b ? [p.b] : []), (v) => v, "enum"];
+  const SHOP = ["shop", "shop", (p) => p.h.map(String), null, "enum"];
+  function facetsFor(c) {
+    const conf = CATP[c];
+    const ids = (conf ? conf.a : Object.keys(PARAMS)).filter((id) => PARAMS[id]);
+    return { facets: [BRAND, ...ids.map(facetOf), SHOP], basic: ["brand", ...(conf ? conf.b : [])] };
+  }
+  // every address key a filter can use (to tell a filtered listing from the homepage)
+  const paramKeys = () => Object.keys(PARAMS).flatMap((id) => (PARAMS[id].k === "range" ? [pUrl(id) + "_min", pUrl(id) + "_max"] : [pUrl(id)]));
   let itemsCache = { key: null, items: [] };
   const TR_LANGS = ["en", "de", "sk"];
   let TR = {};  // product id -> name in the current language (machine translation)
@@ -352,14 +368,46 @@
     if (!isNaN(pmin)) base = base.filter((x) => toCur(x.p) >= pmin);
     if (!isNaN(pmax)) base = base.filter((x) => toCur(x.p) <= pmax);
 
-    const chosen = Object.fromEntries(FACETS.map(([n, k]) => [n, new Set(list(p, k))]));
-    const passes = (x, except) => FACETS.every(([n, , vals]) => n === except || !chosen[n].size || vals(x).some((v) => chosen[n].has(v)));
+    const { facets: FACETS, basic: BASIC } = facetsFor(c);
+    const isRange = (n) => FACETS.find((f) => f[0] === n)[4] === "range";
+    const current = {
+      sets: Object.fromEntries(FACETS.filter((f) => f[4] !== "range").map(([n, k]) => [n, new Set(list(p, k))])),
+      ranges: Object.fromEntries(FACETS.filter((f) => f[4] === "range").map(([n, k]) => [n, [parseFloat(p.get(k + "_min")), parseFloat(p.get(k + "_max"))]])),
+    };
+    const chosen = current.sets;
+    // does a product pass the chosen parameters (all but one, to count that one's values)?
+    const passesWith = (st) => (x, except) => FACETS.every(([n, , vals, , kind]) => {
+      if (n === except) return true;
+      if (kind === "range") {
+        const [a, b] = st.ranges[n];
+        if (isNaN(a) && isNaN(b)) return true;
+        const v = x.n && x.n[n];
+        return v != null && (isNaN(a) || v >= a) && (isNaN(b) || v <= b);
+      }
+      return !st.sets[n].size || vals(x).some((v) => st.sets[n].has(v));
+    });
+    const countsWith = (st) => {
+      const ok = passesWith(st);
+      return Object.fromEntries(FACETS.map(([n, , vals, , kind]) => {
+        if (kind === "range") {
+          let lo = Infinity, hi = -Infinity, cnt = 0;
+          for (const x of base) { const v = x.n && x.n[n]; if (v != null && ok(x, n)) { lo = Math.min(lo, v); hi = Math.max(hi, v); cnt++; } }
+          return [n, { lo, hi, cnt }];
+        }
+        const cnt = new Map();
+        for (const x of base) if (ok(x, n)) for (const v of new Set(vals(x))) cnt.set(v, (cnt.get(v) || 0) + 1);
+        return [n, cnt];
+      }));
+    };
+    const passes = passesWith(current);
     const items = base.filter((x) => passes(x, null));
-    const facetCounts = Object.fromEntries(FACETS.map(([n, , vals]) => {
-      const cnt = new Map();
-      for (const x of base) if (passes(x, n)) for (const v of new Set(vals(x))) cnt.set(v, (cnt.get(v) || 0) + 1);
-      return [n, cnt];
-    }));
+    const facetCounts = countsWith(current);
+    const shown_ = (n, counts, st) => {  // worth showing: more than one choice, or something chosen
+      const [, , , , kind] = FACETS.find((f) => f[0] === n), cnt = counts[n];
+      if (kind === "range") { const [a, b] = st.ranges[n]; return (cnt.cnt >= 3 && cnt.hi > cnt.lo) || !isNaN(a) || !isNaN(b); }
+      if (kind === "bool") return cnt.size > 0 || st.sets[n].size > 0;
+      return cnt.size > 1 || st.sets[n].size > 0 || (n === "shop" && cnt.size > 0);
+    };
 
     const by = {
       relevance: (a, b) => b.s - a.s || a.p - b.p, shops: (a, b) => b.s - a.s || a.p - b.p, price_asc: (a, b) => a.p - b.p, price_desc: (a, b) => b.p - a.p,
@@ -372,12 +420,26 @@
 
     // ---- sidebar, in the style of alza.cz: plain sections, checkbox lists with counts, price slider
     const VISIBLE = 5;
-    const facetBox = (name, key) => {
-      const cnt = facetCounts[name];
-      if (!cnt.size || (cnt.size === 1 && !chosen[name].size && name !== "shop")) return "";
-      const lbl = FACETS.find((f) => f[0] === name)[3] || ((v) => shopName[v] || v);
+    const collator = new Intl.Collator(LOCALES[lang] || "en-GB", { numeric: true, sensitivity: "base" });
+    const unitOf = (n) => (PARAMS[n] && PARAMS[n].un) || "";
+    const fmtNum = (v) => fmt(Math.round(v * 10) / 10);
+    const rangeBox = (n, key, info, [a, b], cls = "") => {
+      const lo = info.lo === Infinity ? (isNaN(a) ? 0 : a) : info.lo, hi = info.hi === -Infinity ? (isNaN(b) ? 0 : b) : info.hi;
+      const st = stepFor(lo, hi), from = isNaN(a) ? lo : Math.max(lo, Math.min(hi, a)), to = isNaN(b) ? hi : Math.max(lo, Math.min(hi, b));
+      return `<div class="f-sec range-filter ${cls}" data-facet="${n}" data-lo="${lo}" data-hi="${hi}" data-kmin="${key}_min" data-kmax="${key}_max">
+        <h3>${esc(pName(n))}${unitOf(n) ? ` <span class="muted">(${esc(unitOf(n))})</span>` : ""}</h3>${dualSlider(lo, hi, st, from, to, pName(n))}</div>`;
+    };
+    const facetBox = (name) => {
+      const [, key, , lbl0, kind] = FACETS.find((f) => f[0] === name);
+      if (!shown_(name, facetCounts, current)) return "";
+      if (kind === "range") return rangeBox(name, key, facetCounts[name], current.ranges[name]);
+      if (kind === "bool") {
+        const on = chosen[name].has("y");
+        return `<div class="f-sec" data-facet="${name}"><div class="opts"><a class="opt ${on ? "on" : ""}" href="${url({ [key]: on ? "" : "y", page: "" })}">
+          <span class="box"></span><span class="opt-l">${esc(pName(name))} <span class="opt-n">(${fmt(facetCounts[name].get("y") || 0)})</span></span></a></div></div>`;
+      }
+      const cnt = facetCounts[name], lbl = lbl0 || ((v) => shopName[v] || v);
       // A–Z by the shown label; numbers by value ("0,20 g" before "0,25 g", "2" before "10").
-      const collator = new Intl.Collator(LOCALES[lang] || "en-GB", { numeric: true, sensitivity: "base" });
       const vals = [...cnt.entries()].sort((a, b) => collator.compare(lbl(a[0]), lbl(b[0])));
       const rows = vals.map(([v, n], i) => {
         const on = chosen[name].has(v);
@@ -387,19 +449,22 @@
       }).join("");
       const hidden = vals.filter(([v], i) => i >= VISIBLE && !chosen[name].has(v)).length;
       const more = hidden ? `<button type="button" class="more-btn" data-more data-less="${t("lessBtn")}">${t("moreN", { n: hidden })}</button>` : "";
-      return `<div class="f-sec" data-facet="${name}"><h3>${t("f." + name)}</h3><div class="opts">${rows}</div>${more}</div>`;
+      return `<div class="f-sec" data-facet="${name}"><h3>${esc(pName(name))}</h3><div class="opts">${rows}</div>${more}</div>`;
     };
+    const isChosen = (n) => (isRange(n) ? current.ranges[n].some((v) => !isNaN(v)) : chosen[n].size > 0);
+    const sideIds = [...BASIC.filter((n) => FACETS.some((f) => f[0] === n)), ...FACETS.map((f) => f[0]).filter((n) => !BASIC.includes(n) && n !== "shop" && isChosen(n))];
+    const anyChosen = FACETS.some(([n]) => isChosen(n));
+    const clearAll = Object.fromEntries([...FACETS.flatMap(([n, k]) => (isRange(n) ? [[k + "_min", ""], [k + "_max", ""]] : [[k, ""]])), ["page", ""]]);
+    const moreCount = FACETS.filter(([n]) => !sideIds.includes(n) && shown_(n, facetCounts, current)).length;
+    const paramsBtn = moreCount || anyChosen ? `<div class="f-sec f-all">${moreCount ? `<button type="button" class="btn all-params" data-params>${icon("sliders-horizontal")} ${t("allParams")}</button>` : ""}
+      ${anyChosen ? `<a class="clear-params" href="${url(clearAll)}">${t("clearParams")}</a>` : ""}</div>` : "";
+    // the "All parameters" window works on a copy of the choices and applies them in one go
+    openParams = () => paramsDialog({ FACETS, current, countsWith, passesWith, base, shown_, rangeBox, collator, shopName, isRange });
     const check = (on, over, label) => `<a class="opt ${on ? "on" : ""}" href="${url(over)}"><span class="box"></span><span class="opt-l">${label}</span></a>`;
     const radio = (on, over, label) => `<a class="opt radio ${on ? "on" : ""}" href="${url(over)}"><span class="box"></span><span class="opt-l">${label}</span></a>`;
-    const step = (() => { const r = Math.max(1, hi - lo) / 200, e = 10 ** Math.floor(Math.log10(r)); return [1, 2, 5, 10].map((k) => k * e).find((x) => x >= r) || 1; })();
     const from = isNaN(pmin) ? lo : Math.max(lo, Math.min(hi, pmin)), to = isNaN(pmax) ? hi : Math.max(lo, Math.min(hi, pmax));
-    const priceBox = hi > lo ? `<div class="f-sec price-filter" data-lo="${lo}" data-hi="${hi}">
-        <h3>${t("price")} <span class="muted">(${cur === "CZK" ? "Kč" : cur})</span></h3>
-        <div class="dual"><div class="dual-track"><span class="dual-fill"></span></div>
-          <input type="range" class="r-min" min="${lo}" max="${hi}" step="${step}" value="${from}" aria-label="${t("price")} ${t("from")}">
-          <input type="range" class="r-max" min="${lo}" max="${hi}" step="${step}" value="${to}" aria-label="${t("price")} ${t("to")}"></div>
-        <div class="price-inputs"><input type="number" class="n-min" value="${Math.round(from)}" min="${lo}" max="${hi}" inputmode="numeric" aria-label="${t("price")} ${t("from")}">
-          <span>–</span><input type="number" class="n-max" value="${Math.round(to)}" min="${lo}" max="${hi}" inputmode="numeric" aria-label="${t("price")} ${t("to")}"></div></div>` : "";
+    const priceBox = hi > lo ? `<div class="f-sec price-filter range-filter" data-lo="${lo}" data-hi="${hi}" data-kmin="pmin" data-kmax="pmax">
+        <h3>${t("price")} <span class="muted">(${cur === "CZK" ? "Kč" : cur})</span></h3>${dualSlider(lo, hi, stepFor(lo, hi), from, to, t("price"))}</div>` : "";
 
     // active filters as removable chips, like alza.cz
     const chips = [];
@@ -409,9 +474,16 @@
     if (stock) chips.push([t("availStock"), { stock: "", page: "" }]);
     if (minSave) chips.push([t("onlyDiscount"), { save: "", page: "" }]);
     if (minShops) chips.push([t("soldIn2"), { minshops: "", multi: "", page: "" }]);
-    for (const [n, k, , lb] of FACETS) for (const v of chosen[n]) {
-      const rest = [...chosen[n]].filter((x) => x !== v);
-      chips.push([esc((lb || ((x) => shopName[x] || x))(v)), { [k]: rest.join(","), page: "" }]);
+    for (const [n, k, , lb, kind] of FACETS) {
+      if (kind === "range") {
+        const [a, b] = current.ranges[n], u = unitOf(n) ? " " + unitOf(n) : "";
+        if (!isNaN(a) || !isNaN(b)) chips.push([`${esc(pName(n))}: ${isNaN(a) ? "…" : fmtNum(a)} – ${isNaN(b) ? "…" : fmtNum(b)}${esc(u)}`, { [k + "_min"]: "", [k + "_max"]: "", page: "" }]);
+        continue;
+      }
+      for (const v of chosen[n]) {
+        const rest = [...chosen[n]].filter((x) => x !== v);
+        chips.push([esc((lb || ((x) => shopName[x] || x))(v)), { [k]: rest.join(","), page: "" }]);
+      }
     }
 
     // quick tiles above the results: subcategories with a photo, then price bands
@@ -461,7 +533,8 @@
           ${check(minShops >= 2, { minshops: minShops ? "" : 2, multi: "", page: "" }, t("soldIn2"))}</div>
         <div class="f-sec"><h3>${t("avail")}</h3><div class="opts">
           ${radio(!stock, { stock: "", page: "" }, t("availAll"))}${radio(stock, { stock: "1", page: "" }, t("availStock"))}</div></div>
-        ${FACETS.map(([n, k]) => facetBox(n, k)).join("")}
+        ${sideIds.map((n) => facetBox(n)).join("")}
+        ${paramsBtn}
       </details></aside>
       <section class="results">
         <div class="results-head"><h1>${title}</h1></div>
@@ -475,30 +548,120 @@
             : `<a class="pg" href="${url({ page: n === 1 ? "" : n })}">${n}</a>`).join("")}
           ${page < pages ? `<a class="pg-step" href="${url({ page: page + 1 })}">${t("next")}</a>` : ""}</nav>` : ""}
       </section></div>`;
-    priceSlider();
+    rangeSliders(app);
   }
 
-  // Price slider: drag updates the boxes live, releasing (or editing a box) applies the filter.
-  function priceSlider() {
-    const box = app.querySelector(".price-filter");
-    if (!box) return;
-    const [rMin, rMax, nMin, nMax] = [".r-min", ".r-max", ".n-min", ".n-max"].map((sel) => box.querySelector(sel));
-    const lo = +box.dataset.lo, hi = +box.dataset.hi;
-    const paint = () => {
-      const a = (+rMin.value - lo) / (hi - lo) * 100, b = (+rMax.value - lo) / (hi - lo) * 100;
-      box.querySelector(".dual-fill").style.cssText = `left:${a}%;right:${100 - b}%`;
+  const stepFor = (lo, hi) => {
+    const r = Math.max(hi - lo, 0.1) / 200, e = 10 ** Math.floor(Math.log10(r));
+    return [1, 2, 5, 10].map((k) => k * e).find((x) => x >= r) || 1;
+  };
+  const roundTo = (v, st) => (st < 1 ? Math.round(v * 10) / 10 : Math.round(v));
+  const dualSlider = (lo, hi, st, from, to, label) => `<div class="dual"><div class="dual-track"><span class="dual-fill"></span></div>
+      <input type="range" class="r-min" min="${lo}" max="${hi}" step="${st}" value="${from}" aria-label="${esc(label)} ${t("from")}">
+      <input type="range" class="r-max" min="${lo}" max="${hi}" step="${st}" value="${to}" aria-label="${esc(label)} ${t("to")}"></div>
+    <div class="price-inputs"><input type="number" class="n-min" value="${roundTo(from, st)}" min="${lo}" max="${hi}" step="${st < 1 ? 0.1 : 1}" aria-label="${esc(label)} ${t("from")}">
+      <span>–</span><input type="number" class="n-max" value="${roundTo(to, st)}" min="${lo}" max="${hi}" step="${st < 1 ? 0.1 : 1}" aria-label="${esc(label)} ${t("to")}"></div>`;
+
+  // Range sliders (price and number parameters): dragging updates the boxes live; releasing, or
+  // editing a box, applies the filter - in the sidebar through the address, in the window through onSet.
+  function rangeSliders(root, onSet) {
+    for (const box of root.querySelectorAll(".range-filter")) {
+      const [rMin, rMax, nMin, nMax] = [".r-min", ".r-max", ".n-min", ".n-max"].map((sel) => box.querySelector(sel));
+      const lo = +box.dataset.lo, hi = +box.dataset.hi, st = +rMin.step;
+      const paint = () => {
+        const a = hi > lo ? (+rMin.value - lo) / (hi - lo) * 100 : 0, b = hi > lo ? (+rMax.value - lo) / (hi - lo) * 100 : 100;
+        box.querySelector(".dual-fill").style.cssText = `left:${a}%;right:${100 - b}%`;
+      };
+      const apply = () => {
+        let a = +nMin.value, b = +nMax.value;
+        if (a > b) [a, b] = [b, a];
+        const vals = { [box.dataset.kmin]: a > lo ? roundTo(a, st) : "", [box.dataset.kmax]: b < hi ? roundTo(b, st) : "" };
+        if (onSet) return onSet(box.dataset.facet, vals);
+        history.pushState(null, "", url({ ...vals, page: "" })); route();
+      };
+      rMin.addEventListener("input", () => { if (+rMin.value > +rMax.value) rMin.value = rMax.value; nMin.value = roundTo(+rMin.value, st); paint(); });
+      rMax.addEventListener("input", () => { if (+rMax.value < +rMin.value) rMax.value = rMin.value; nMax.value = roundTo(+rMax.value, st); paint(); });
+      for (const el of [rMin, rMax, nMin, nMax]) el.addEventListener("change", apply);
+      paint();
+    }
+  }
+
+  // "All parameters": every parameter of the category in tabs, like alza.cz. Choices are made on a
+  // copy and counted live; "Show N products" applies them all at once.
+  let openParams = null;
+  function paramsDialog(ctx) {
+    const { FACETS, current, countsWith, passesWith, base, shown_, rangeBox, collator, shopName, isRange } = ctx;
+    const draft = { sets: Object.fromEntries(Object.entries(current.sets).map(([n, s]) => [n, new Set(s)])),
+      ranges: Object.fromEntries(Object.entries(current.ranges).map(([n, r]) => [n, [...r]])) };
+    const secOf = (n) => (n === "brand" ? "basic" : n === "shop" ? "shops" : (PARAMS[n] && PARAMS[n].s) || "basic");
+    const order = Object.keys(PSECT);
+    let tab = null;
+    const dlg = document.createElement("dialog");
+    dlg.className = "pdlg";
+    dlg.setAttribute("aria-labelledby", "pdlg-h");
+    document.body.appendChild(dlg);
+    const render = () => {
+      const counts = countsWith(draft), ok = passesWith(draft);
+      const total = base.filter((x) => ok(x, null)).length;
+      const visible = FACETS.filter(([n]) => shown_(n, counts, draft));
+      const tabs = order.filter((s) => visible.some(([n]) => secOf(n) === s));
+      if (!tabs.includes(tab)) tab = tabs[0];
+      const chosenIn = (s) => visible.some(([n]) => secOf(n) === s && (isRange(n) ? draft.ranges[n].some((v) => !isNaN(v)) : draft.sets[n].size));
+      const inTab = visible.filter(([n]) => secOf(n) === tab);
+      const tile = (n, v, label, cnt) => `<button type="button" class="ptile ${draft.sets[n].has(v) ? "on" : ""}" data-f="${esc(n)}" data-v="${esc(v)}" ${cnt ? "" : "disabled"}>
+          <span class="box"></span><span class="ptile-l">${esc(label)} <span class="opt-n">(${fmt(cnt)})</span></span></button>`;
+      const bools = inTab.filter((f) => f[4] === "bool");
+      const blocks = inTab.filter((f) => f[4] !== "bool").map(([n, key, , lbl, kind]) => {
+        if (kind === "range") return rangeBox(n, key, counts[n], draft.ranges[n], "p-range");
+        const label = lbl || ((v) => shopName[v] || v);
+        const vals = [...counts[n].entries(), ...[...draft.sets[n]].filter((v) => !counts[n].has(v)).map((v) => [v, 0])]
+          .sort((a, b) => collator.compare(label(a[0]), label(b[0])));
+        return `<div class="p-block"><h3>${esc(pName(n))}</h3><div class="ptiles">${vals.map(([v, cnt]) => tile(n, v, label(v), cnt)).join("")}</div></div>`;
+      });
+      if (bools.length) blocks.push(`<div class="p-block"><h3>${esc(PSECT.features ? PSECT.features[LI()] : "")}</h3><div class="ptiles">${bools.map(([n]) => tile(n, "y", pName(n), counts[n].get("y") || 0)).join("")}</div></div>`);
+      dlg.innerHTML = `<div class="pdlg-head"><h2 id="pdlg-h">${t("allParams")}</h2><button type="button" class="pdlg-x" data-close aria-label="${t("close")}">${icon("x")}</button></div>
+        <div class="pdlg-body"><nav class="pdlg-tabs">${tabs.map((s) => `<button type="button" class="${s === tab ? "on" : ""} ${chosenIn(s) ? "has" : ""}" data-tab="${s}">${esc(PSECT[s][LI()])}</button>`).join("")}</nav>
+          <div class="pdlg-panel">${blocks.join("") || `<p class="muted">${t("nothing")}</p>`}</div></div>
+        <div class="pdlg-foot"><button type="button" class="linkish" data-clear>${t("clearParams")}</button>
+          <span class="sp"></span><button type="button" class="btn btn-ghost" data-close>${t("close")}</button>
+          <button type="button" class="btn" data-apply ${total ? "" : "disabled"}>${t("showN", { n: nprod(total) })}</button></div>`;
+      rangeSliders(dlg, (n, vals) => {
+        const k = FACETS.find((f) => f[0] === n)[1];
+        draft.ranges[n] = [parseFloat(vals[k + "_min"]), parseFloat(vals[k + "_max"])];
+        const y = dlg.querySelector(".pdlg-panel").scrollTop; render(); dlg.querySelector(".pdlg-panel").scrollTop = y;
+      });
     };
-    const apply = () => {
-      let a = Math.round(+nMin.value), b = Math.round(+nMax.value);
-      if (a > b) [a, b] = [b, a];
-      const href = url({ pmin: a > lo ? a : "", pmax: b < hi ? b : "", page: "" });
-      history.pushState(null, "", href); route();
-    };
-    rMin.addEventListener("input", () => { if (+rMin.value > +rMax.value) rMin.value = rMax.value; nMin.value = Math.round(+rMin.value); paint(); });
-    rMax.addEventListener("input", () => { if (+rMax.value < +rMin.value) rMax.value = rMin.value; nMax.value = Math.round(+rMax.value); paint(); });
-    rMin.addEventListener("change", apply); rMax.addEventListener("change", apply);
-    nMin.addEventListener("change", apply); nMax.addEventListener("change", apply);
-    paint();
+    const close = () => { dlg.close(); dlg.remove(); };
+    dlg.addEventListener("click", (e) => {
+      if (e.target === dlg || e.target.closest("[data-close]")) return close();
+      const tb = e.target.closest("[data-tab]");
+      if (tb) { tab = tb.dataset.tab; render(); dlg.querySelector(".pdlg-panel").scrollTop = 0; return; }
+      const pt = e.target.closest(".ptile");
+      if (pt && !pt.disabled) {
+        const s = draft.sets[pt.dataset.f], v = pt.dataset.v;
+        s.has(v) ? s.delete(v) : s.add(v);
+        const y = dlg.querySelector(".pdlg-panel").scrollTop; render(); dlg.querySelector(".pdlg-panel").scrollTop = y;
+        return;
+      }
+      if (e.target.closest("[data-clear]")) {
+        for (const s of Object.values(draft.sets)) s.clear();
+        for (const n of Object.keys(draft.ranges)) draft.ranges[n] = [NaN, NaN];
+        return render();
+      }
+      if (e.target.closest("[data-apply]")) {
+        const over = { page: "" };
+        for (const [n, k, , , kind] of FACETS) {
+          if (kind === "range") { const [a, b] = draft.ranges[n]; over[k + "_min"] = isNaN(a) ? "" : a; over[k + "_max"] = isNaN(b) ? "" : b; }
+          else over[k] = [...draft.sets[n]].join(",");
+        }
+        close();
+        history.pushState(null, "", url(over));
+        route();
+      }
+    });
+    dlg.addEventListener("close", () => dlg.remove());
+    render();
+    dlg.showModal();
   }
 
   // ---------------------------------------------------------------- product
@@ -639,6 +802,7 @@
     if (page === "404") return;
     try {
       const m = await json("/data/meta.json");
+      PARAMS = m.params || {}; PSECT = m.paramSections || {}; CATP = m.catParams || {};
       RATES = { [BASE]: 1, ...(m.rates || {}) };
       if (!RATES[cur]) cur = BASE;
       document.getElementById("cur").value = cur;
@@ -649,7 +813,7 @@
       if (page === "shops") return shopsPage(m);
       if (page === "privacy") return privacyPage();
       const p = P();
-      const filtered = ["q", "cat", "shop", "stock", "multi", "minshops", "save", "pmin", "pmax", "all", ...FACETS.map((f) => f[1])].some((k) => p.get(k))
+      const filtered = ["q", "cat", "shop", "stock", "multi", "minshops", "save", "pmin", "pmax", "all", "brand", ...paramKeys()].some((k) => p.get(k))
         || (p.get("sort") || "relevance") !== "relevance" || +p.get("page") > 1;
       return filtered ? await listing(m) : home(m);
     } catch (e) {
@@ -660,6 +824,7 @@
   // Filters, sorting and paging on the listing page update in place instead of reloading.
   if (page === "index") {
     document.addEventListener("click", (e) => {
+      if (e.target.closest("[data-params]") && openParams) return openParams();
       const more = e.target.closest("[data-more]");
       if (more) {
         const g = more.closest(".f-sec, .f-group"); g.classList.toggle("expanded");

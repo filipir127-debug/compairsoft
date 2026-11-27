@@ -23,6 +23,7 @@ from .categories import CATEGORIES, GROUP_OF, GROUPS
 from .images import export_buckets, published_thumbs, thumb_name
 from .rates import SHOWN, current_rates
 from .translate import LANGS, load_translations
+from .params import extract as extract_params, meta_defs
 from .sources.common import safe_url
 from .text import SYNONYMS, colors, normalize, strip_accents
 
@@ -155,8 +156,11 @@ def _card(p: dict, shops_of: dict, brand: str | None = None) -> dict:
             "h": sorted(shops_of.get(p["id"], ()))}
     if brand:
         card["b"] = brand
-    if tags := _attrs(p["title"], p["category"], p["min_price"]):
+    extra, nums = extract_params(p["title"], p["category"], p["min_price"])
+    if tags := list(dict.fromkeys(_attrs(p["title"], p["category"], p["min_price"]) + extra)):
         card["a"] = tags
+    if nums:
+        card["n"] = nums
     return card
 
 
@@ -335,6 +339,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "images": _group_images(products, offers),
         "sections": sections,
         "syn": synonyms,
+        **meta_defs(),  # filter parameters: definitions, tabs ("paramSections"), per-category lists
     }
     _dump(out / "data" / "meta.json", meta)
 

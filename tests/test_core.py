@@ -334,3 +334,37 @@ def test_offers_without_a_price_are_not_shown(tmp_path):
                                     in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
     assert rebuild_products(conn) == 1
     assert [r[0] for r in conn.execute("SELECT title FROM products")] == ["SSG10 Sniper"]
+
+
+@pytest.mark.parametrize("title, category, tags, nums", [
+    ("Li-Pol akumulátor Gens ACE 7,4V 1200mAh 25C - Mini Tamiya", "batteries", {"chem:lipo", "conn:tamiya-mini"}, {"volt": 7.4, "mah": 1200, "crate": 25}),
+    ("TITAN Akumulátor Li-Ion 11,1V 3000mAh 16C - Mini CQB s Dean konektorem", "batteries", {"chem:liion", "conn:deans", "bshape:stick"}, {"volt": 11.1, "mah": 3000}),
+    ("Puškohled Walther 3-9x44 Sniper", "optics", {"otype:scope"}, {"zoom": 9, "obj": 44}),
+    ("Náhradní ochranné sklíčko kolimátorů - 50 x 55 mm", "optics", set(), {}),
+    ("Sada pružin SHS M100", "parts", {"ptype:spring"}, {"spring": 100}),
+    ("6,03mm AEG nerezová hlaveň SHS - 430 mm", "parts", {"ptype:barrel", "bdia:6.03"}, {"blen": 430}),
+    ("Zásobník M4/M16 na 130 ran FROG, tlačný - pískový", "magazines", {"fits:m4"}, {"rounds": 130}),
+    ("Airsoftové kuličky G&G BIO 0,28g, 2000bb", "bbs", {"bio:y", "bbdia:6"}, {"bbcount": 2000}),
+    ("Taktické kalhoty Conquistador Gen. I Flex - Coyote Brown, M-Tac Varianta: XL", "clothing", {"ctype:pants", "size:xl"}, {}),
+    ("Taktické boty Lowa ZEPHYR MK2 GTX® MID - černé, LOWA Varianta: 43", "clothing", {"ctype:boots"}, {"shoe": 43}),
+    ("Stehenní pouzdro na pistoli Glock MOLLE - pravé", "holsters", {"fits:glock", "hand:right", "hmount:thigh", "hmount:molle"}, {}),
+    ("Kuše Beast Hunter Fighter 185lbs camo", "bows", {"bowtype:crossbow"}, {"lbs": 185}),
+    ("Ochranná maska DEATH, černá, ACM", "masks", {"masktype:full"}, {}),
+])
+def test_filter_parameters_from_names(title, category, tags, nums):
+    from airsoftcompare.params import extract
+    got_tags, got_nums = extract(title, category)
+    assert tags <= set(got_tags), got_tags
+    assert all(got_nums.get(k) == v for k, v in nums.items()), got_nums
+
+
+def test_every_category_has_filter_definitions():
+    from airsoftcompare.categories import CATEGORIES, GROUPS
+    from airsoftcompare.params import CATEGORY_PARAMS, P, meta_defs
+    assert set(CATEGORY_PARAMS) == set(CATEGORIES)
+    assert all(p.rstrip("*") in P for ps in CATEGORY_PARAMS.values() for p in ps)
+    m = meta_defs()
+    assert set(GROUPS) <= set(m["catParams"]) and all(d["s"] in m["paramSections"] for d in m["params"].values())
+    urls = [d.get("u", k) for k, d in m["params"].items()]
+    reserved = {"q", "cat", "shop", "stock", "multi", "minshops", "save", "pmin", "pmax", "all", "page", "sort", "brand"}
+    assert len(urls) == len(set(urls)) and not reserved & set(urls)
