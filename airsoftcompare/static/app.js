@@ -15,8 +15,7 @@
       "foot.disclaimer": "Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.",
       updated: "Prices last updated {d}.", all: "All products", "sec.most": "Compared in the most shops", "sec.diff": "Biggest price differences",
       "nf.title": "Page not found", "nf.home": "Back to the homepage", home: "Home",
-      "hero.title": "Find the cheapest airsoft gear", "hero.text": "We compare <b>{offers}</b> offers from <b>{shops}</b> airsoft shops, so you don't have to open every one.",
-      "stat.products": "products", "stat.compared": "compared across shops", "stat.shops": "shops", categories: "Categories",
+      "hero.title": "Find the cheapest airsoft gear", "hero.text": "We compare <b>{offers}</b> offers from <b>{shops}</b> airsoft shops, so you don't have to open every one.", categories: "Categories",
       nprod: "{n} products", nprod1: "1 product", browseAll: "Browse all {n} products", showAll: "Show all ›",
       filters: "Filters", price: "Price", from: "from", to: "to", avail: "Availability", inStockOnly: "In stock only", clear: "Clear filters",
       showMore: "Show more", showLess: "Show less", any: "Any", allOf: "All", results: "Show {n} products",
@@ -45,8 +44,7 @@
       "foot.disclaimer": "Ceny čteme z veřejných feedů a stránek obchodů a nemusí být aktuální. Před nákupem vždy ověřte cenu v obchodě.",
       updated: "Ceny naposledy aktualizovány {d}.", all: "Všechny produkty", "sec.most": "Porovnáno v nejvíce obchodech", "sec.diff": "Největší rozdíly v cenách",
       "nf.title": "Stránka nenalezena", "nf.home": "Zpět na úvod", home: "Úvod",
-      "hero.title": "Najděte nejlevnější airsoftové vybavení", "hero.text": "Porovnáváme <b>{offers}</b> nabídek z <b>{shops}</b> airsoftových obchodů, abyste nemuseli procházet každý zvlášť.",
-      "stat.products": "produktů", "stat.compared": "porovnáno mezi obchody", "stat.shops": "obchodů", categories: "Kategorie",
+      "hero.title": "Najděte nejlevnější airsoftové vybavení", "hero.text": "Porovnáváme <b>{offers}</b> nabídek z <b>{shops}</b> airsoftových obchodů, abyste nemuseli procházet každý zvlášť.", categories: "Kategorie",
       nprod: "{n} produktů", nprod1: "1 produkt", nprod2: "{n} produkty", browseAll: "Zobrazit všech {n} produktů", showAll: "Zobrazit vše ›",
       filters: "Filtry", price: "Cena", from: "od", to: "do", avail: "Dostupnost", inStockOnly: "Pouze skladem", clear: "Zrušit filtry",
       showMore: "Zobrazit více", showLess: "Zobrazit méně", any: "Libovolně", allOf: "Vše", results: "Zobrazit {n} produktů",
@@ -75,8 +73,7 @@
       "foot.disclaimer": "Ceny čítame z verejných feedov a stránok obchodov a nemusia byť aktuálne. Pred nákupom vždy overte cenu v obchode.",
       updated: "Ceny naposledy aktualizované {d}.", all: "Všetky produkty", "sec.most": "Porovnané v najviac obchodoch", "sec.diff": "Najväčšie rozdiely v cenách",
       "nf.title": "Stránka sa nenašla", "nf.home": "Späť na úvod", home: "Úvod",
-      "hero.title": "Nájdite najlacnejšie airsoftové vybavenie", "hero.text": "Porovnávame <b>{offers}</b> ponúk z <b>{shops}</b> airsoftových obchodov, aby ste nemuseli prechádzať každý zvlášť.",
-      "stat.products": "produktov", "stat.compared": "porovnaných medzi obchodmi", "stat.shops": "obchodov", categories: "Kategórie",
+      "hero.title": "Nájdite najlacnejšie airsoftové vybavenie", "hero.text": "Porovnávame <b>{offers}</b> ponúk z <b>{shops}</b> airsoftových obchodov, aby ste nemuseli prechádzať každý zvlášť.", categories: "Kategórie",
       nprod: "{n} produktov", nprod1: "1 produkt", nprod2: "{n} produkty", browseAll: "Zobraziť všetkých {n} produktov", showAll: "Zobraziť všetko ›",
       filters: "Filtre", price: "Cena", from: "od", to: "do", avail: "Dostupnosť", inStockOnly: "Iba skladom", clear: "Zrušiť filtre",
       showMore: "Zobraziť viac", showLess: "Zobraziť menej", any: "Ľubovoľne", allOf: "Všetko", results: "Zobraziť {n} produktov",
@@ -105,8 +102,7 @@
       "foot.disclaimer": "Die Preise stammen aus öffentlichen Feeds und Produktseiten der Shops und können veraltet sein. Bitte vor dem Kauf im Shop prüfen.",
       updated: "Preise zuletzt aktualisiert am {d}.", all: "Alle Produkte", "sec.most": "In den meisten Shops verglichen", "sec.diff": "Größte Preisunterschiede",
       "nf.title": "Seite nicht gefunden", "nf.home": "Zur Startseite", home: "Start",
-      "hero.title": "Finde die günstigste Airsoft-Ausrüstung", "hero.text": "Wir vergleichen <b>{offers}</b> Angebote aus <b>{shops}</b> Airsoft-Shops, damit du nicht jeden einzeln öffnen musst.",
-      "stat.products": "Produkte", "stat.compared": "shopübergreifend verglichen", "stat.shops": "Shops", categories: "Kategorien",
+      "hero.title": "Finde die günstigste Airsoft-Ausrüstung", "hero.text": "Wir vergleichen <b>{offers}</b> Angebote aus <b>{shops}</b> Airsoft-Shops, damit du nicht jeden einzeln öffnen musst.", categories: "Kategorien",
       nprod: "{n} Produkte", nprod1: "1 Produkt", browseAll: "Alle {n} Produkte anzeigen", showAll: "Alle anzeigen ›",
       filters: "Filter", price: "Preis", from: "von", to: "bis", avail: "Verfügbarkeit", inStockOnly: "Nur auf Lager", clear: "Filter zurücksetzen",
       showMore: "Mehr anzeigen", showLess: "Weniger anzeigen", any: "Beliebig", allOf: "Alle", results: "{n} Produkte anzeigen",
@@ -304,9 +300,7 @@
     }).join("");
     const titles = { "Compared in the most shops": t("sec.most"), "Biggest price differences": t("sec.diff") };
     app.innerHTML = `
-      <section class="hero"><div><h1>${t("hero.title")}</h1><p data-nosnippet>${t("hero.text", { offers: fmt(m.stats.offers), shops: m.stats.shops })}</p></div>
-        <div class="hero-stats"><div><b>${fmt(m.stats.products)}</b><span>${t("stat.products")}</span></div>
-          <div><b>${fmt(m.stats.compared)}</b><span>${t("stat.compared")}</span></div><div><b>${m.stats.shops}</b><span>${t("stat.shops")}</span></div></div></section>
+      <section class="hero"><div><h1>${t("hero.title")}</h1><p data-nosnippet>${t("hero.text", { offers: fmt(m.stats.offers), shops: m.stats.shops })}</p></div></section>
       <div class="hero-cats"><h2 class="sec-title">${t("categories")}</h2><section class="tiles">${tiles}</section></div>
       ${m.sections.map((s) => row(titles[s.title] || s.title, s.more, s.items)).join("")}
       <div class="center"><a class="btn btn-big" href="/?all=1">${t("browseAll", { n: fmt(m.stats.products) })}</a></div>`;

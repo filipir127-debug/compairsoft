@@ -99,9 +99,6 @@ img { max-width: 100%; }
 .hero { background: linear-gradient(120deg, var(--brand-2), var(--brand)); color: #fff; border-radius: 16px; padding: 28px 32px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
 .hero h1 { margin: 0 0 6px; font-size: 30px; letter-spacing: -.02em; }
 .hero p { margin: 0; color: #cfd8ea; max-width: 560px; } .hero p b { color: #fff; }
-.hero-stats { display: flex; gap: 12px; }
-.hero-stats div { background: rgba(255,255,255,.09); border-radius: 12px; padding: 12px 18px; text-align: center; min-width: 110px; }
-.hero-stats b { display: block; font-size: 22px; } .hero-stats span { font-size: 12px; color: #cfd8ea; }
 
 .sec-title { font-size: 21px; letter-spacing: -.01em; margin: 30px 0 14px; }
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
@@ -244,8 +241,6 @@ img { max-width: 100%; }
   .logo-tag { display: none; } .logo-words { width: auto; }
   .filters { top: auto; }
   .hero { padding: 20px; } .hero h1 { font-size: 23px; }
-  .hero-stats { width: 100%; } .hero-stats div { flex: 1; min-width: 0; padding: 10px 6px; }
-  .hero-stats b { font-size: 18px; } .hero-stats span { font-size: 11px; line-height: 1.25; display: block; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .card-body { padding: 10px; } .price { font-size: 17px; }
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
