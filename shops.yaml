@@ -46,6 +46,13 @@ shops:
     type: feed
     feed_url: https://www.airsoftguns.cz/export/heureka.xml
 
+  # Army & outdoor shop (clothing, boots, pouches, gloves); affiliate programme on CJ (7 %)
+  - name: E-armyshop
+    url: https://www.e-armyshop.cz
+    type: feed
+    feed_url: https://www.e-armyshop.cz/heureka/export/products.xml
+    timeout: 120                # a 13 MB feed
+
   # ---- Crawled from sitemaps (one page per request_delay). If a shop shares its
   # Heureka feed URL, switch it to `type: feed` – it updates in seconds instead of hours.
   - name: AirsoftPro
