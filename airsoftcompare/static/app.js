@@ -32,7 +32,7 @@
       loadError: "Couldn't load the data. Please refresh the page.",
       "f.minshops": "Sold in", "f.save": "Saving at least", "f.brand": "Brand", "f.color": "Colour", "f.power": "Power source", "f.material": "Material",
       "f.cap": "Magazine type", "f.bbw": "BB weight", "f.shop": "Shop", shopsPlus: "{n}+ shops",
-      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual", "allParams": "All parameters", "clearParams": "Clear selected parameters", "close": "Close", "showN": "Show {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Spring", "tile.hpa": "HPA", "f.platform": "Platform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "WWII", "pl.bullpup": "Bullpup", "pl.mg": "Machine guns", "ag.rifle": "Rifles", "ag.pistol": "Pistols", "ag.pellets": "Diabolos", "f.airgun": "Type", "f.caliber": "Calibre",
+      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual", "allResults": "All results", "allParams": "All parameters", "clearParams": "Clear selected parameters", "close": "Close", "showN": "Show {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Spring", "tile.hpa": "HPA", "f.platform": "Platform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "WWII", "pl.bullpup": "Bullpup", "pl.mg": "Machine guns", "ag.rifle": "Rifles", "ag.pistol": "Pistols", "ag.pellets": "Diabolos", "f.airgun": "Type", "f.caliber": "Calibre",
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
@@ -61,7 +61,7 @@
       loadError: "Data se nepodařilo načíst. Obnovte prosím stránku.",
       "f.minshops": "Prodává", "f.save": "Úspora alespoň", "f.brand": "Značka", "f.color": "Barva", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníku", "f.bbw": "Gramáž kuliček", "f.shop": "Obchod", shopsPlus: "{n}+ obchodů",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální", "allParams": "Všechny parametry", "clearParams": "Zrušit vybrané parametry", "close": "Zavřít", "showN": "Zobrazit {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. světová válka", "pl.bullpup": "Bullpup", "pl.mg": "Kulomety", "ag.rifle": "Pušky", "ag.pistol": "Pistole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Ráže",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální", "allResults": "Všechny výsledky", "allParams": "Všechny parametry", "clearParams": "Zrušit vybrané parametry", "close": "Zavřít", "showN": "Zobrazit {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. světová válka", "pl.bullpup": "Bullpup", "pl.mg": "Kulomety", "ag.rifle": "Pušky", "ag.pistol": "Pistole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Ráže",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -90,7 +90,7 @@
       loadError: "Dáta sa nepodarilo načítať. Obnovte prosím stránku.",
       "f.minshops": "Predáva", "f.save": "Úspora aspoň", "f.brand": "Značka", "f.color": "Farba", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníka", "f.bbw": "Gramáž guličiek", "f.shop": "Obchod", shopsPlus: "{n}+ obchodov",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny", "allParams": "Všetky parametre", "clearParams": "Zrušiť vybrané parametre", "close": "Zavrieť", "showN": "Zobraziť {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. svetová vojna", "pl.bullpup": "Bullpup", "pl.mg": "Guľomety", "ag.rifle": "Pušky", "ag.pistol": "Pištole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Kaliber",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny", "allResults": "Všetky výsledky", "allParams": "Všetky parametre", "clearParams": "Zrušiť vybrané parametre", "close": "Zavrieť", "showN": "Zobraziť {n}", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. svetová vojna", "pl.bullpup": "Bullpup", "pl.mg": "Guľomety", "ag.rifle": "Pušky", "ag.pistol": "Pištole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Kaliber",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -119,7 +119,7 @@
       loadError: "Daten konnten nicht geladen werden. Bitte Seite neu laden.",
       "f.minshops": "Erhältlich in", "f.save": "Ersparnis mindestens", "f.brand": "Marke", "f.color": "Farbe", "f.power": "Antrieb", "f.material": "Material",
       "f.cap": "Magazintyp", "f.bbw": "BB-Gewicht", "f.shop": "Shop", shopsPlus: "{n}+ Shops",
-      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell", "allParams": "Alle Parameter", "clearParams": "Ausgewählte Parameter löschen", "close": "Schließen", "showN": "{n} anzeigen", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Federdruck", "tile.hpa": "HPA", "f.platform": "Plattform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "Zweiter Weltkrieg", "pl.bullpup": "Bullpup", "pl.mg": "Maschinengewehre", "ag.rifle": "Gewehre", "ag.pistol": "Pistolen", "ag.pellets": "Diabolos", "f.airgun": "Typ", "f.caliber": "Kaliber",
+      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell", "allResults": "Alle Ergebnisse", "allParams": "Alle Parameter", "clearParams": "Ausgewählte Parameter löschen", "close": "Schließen", "showN": "{n} anzeigen", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Federdruck", "tile.hpa": "HPA", "f.platform": "Plattform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "Zweiter Weltkrieg", "pl.bullpup": "Bullpup", "pl.mg": "Maschinengewehre", "ag.rifle": "Gewehre", "ag.pistol": "Pistolen", "ag.pellets": "Diabolos", "f.airgun": "Typ", "f.caliber": "Kaliber",
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
@@ -323,10 +323,20 @@
   }
 
   // ---------------------------------------------------------------- listing with facets
+  // A search word matches at the start of a word in the name. Model codes stay whole: "m4" finds
+  // M4, M4A1 and M4/M16 but not M40 or M45; short words find themselves and their plural
+  // ("ak" finds AK-47 and AKS-74U, not "akumulátor"); longer words also match as a prefix
+  // ("pistol" finds "pistole"); numbers also match after letters ("416" finds HK416).
+  const wordRx = (w) => {
+    const e = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const head = /^[0-9]/.test(w) ? "(?:^|[^0-9])" : "(?:^|[^a-z0-9])";
+    const tail = /[0-9]$/.test(w) ? "(?![0-9])" : w.length <= 3 ? "(?=s?(?![a-z]))" : "";
+    return new RegExp(head + e + tail);
+  };
   function matcher(q, syn) {
     const words = fold(q).split(/[^a-z0-9.]+/).filter(Boolean);
-    const alts = words.map((w) => [w, ...(syn[w] || [])]);
-    return (p) => { const k = "_f" + lang, s = (p[k] ||= fold(p.t + " " + (TR[p.id] || "") + " " + (p.b || ""))); return alts.every((o) => o.some((x) => s.includes(x))); };
+    const alts = words.map((w) => [w, ...(syn[w] || [])].map(wordRx));
+    return (p) => { const k = "_f" + lang, s = (p[k] ||= fold(p.t + " " + (TR[p.id] || "") + " " + (p.b || ""))); return alts.every((o) => o.some((rx) => rx.test(s))); };
   }
   const tagVals = (prefix) => (p) => (p.a || []).filter((x) => x.startsWith(prefix)).map((x) => x.slice(prefix.length));
   // name, url param, values of a product, label of a value
@@ -552,6 +562,19 @@
         const on = one(level) === v;
         return `<a class="qtile ${on ? "on" : ""}" href="${url({ [key]: on ? "" : v, page: "" })}">${qimg(best(v))}${esc(shownLabel(v))}</a>`;
       }).join("");
+    }
+    // A search across all categories: tiles for the categories it found, most results first.
+    const catTile = (sub, label, href, on) => {
+      const img = photoOf(sub);
+      return `<a class="qtile ${on ? "on" : ""}" href="${url(href)}"><span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[GROUP_OF[sub]] || "layers", "ic")}</span>${label}</a>`;
+    };
+    if (q && !c) {
+      const found = new Map();
+      for (const x of items) found.set(x.c, (found.get(x.c) || 0) + 1);
+      const top = [...found.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
+      subTiles = top.length > 1 ? top.map(([sub, n]) => catTile(sub, `${esc(catName(sub))} <span class="qn">${fmt(n)}</span>`, { cat: sub, page: "" }, false)).join("") : "";
+    } else if (q && c) {
+      subTiles = `<a class="qtile" href="${url({ cat: "", page: "" })}"><span class="qimg qprice">${icon("search", "ic")}</span>${t("allResults")}</a>` + subTiles;
     }
     const priceTiles = bands.map((v) => `<a class="qtile ${pmax === v && isNaN(pmin) ? "on" : ""}" href="${url({ pmin: "", pmax: v, page: "" })}">
         <span class="qimg qprice">${icon("layers", "ic")}</span>${t("priceUpTo", { v: fmtCur(v) })}</a>`).join("");

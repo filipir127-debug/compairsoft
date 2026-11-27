@@ -444,3 +444,26 @@ def test_robots_txt_keeps_crawlers_out_of_filter_combinations(tmp_path):
     for url in ("/", "/?cat=guns", "/?cat=airguns", "/product/1449ef11bd3d", "/shops", "/about",
                 "/data/g/weapons.json", "/static/app.js?v=202611271657", "/sitemap.xml"):
         assert not blocked(url), url
+
+
+def test_search_matches_whole_model_names():
+    import json, re, shutil, subprocess
+    from pathlib import Path
+    if not shutil.which("node"):
+        pytest.skip("node not installed")
+    js = Path(__file__).resolve().parent.parent.joinpath("airsoftcompare/static/app.js").read_text(encoding="utf-8")
+    fn = re.search(r"const wordRx = \(w\) => \{.*?\n  \};", js, re.S).group(0)
+    cases = [  # search word, folded product name, should match
+        ("m4", "airsoftova zbran m4 cqb - cerna", True), ("m4", "zasobnik m4/m16 na 130 ran", True),
+        ("m4", "specna arms m4a1 sa-c01", True), ("m4", "airsoft pistol colt m45 - co2", False),
+        ("m4", "odstrelovaci puska m40a3", False), ("m4", "co2 zasobnik pro viva mosin nagant m44", False),
+        ("ak", "airsoftova zbran ak-47", True), ("ak", "lct aks-74u", True), ("ak", "cyma ak47 tactical", True),
+        ("ak", "li-pol akumulator 7,4v", False), ("ak", "akce: kulicky 0,25g", False),
+        ("sniper", "airsoft sniper l96", True), ("pistol", "airsoftova pistole glock 17", True),
+        ("416", "airsoftova zbran hk416 a5", True), ("co2", "bombicka co2 12g", True), ("co2", "co22 test", False),
+        ("bb", "fallens airsoft bbs 0.32g", True), ("mag", "pmag 30 rnd", False),
+    ]
+    script = fn + "\nconsole.log(JSON.stringify(%s.map(([w, s]) => wordRx(w).test(s))));" % json.dumps([c[:2] for c in cases])
+    got = json.loads(subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True).stdout)
+    for (w, s, want), g in zip(cases, got):
+        assert g == want, f"{w!r} in {s!r}: {g}"

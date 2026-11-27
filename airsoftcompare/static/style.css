@@ -432,3 +432,6 @@ html.js .intro { display: none; }
 
 /* footer pitch: the last sentence on its own line (a line break in the text) */
 .foot-about { white-space: pre-line; }
+
+/* number of search results in a category tile */
+.qtile .qn { margin-left: auto; padding-left: 8px; white-space: nowrap; font-size: 12px; font-weight: 600; color: var(--muted); }
