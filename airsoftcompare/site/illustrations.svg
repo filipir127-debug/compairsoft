@@ -1,33 +1,47 @@
 <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true">
 <!-- Category illustrations, drawn for CompAirsoft. Colours come from CSS variables (--il-*), so they follow the theme. -->
 
-<!-- M4 carbine -->
+<!-- M4 carbine with quad rail (CQB) -->
 <symbol id="cat-weapons" viewBox="0 0 160 90">
   <circle cx="80" cy="45" r="40" fill="var(--il-bg)"/>
-  <g transform="translate(80 45) rotate(-45) scale(0.1029) translate(-420.0 -55.0)">
+  <g transform="translate(80 45) rotate(-45) scale(0.1025) translate(-425.0 -62.0)">
 
-  <path d="M0 -28 L170 -20 L172 30 L120 40 L18 105 Q0 112 0 95 Z" fill="var(--il-main)"/>
-  <rect x="-6" y="-30" width="16" height="140" rx="6" fill="var(--il-mid)"/>
-  <rect x="160" y="-16" width="130" height="32" rx="6" fill="var(--il-mid)"/>
-  <path d="M325 50 L372 50 L342 172 Q338 182 326 182 L300 182 Q288 182 291 170 Z" fill="var(--il-main)"/>
-  <path d="M372 52 Q368 92 410 88 L440 58" fill="none" stroke="var(--il-main)" stroke-width="10"/>
-  <path d="M388 58 L398 82" stroke="var(--il-mid)" stroke-width="9" stroke-linecap="round"/>
-  <path d="M388 90 L452 90 Q455 148 486 205 L438 226 Q397 160 388 90 Z" fill="var(--il-accent)"/>
-  <path d="M280 0 H470 V55 H452 V92 H388 V55 H280 Z" fill="var(--il-main)"/>
-  <rect x="280" y="-44" width="202" height="46" rx="6" fill="var(--il-main)"/>
-  <rect x="268" y="-34" width="18" height="12" rx="3" fill="var(--il-mid)"/>
-  <rect x="340" y="-26" width="70" height="16" rx="4" fill="var(--il-mid)"/>
-  <path d="M286 -51 H640" stroke="var(--il-main)" stroke-width="16" stroke-dasharray="10 6"/>
-  <rect x="480" y="-44" width="160" height="70" rx="10" fill="var(--il-main)"/>
-  <g fill="var(--il-mid)"><rect x="500" y="-22" width="26" height="28" rx="6"/><rect x="538" y="-22" width="26" height="28" rx="6"/><rect x="576" y="-22" width="26" height="28" rx="6"/></g>
-  <rect x="636" y="-10" width="160" height="20" rx="4" fill="var(--il-main)"/>
-  <rect x="650" y="-24" width="26" height="36" rx="4" fill="var(--il-main)"/>
-  <rect x="790" y="-17" width="56" height="34" rx="6" fill="var(--il-main)"/>
-  <path d="M806 -8 V8 M826 -8 V8" stroke="var(--il-mid)" stroke-width="6" stroke-linecap="round"/>
-  <rect x="352" y="-104" width="78" height="44" rx="12" fill="var(--il-main)"/>
-  <rect x="366" y="-62" width="50" height="10" fill="var(--il-main)"/>
-  <rect x="424" y="-98" width="12" height="32" rx="4" fill="var(--il-accent)"/>
-  <rect x="382" y="-118" width="18" height="16" rx="3" fill="var(--il-mid)"/>
+  <path d="M4 -24 H204 V30 H158 L150 44 L58 126 Q50 133 40 133 H8 Q2 133 2 127 V-18 Q2 -24 8 -24 Z" fill="var(--il-main)"/>
+  <rect x="-6" y="-26" width="16" height="161" rx="5" fill="var(--il-mid)"/>
+  <path d="M44 104 L118 38" stroke="var(--il-bg)" stroke-width="9" stroke-linecap="round"/>
+  <rect x="150" y="30" width="22" height="12" rx="3" fill="var(--il-mid)"/>
+  <path d="M26 -4 H186" stroke="var(--il-mid)" stroke-width="5" stroke-linecap="round"/>
+  <rect x="200" y="-16" width="86" height="32" rx="4" fill="var(--il-main)"/>
+  <rect x="280" y="-22" width="14" height="44" rx="4" fill="var(--il-mid)"/>
+  <path d="M330 52 L376 52 L346 172 Q342 184 330 184 L304 184 Q292 184 295 172 Z" fill="var(--il-main)"/>
+  <path d="M358 100 Q372 104 368 116" stroke="var(--il-mid)" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M376 54 Q370 92 412 88 L440 58" fill="none" stroke="var(--il-main)" stroke-width="10"/>
+  <path d="M392 58 Q402 70 396 82" stroke="var(--il-mid)" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <path d="M390 92 L454 92 Q457 156 480 218 L430 236 Q398 172 390 92 Z" fill="var(--il-accent)"/>
+  <path d="M410 104 Q413 160 436 216 M432 104 Q435 156 456 206" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>
+  <path d="M290 0 H470 V56 H454 V94 H390 V56 H290 Z" fill="var(--il-main)"/>
+  <circle cx="345" cy="28" r="7" fill="var(--il-mid)"/>
+  <rect x="440" y="10" width="20" height="10" rx="3" fill="var(--il-mid)"/>
+  <rect x="288" y="-44" width="194" height="46" rx="5" fill="var(--il-main)"/>
+  <rect x="340" y="-30" width="76" height="16" rx="3" fill="var(--il-mid)"/>
+  <circle cx="314" cy="-14" r="10" fill="var(--il-mid)"/>
+  <rect x="274" y="-38" width="20" height="12" rx="3" fill="var(--il-mid)"/>
+  <path d="M290 -49 H700" stroke="var(--il-main)" stroke-width="12" stroke-dasharray="9 5"/>
+  <path d="M302 -56 V-94 H330 L340 -80 V-56 Z" fill="var(--il-main)"/>
+  <rect x="318" y="-90" width="8" height="12" rx="2" fill="var(--il-mid)"/>
+  <rect x="480" y="-46" width="22" height="78" rx="6" fill="var(--il-main)"/>
+  <path d="M485 -40 V26 M491 -40 V26 M497 -40 V26" stroke="var(--il-mid)" stroke-width="2.5"/>
+  <rect x="500" y="-44" width="200" height="74" rx="6" fill="var(--il-main)"/>
+  <path d="M516 -33 V21 M528 -33 V21 M540 -33 V21 M552 -33 V21 M564 -33 V21 M576 -33 V21 M588 -33 V21 M600 -33 V21 M612 -33 V21 M624 -33 V21 M636 -33 V21 M648 -33 V21 M660 -33 V21 M672 -33 V21 M684 -33 V21" stroke="var(--il-mid)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M504 35 H696" stroke="var(--il-main)" stroke-width="10" stroke-dasharray="9 5"/>
+  <rect x="696" y="-9" width="110" height="18" rx="3" fill="var(--il-main)"/>
+  <path d="M704 -6 L730 -90 M762 -6 L740 -90" stroke="var(--il-main)" stroke-width="11" stroke-linecap="round"/>
+  <rect x="724" y="-100" width="22" height="14" rx="3" fill="var(--il-main)"/>
+  <rect x="731" y="-112" width="8" height="14" rx="2" fill="var(--il-main)"/>
+  <rect x="700" y="-14" width="66" height="30" rx="5" fill="var(--il-main)"/>
+  <rect x="736" y="14" width="22" height="16" rx="3" fill="var(--il-main)"/>
+  <rect x="802" y="-13" width="52" height="26" rx="4" fill="var(--il-main)"/>
+  <path d="M814 -6 H846 M814 6 H846" stroke="var(--il-mid)" stroke-width="4" stroke-linecap="round"/>
   </g>
 </symbol>
 
