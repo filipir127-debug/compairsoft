@@ -52,11 +52,15 @@ jobs:
         if: github.event_name != 'push'
         run: |
           mkdir -p data
-          python -m airsoftcompare update --batch --max-minutes "${{ github.event.inputs.crawl_minutes || '240' }}"
+          python -m airsoftcompare update --batch --max-minutes "${{ github.event.inputs.crawl_minutes || '220' }}"
 
       - name: Cache product photos
         if: github.event_name != 'push'
-        run: python -m airsoftcompare thumbs --max-minutes 45
+        run: python -m airsoftcompare thumbs --max-minutes 40
+
+      - name: Translate product names
+        if: github.event_name != 'push'
+        run: python -m airsoftcompare translate --max-minutes 40
 
       - name: Save database
         if: always() && github.event_name != 'push'

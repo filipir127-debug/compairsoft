@@ -305,3 +305,5 @@ img { max-width: 100%; }
 .home-start .catbar { max-height: 0; opacity: 0; border-bottom-width: 0; transition: none; }
 .sprite { display: none; }
 .legend .sw { margin-right: 6px; vertical-align: middle; }
+.orig-name { font-size: 13px; color: var(--muted); margin-top: -6px; }
+.lang.cur select { max-width: 76px; }

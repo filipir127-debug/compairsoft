@@ -165,6 +165,8 @@ def update_all(cfg: dict, only: list[str] | None = None, max_minutes: float | No
                batch: bool = False) -> None:
     """batch=True (scheduled jobs): match products once at the end instead of while crawling."""
     settings = {**cfg["settings"], "live_rematch": not batch}
+    from .rates import current_rates
+    _, settings["exchange_rates"] = current_rates(settings)  # today's ČNB rates for foreign-currency shops
     conn = dbmod.connect(settings["database"])
     shops = [s for s in cfg["shops"] if not only or s["name"] in only]
     if not shops:

@@ -26,6 +26,8 @@ def main(argv: list[str] | None = None) -> None:
     up.add_argument("--batch", action="store_true", help="match products once at the end (for scheduled jobs)")
     th = sub.add_parser("thumbs", help="download product photos and store small WebP copies")
     th.add_argument("--max-minutes", type=float, help="stop after this long; the rest continues next run")
+    tl = sub.add_parser("translate", help="machine-translate product names to English and German")
+    tl.add_argument("--max-minutes", type=float, help="stop after this long; the rest continues next run")
     ex = sub.add_parser("export", help="write the whole site as static files (for Cloudflare Pages)")
     ex.add_argument("out", nargs="?", default="dist")
     sub.add_parser("rematch", help="re-run product matching only")
@@ -73,6 +75,9 @@ def main(argv: list[str] | None = None) -> None:
     elif args.cmd == "thumbs":
         from .images import cache_images
         cache_images(cfg, args.max_minutes)
+    elif args.cmd == "translate":
+        from .translate import translate_names
+        translate_names(cfg, args.max_minutes)
     elif args.cmd == "export":
         from .export import export_site
         export_site(cfg, args.out)

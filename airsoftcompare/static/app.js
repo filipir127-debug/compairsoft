@@ -1,7 +1,7 @@
 "use strict";
 (() => {
   const SITE = JSON.parse(document.getElementById("site-config").textContent);
-  const { groups: GROUPS, groupOf: GROUP_OF, icons: ICONS, currency: CUR, cats: CATS } = SITE;
+  const { groups: GROUPS, groupOf: GROUP_OF, icons: ICONS, currency: BASE, cats: CATS } = SITE;
   const V = document.documentElement.dataset.v;
   const app = document.getElementById("app");
   const PAGE_SIZE = 48;
@@ -37,7 +37,7 @@
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
-      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", zoom: "Show the original photo", showEmail: "Show email address",
+      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", origName: "Original name", ratesNote: "Prices in {c} are converted from CZK at the Czech National Bank rate of {d}.", zoom: "Show the original photo", showEmail: "Show email address",
     },
     cs: {
       "search.ph": "Hledat zbraně, zásobníky, kolimátory…", "search.btn": "Hledat", "nav.shops": "Obchody", loading: "Načítání…",
@@ -67,7 +67,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
+      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", origName: "Původní název", ratesNote: "Ceny v {c} jsou přepočtené z Kč kurzem ČNB ze dne {d}.", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
     },
     sk: {
       "search.ph": "Hľadať zbrane, zásobníky, kolimátory…", "search.btn": "Hľadať", "nav.shops": "Obchody", loading: "Načítava sa…",
@@ -97,7 +97,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
+      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", origName: "Pôvodný názov", ratesNote: "Ceny v {c} sú prepočítané z Kč kurzom ČNB zo dňa {d}.", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
     },
     de: {
       "search.ph": "Waffen, Magazine, Red Dots suchen…", "search.btn": "Suchen", "nav.shops": "Shops", loading: "Wird geladen…",
@@ -127,7 +127,7 @@
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
-      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
+      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", origName: "Originalname", ratesNote: "Preise in {c} sind aus CZK zum Kurs der Tschechischen Nationalbank vom {d} umgerechnet.", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
     },
   };
   const CAT_NAMES = {
@@ -171,10 +171,18 @@
   const json = (u) => (cache[u] ||= fetch(`${u}?v=${V}`).then((r) => { if (!r.ok) throw new Error(`${u}: ${r.status}`); return r.json(); }));
   const fold = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   const fmt = (n) => Math.round(n).toLocaleString("cs-CZ").replace(/\s/g, " ");
+  // Prices are stored in the base currency (CZK) and converted for display at the ČNB daily rate.
+  const LOCALES = { cs: "cs-CZ", sk: "sk-SK", en: "en-GB", de: "de-DE" };
+  let RATES = { [BASE]: 1 };
+  let cur = (() => { try { return localStorage.getItem("currency"); } catch (e) { return null; } })()
+    || ({ sk: "EUR", de: "EUR" }[document.documentElement.lang] || BASE);
+  const rate = () => RATES[cur] || 1;
+  const toCur = (v) => v / rate();
   const money = (v) => {
     if (v == null) return "–";
-    const s = CUR === "CZK" ? fmt(v) : v.toLocaleString("cs-CZ", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return s + ({ CZK: " Kč", EUR: " €", PLN: " zł" }[CUR] || " " + CUR);
+    const x = toCur(v);
+    if (cur === "CZK") return fmt(x) + " Kč";
+    return x.toLocaleString(LOCALES[lang] || "en-GB", { style: "currency", currency: cur, maximumFractionDigits: x >= 1000 ? 0 : 2 });
   };
   const icon = (name, cls = "ic") => `<svg class="${cls}"><use href="#i-${name}"/></svg>`;
   const groupIcon = (c) => icon(ICONS[GROUP_OF[c] || c] || "image", "ph");
@@ -201,8 +209,11 @@
     document.getElementById("theme").setAttribute("aria-label", t("theme"));
   }
   const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } };
+  document.getElementById("cur").addEventListener("change", (e) => {
+    cur = e.target.value; store("currency", cur); route();
+  });
   document.getElementById("lang").addEventListener("change", (e) => {
-    lang = e.target.value; store("lang", lang); applyShell(); route();
+    lang = e.target.value; store("lang", lang); TR = {}; itemsCache.trKey = null; applyShell(); route();
   });
   document.getElementById("theme").addEventListener("click", () => {
     const d = document.documentElement;
@@ -217,7 +228,7 @@
     return `<a class="card" href="/product/${p.id}">
       <div class="thumb">${groupIcon(p.c)}${safeUrl(p.i) ? `<img src="${esc(safeUrl(p.i))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}${save}</div>
       <div class="card-body">
-        ${p.b ? `<div class="card-brand">${esc(p.b)}</div>` : ""}<div class="name">${esc(p.t)}</div>${stock}
+        ${p.b ? `<div class="card-brand">${esc(p.b)}</div>` : ""}<div class="name">${esc(nameOf(p))}</div>${stock}
         <div class="price-row"><div class="price">${p.s > 1 ? `<small>${t("fromP")}</small> ` : ""}${money(p.p)}</div></div>
         <div class="cmp ${p.s > 1 ? "multi" : ""}">${p.s > 1 ? t("compareN", { n: p.s }) : t("oneShop")}</div>
       </div></a>`;
@@ -244,6 +255,7 @@
   }
   function home(m) {
     markGroup(null);
+    if (TR_LANGS.includes(lang) && m.tr) Object.assign(TR, m.tr[lang] || {});
     document.title = `CompAirsoft – ${t("hero.title")}`;
     const tiles = Object.entries(GROUPS).map(([g, [, , subs]]) => {
       const total = subs.reduce((n, s) => n + (m.counts[s] || 0), 0);
@@ -269,7 +281,7 @@
   function matcher(q, syn) {
     const words = fold(q).split(/[^a-z0-9.]+/).filter(Boolean);
     const alts = words.map((w) => [w, ...(syn[w] || [])]);
-    return (p) => { const s = (p._f ||= fold(p.t + " " + (p.b || ""))); return alts.every((o) => o.some((x) => s.includes(x))); };
+    return (p) => { const k = "_f" + lang, s = (p[k] ||= fold(p.t + " " + (TR[p.id] || "") + " " + (p.b || ""))); return alts.every((o) => o.some((x) => s.includes(x))); };
   }
   const tagVals = (prefix) => (p) => (p.a || []).filter((x) => x.startsWith(prefix)).map((x) => x.slice(prefix.length));
   // name, url param, values of a product, label of a value
@@ -283,11 +295,19 @@
     ["shop", "shop", (p) => p.h.map(String), null],
   ];
   let itemsCache = { key: null, items: [] };
+  const TR_LANGS = ["en", "de"];
+  let TR = {};  // product id -> name in the current language (machine translation)
+  const nameOf = (p) => TR[p.id] || p.t;
   async function loadItems(group) {
     const key = group || "*";
     if (itemsCache.key !== key) {
       const files = group ? [group] : Object.keys(GROUPS);
       itemsCache = { key, items: (await Promise.all(files.map((g) => json(`/data/g/${g}.json`)))).flat() };
+    }
+    if (TR_LANGS.includes(lang) && itemsCache.trKey !== lang + key) {
+      const files = group ? [group] : Object.keys(GROUPS);
+      for (const m of await Promise.all(files.map((g) => json(`/data/g/${g}.${lang}.json`).catch(() => ({}))))) Object.assign(TR, m);
+      itemsCache.trKey = lang + key;
     }
     return itemsCache.items;
   }
@@ -311,8 +331,8 @@
     if (stock) base = base.filter((x) => x.k > 0);
     if (minShops) base = base.filter((x) => x.s >= minShops);
     if (minSave) base = base.filter((x) => x.s > 1 && x.x > 0 && (1 - x.p / x.x) * 100 >= minSave);
-    if (!isNaN(pmin)) base = base.filter((x) => x.p >= pmin);
-    if (!isNaN(pmax)) base = base.filter((x) => x.p <= pmax);
+    if (!isNaN(pmin)) base = base.filter((x) => toCur(x.p) >= pmin);
+    if (!isNaN(pmax)) base = base.filter((x) => toCur(x.p) <= pmax);
 
     const chosen = Object.fromEntries(FACETS.map(([n, k]) => [n, new Set(list(p, k))]));
     const passes = (x, except) => FACETS.every(([n, , vals]) => n === except || !chosen[n].size || vals(x).some((v) => chosen[n].has(v)));
@@ -361,7 +381,7 @@
       <aside class="filters"><details class="filters-box" ${open}><summary>${icon("sliders-horizontal")} ${t("filters")}</summary>
         ${active ? `<a class="clear" href="${catHref(c)}">${icon("x")} ${t("clear")}</a>` : ""}
         <form method="get" action="/" class="f-group">${["q", "cat", "sort", "stock", "minshops", "save", ...FACETS.map((f) => f[1])].map(keep).join("")}<input type="hidden" name="all" value="1">
-          <div class="f-title">${t("price")} (${CUR === "CZK" ? "Kč" : CUR})</div><div class="range">
+          <div class="f-title">${t("price")} (${cur === "CZK" ? "Kč" : cur})</div><div class="range">
             <input type="number" name="pmin" value="${isNaN(pmin) ? "" : pmin}" min="0" inputmode="numeric" placeholder="${t("from")}" aria-label="${t("price")} ${t("from")}"><span>–</span>
             <input type="number" name="pmax" value="${isNaN(pmax) ? "" : pmax}" min="0" inputmode="numeric" placeholder="${t("to")}" aria-label="${t("price")} ${t("to")}">
             <button class="btn btn-small" type="submit" aria-label="OK">OK</button></div></form>
@@ -416,23 +436,26 @@
       return;
     }
     const p = d.p, g = GROUP_OF[p.c] || "misc";
+    const tr = (TR_LANGS.includes(lang) && d.tr && d.tr[lang]) || null;
+    if (tr) d.sim.forEach((q, i) => { if (tr.sim[i]) TR[q.id] = tr.sim[i]; });
+    const title = (tr && tr.t) || p.t;
     markGroup(g);
-    document.title = `${p.t} – ${t("priceCmp")} | CompAirsoft`;
+    document.title = `${title} – ${t("priceCmp")} | CompAirsoft`;
     const live = d.o.filter((o) => o.a);
     const offers = d.o.map((o, i) => {
       const best = i === 0 && o.k !== 0 && o.a;
       const st = !o.a ? `<span class="stock no">${t("removed")}</span>` : o.k === 1 ? `<span class="stock yes">${t("inStock")}</span>`
         : o.k === 0 ? `<span class="stock no">${t("outOfStock")}</span>` : `<span class="stock">${t("unknown")}</span>`;
-      const foreign = o.y && o.y !== CUR && o.r != null ? `<small>${o.r.toFixed(2)} ${esc(o.y)}</small>` : "";
+      const foreign = o.y && o.y !== cur && o.y !== BASE && o.r != null ? `<small>${o.r.toFixed(2)} ${esc(o.y)}</small>` : "";
       return `<div class="offer ${best ? "best" : ""} ${o.a ? "" : "gone"}">
-        <div class="o-shop"><b>${esc(o.s)}</b>${best && d.o.length > 1 ? `<span class="tag">${t("cheapest")}</span>` : ""}<div class="o-title">${esc(o.t)}</div></div>
+        <div class="o-shop"><b>${esc(o.s)}</b>${best && d.o.length > 1 ? `<span class="tag">${t("cheapest")}</span>` : ""}<div class="o-title" title="${esc(o.t)}">${esc((tr && tr.o[i]) || o.t)}</div></div>
         <div class="o-stock">${st}</div><div class="o-price">${money(o.v)}${foreign}</div>
         <a class="btn btn-shop" href="${esc(safeUrl(o.u) || "#")}" target="_blank" rel="noopener noreferrer nofollow">${t("goShop")}</a></div>`;
     }).join("");
     app.innerHTML = `
       <nav class="crumbs"><a href="/">${t("home")}</a><span>›</span><a href="/?cat=${g}">${esc(catName(g))}</a>${GROUPS[g][2].length > 1 ? `<span>›</span><a href="/?cat=${p.c}">${esc(catName(p.c))}</a>` : ""}</nav>
       <section class="pd"><div class="pd-img">${groupIcon(p.c)}${safeUrl(p.i) ? `<button type="button" class="zoom" data-orig="${esc(safeUrl(p.orig) || safeUrl(p.i))}" aria-label="${t("zoom")}"><img src="${esc(safeUrl(p.i))}" alt="${esc(p.t)}" referrerpolicy="no-referrer"><span class="zoom-hint">${icon("search")}</span></button>` : ""}</div>
-        <div class="pd-info"><h1>${esc(p.t)}</h1>
+        <div class="pd-info"><h1>${esc(title)}</h1>${title !== p.t ? `<div class="orig-name">${t("origName")}: ${esc(p.t)}</div>` : ""}
           <div class="pd-meta">${p.b ? `<span>${t("brand")}: <b>${esc(p.b)}</b></span>` : ""}<span>${t("category")}: <a href="/?cat=${p.c}">${esc(catName(p.c))}</a></span>${p.e ? `<span>EAN: ${esc(p.e)}</span>` : ""}</div>
           <div class="pd-buy"><div>
             <div class="pd-price">${p.s > 1 ? `<small>${t("fromP")}</small> ` : ""}${money(p.p)}</div>
@@ -516,7 +539,11 @@
     if (page === "404") return;
     try {
       const m = await json("/data/meta.json");
-      document.getElementById("updated").textContent = t("updated", { d: m.generated.replace("T", " ") });
+      RATES = { [BASE]: 1, ...(m.rates || {}) };
+      if (!RATES[cur]) cur = BASE;
+      document.getElementById("cur").value = cur;
+      document.getElementById("updated").textContent = t("updated", { d: m.generated.replace("T", " ") })
+        + (cur !== BASE && m.rates_date ? " " + t("ratesNote", { c: cur, d: m.rates_date }) : "");
       catbarFollow(null);
       if (page === "product") return await product();
       if (page === "shops") return shopsPage(m);

@@ -21,6 +21,8 @@ from jinja2 import Environment, FileSystemLoader
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
 from .images import export_buckets, published_thumbs, thumb_name
+from .rates import SHOWN, current_rates
+from .translate import LANGS, load_translations
 from .sources.common import safe_url
 from .text import SYNONYMS, colors, normalize, strip_accents
 
@@ -160,6 +162,8 @@ def export_site(cfg: dict, out: str | Path) -> None:
         shutil.rmtree(out)
     (out / "static").mkdir(parents=True)
 
+    rates_day, rates = current_rates(settings)
+    tr = load_translations(conn)
     _THUMBS.clear()
     _THUMBS.update(published_thumbs(settings))
     products = [dict(r) for r in conn.execute("SELECT * FROM products")]
@@ -213,6 +217,11 @@ def export_site(cfg: dict, out: str | Path) -> None:
                   for o in offers.get(pid, [])],
             "hist": history.get(pid, {}),
             "sim": [{k: v for k, v in cards[q].items() if k != "h"} for q in similar.get(pid, [])[:6]],
+            # Machine translations (en, de): product name, offer names, similar products' names.
+            "tr": {lang: {"t": tr[lang].get(p["title"], ""),
+                          "o": [tr[lang].get(o["title"], "") for o in offers.get(pid, [])],
+                          "sim": [tr[lang].get(cards[q]["t"], "") for q in similar.get(pid, [])[:6]]}
+                   for lang in LANGS if tr[lang].get(p["title"])},
         }
     size = sum(_dump(out / "data" / "p" / f"{k}.json", v) for k, v in shards.items())
     log.info("Wrote %d product shards (%.1f MB)", len(shards), size / 1e6)
@@ -222,6 +231,9 @@ def export_site(cfg: dict, out: str | Path) -> None:
     for p in sorted(products, key=lambda p: (-p["shop_count"], p["min_price"])):
         by_group[GROUP_OF.get(p["category"], "misc")].append(cards[p["id"]])
     for g in GROUPS:
+        for lang in LANGS:  # translated names, loaded by the browser only for that language
+            _dump(out / "data" / "g" / f"{g}.{lang}.json",
+                  {c["id"]: tr[lang][c["t"]] for c in by_group.get(g, []) if c["t"] in tr[lang]})
         n = _dump(out / "data" / "g" / f"{g}.json", by_group.get(g, []))
         log.info("Group %s: %d products (%.1f MB)", g, len(by_group.get(g, [])), n / 1e6)
 
@@ -254,6 +266,9 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "shops": [{"id": s["id"], "name": s["name"], "url": safe_url(s["url"]), "type": s["type"], "offers": s["offer_count"],
                    "cheapest": cheapest[s["id"]], "updated": s["last_update"], "status": s["last_status"]} for s in shops],
         "counts": counts,
+        "tr": {lang: {i["id"]: tr[lang][i["t"]] for s in sections for i in s["items"] if i["t"] in tr[lang]} for lang in LANGS},
+        "rates": {c: rates[c] for c in SHOWN if c in rates},
+        "rates_date": rates_day,
         "images": _group_images(products, offers),
         "sections": sections,
         "syn": synonyms,

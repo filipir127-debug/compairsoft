@@ -9,3 +9,7 @@ numpy>=1.26
 pytest>=8.0
 httpx>=0.27       # tests: FastAPI TestClient
 Pillow>=10
+ctranslate2>=4.0     # offline machine translation of product names
+sentencepiece>=0.2
+subword-nmt>=0.3
+sacremoses>=0.1

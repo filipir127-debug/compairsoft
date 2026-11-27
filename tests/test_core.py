@@ -175,3 +175,9 @@ def test_thumbnails_fit_450_and_flatten_transparency():
     assert make_thumb(b"not an image") is None
     name = thumb_name("https://shop.cz/a.jpg")
     assert name.endswith(".webp") and 0 <= bucket(name) < BUCKETS
+
+
+def test_parse_cnb_rates():
+    from airsoftcompare.rates import parse_cnb
+    day, rates = parse_cnb("26.11.2026 #227\nzemě|měna|množství|kód|kurz\nEMU|euro|1|EUR|24,455\nMaďarsko|forint|100|HUF|6,570\n")
+    assert day == "26.11.2026" and rates["EUR"] == 24.455 and abs(rates["HUF"] - 0.0657) < 1e-9 and rates["CZK"] == 1.0
