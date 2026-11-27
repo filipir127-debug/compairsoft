@@ -58,6 +58,27 @@ _PLATFORM = [
            r"negev|m134|minigun|vulcan|stoner|ultimax|maxim|zb ?26|dp-?28|type ?96|m1919|ameli)\b"),
 ]
 GUN_TYPES = {"pistols", "guns", "smgs", "shotguns", "snipers"}
+# Air guns: kind (Guns > Airguns > Rifles / Pistols / Diabolos) and calibre (Diabolos > 4.5mm …).
+_AIRGUN_KIND = [("pellets", r"\b(diabol\w*|pellet\w*|broky|strelivo)\b"),
+                ("rifle", r"\b(vzduchovk\w*|pusk[ayu]\w*|samopal\w*|karabin\w*|rifle\w*)\b"),
+                ("pistol", r"\b(pistol\w*|revolver\w*|glock\w*|1911|beretta|cz ?75\w*|walther p\w*|makarov|schofield|"
+                           r"dan wesson|python|peacemaker|saa|smith ?& ?wesson|s ?& ?w|m29|629)\b")]
+_INCH = {"177": "4.5", "20": "5.0", "22": "5.5", "25": "6.35", "30": "7.62", "357": "9"}
+CALIBERS = ("4.5", "5.0", "5.5", "6.35", "7.62", "9")
+
+
+def _caliber(t: str) -> str | None:
+    """Calibre bucket of an air gun or its pellets: "cal.5,52mm" -> 5.5, ".177" / "cal. 22" -> inches."""
+    for m in re.finditer(r"cal\.? ?(\d{1,3}(?:[.,]\d{1,2})?) ?(?:mm)?\b|(?<![\d.,])(\d{1,2}[.,]\d{1,2}) ?mm\b"
+                         r"|(?<![\d\w])\.(177|20|22|25|30|357)\b", t):
+        if m.group(3) or (m.group(1) and m.group(1) in _INCH):
+            return _INCH[m.group(3) or m.group(1)]
+        mm = float((m.group(1) or m.group(2)).replace(",", "."))
+        if 4.3 <= mm <= 9.2:
+            return min(CALIBERS, key=lambda c: abs(float(c) - mm))
+    return None
+
+
 _METAL = r"\b(kov\w*|celokov\w*|full ?metal|metal\w*|ocel\w*|steel|hlinik\w*|alu\w*|cnc)\b"
 _PLASTIC = r"\b(abs|plast\w*|nylon\w*|polymer\w*)\b"
 _CAP = r"\b(mid|hi|high|low|real)[ -]?cap\b"
@@ -91,6 +112,15 @@ def _attrs(title: str, category: str, price: float | None = None) -> list[str]:
             tags.append("mt:metal")
         elif re.search(_PLASTIC, t):
             tags.append("mt:plastic")
+    if category == "airguns":
+        # the first kind word decides: "Vzduchová pistole … Diabolo" is a pistol, "Diabolo … pistole" pellets
+        hits = [(m.start(), k) for k, rx in _AIRGUN_KIND for m in [re.search(rx, t)] if m]
+        kind = min(hits)[1] if hits else "rifle"
+        if kind == "pellets" and price and price > 1500:  # a gun "for diabolos", not a tin of them
+            kind = "pistol" if any(k == "pistol" for _, k in hits) else "rifle"
+        tags.append("ag:" + kind)
+        if cal := _caliber(t):
+            tags.append(f"cal:{cal}")
     if category == "magazines" and (m := re.search(_CAP, t)):
         tags.append("cap:" + {"high": "hi"}.get(m.group(1), m.group(1)))
     if category == "bbs" and (m := re.search(_BB_WEIGHT, t)):

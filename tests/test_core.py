@@ -212,7 +212,7 @@ def test_parse_cnb_rates():
     ("Potravinová dávka Pro Ration FULL-DAY (celodenní) - Menu 1, Adventure Menu", "food"),
     ("Plátek sýrové pizzy (US MRE Menu 11)", "food"),
     ("Sušené hovězí maso Original - 25g, Indiana Jerky", "food"),
-    ("Diabolo Gamo Magnum Energy 250ks cal.4,5mm", "other"),
+    ("Diabolo Gamo Magnum Energy 250ks cal.4,5mm", "airguns"),
     ("Handsfree A21M, Midland", "comms"),
     ("Baterie BL-5 pro rádiostanici Baofeng UV-5R - Baofeng", "comms"),
     ("Špunty do uší MaxDefense M02, EARMOR", "comms"),
@@ -271,3 +271,66 @@ def test_gun_power_and_platform_tags():
     assert "pw:spring" in tags("Glock 25, kov, Galaxy", "pistols", 470)            # cheap pistol: spring
     assert "pw:gas" in tags("Hi-Capa 5.1, WE", "pistols", 2500)
     assert {"pl:ww2", "pl:mg"} <= tags("Airsoftový kulomet MG42 - celokov", "guns")
+
+
+@pytest.mark.parametrize("title, expected", [
+    ("Nůž Mora® 756T nerez ZELENÝ", "melee"),
+    ("Obušek teleskopický EXB 16 nekalený ČERNÝ", "melee"),
+    ("Kuše Beast Hunter Blade 175lb camo", "bows"),
+    ("Toulec Avalon Classic 3T-2 pocket LH black", "bows"),
+    ("Pryžové nesmeky s kovovými hroty YETTI, BENNON", "other"),
+    ("Střelecký terč IPSC Hard Cover 1 - 50ks, Range Solutions", "targets"),
+    ("Magnetka Umarex Germany", "magnets"),
+    ("Magnetický opasek EDC Magnetic Belt - černý, Helikon-Tex", "pouches"),
+    ("Sběratelská kniha nášivek - Coyote Brown, Emerson Gear", "books"),
+    ("Redukce T-Dean, Large TAMIYA konektor, samice", "cables"),
+    ("Redukce závitu tlumiče ze 14mm + na 14mm -, Specna Arms", "parts"),
+    ("Vzduchovka Hatsan 105X Torpedo cal.5,5mm FP", "airguns"),
+    ("Vzduchová pistole Glock 17 Gen5 BlowBack Coyote", "airguns"),
+    ("CZ 75D Compact Dual tone - CO2, 4,5mm, GNB, ASG", "airguns"),
+    ("Diabolo JSB Exact Jumbo RS 500ks cal.5,52mm", "airguns"),
+    ("Zásobník pro CZ 75D cal. 4,5mm 15BB Co2 ASG", "magazines"),
+])
+def test_other_and_airgun_categories(title, expected):
+    assert categorize(title) == expected
+
+
+@pytest.mark.parametrize("title, price, expected", [
+    ("Diabolo JSB Exact Jumbo RS 500ks cal.5,52mm", 385, {"ag:pellets", "cal:5.5"}),
+    ("Diabolo H&N Field Target .177", 200, {"ag:pellets", "cal:4.5"}),
+    ("Diabolo cal. 22 (5,5 mm)", 200, {"ag:pellets", "cal:5.5"}),
+    ("Diabolky EXACT King Heavy 6,35mm (cal .25)", 474, {"ag:pellets", "cal:6.35"}),
+    ("Vzduchová pistole Glock 17 Gen5 Diabolo BlowBack", 3890, {"ag:pistol"}),
+    ("ASG Schofield 6\" 4,5mm Diabolky Stainless", 3840, {"ag:pistol", "cal:4.5"}),
+    ("Vzduchovka Taipan Veteran II cal.6,35mm FP", 42900, {"ag:rifle", "cal:6.35"}),
+])
+def test_airgun_kind_and_calibre(title, price, expected):
+    from airsoftcompare.export import _attrs
+    assert expected <= set(_attrs(title, "airguns", price))
+
+
+def test_page_numbers_in_app_js():
+    import re, shutil, subprocess
+    from pathlib import Path
+    if not shutil.which("node"):
+        pytest.skip("node not installed")
+    js = Path(__file__).resolve().parent.parent.joinpath("airsoftcompare/static/app.js").read_text(encoding="utf-8")
+    fn = re.search(r"const pageNumbers = .*?\n  \};", js, re.S).group(0)
+    out = subprocess.run(["node", "-e", fn + "\nconsole.log(JSON.stringify([[13,95],[1,95],[3,5],[95,95],[1,1]].map(([p,n]) => pageNumbers(p,n))))"],
+                         capture_output=True, text=True, check=True).stdout
+    assert __import__("json").loads(out) == [[1, 2, 0, 11, 12, 13, 14, 15, 0, 95], [1, 2, 3, 0, 95], [1, 2, 3, 4, 5],
+                                             [1, 2, 0, 93, 94, 95], [1]]
+
+
+def test_offers_without_a_price_are_not_shown(tmp_path):
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    conn = dbmod.connect(str(tmp_path / "t.db"))
+    sid = _shop_id(conn, {"name": "Novritsch", "url": "https://x.eu", "type": "sitemap"})
+    for title, price in (("SSR9 - Build your Setup!", 0), ("SSX10 Optionals", 0), ("SSG10 Sniper", 9990)):
+        save_offer(conn, sid, Offer(url=f"https://x.eu/{price}{len(title)}", title=title, price=price, currency="CZK",
+                                    in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
+    assert rebuild_products(conn) == 1
+    assert [r[0] for r in conn.execute("SELECT title FROM products")] == ["SSG10 Sniper"]

@@ -33,7 +33,7 @@
       loadError: "Couldn't load the data. Please refresh the page.",
       "f.minshops": "Sold in", "f.save": "Saving at least", "f.brand": "Brand", "f.color": "Colour", "f.power": "Power source", "f.material": "Material",
       "f.cap": "Magazine type", "f.bbw": "BB weight", "f.shop": "Shop", shopsPlus: "{n}+ shops",
-      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Spring", "tile.hpa": "HPA", "f.platform": "Platform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "WWII", "pl.bullpup": "Bullpup", "pl.mg": "Machine guns",
+      "pw.electric": "Electric (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Spring / manual", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Spring", "tile.hpa": "HPA", "f.platform": "Platform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "WWII", "pl.bullpup": "Bullpup", "pl.mg": "Machine guns", "ag.rifle": "Rifles", "ag.pistol": "Pistols", "ag.pellets": "Diabolos", "f.airgun": "Type", "f.caliber": "Calibre",
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
@@ -63,7 +63,7 @@
       loadError: "Data se nepodařilo načíst. Obnovte prosím stránku.",
       "f.minshops": "Prodává", "f.save": "Úspora alespoň", "f.brand": "Značka", "f.color": "Barva", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníku", "f.bbw": "Gramáž kuliček", "f.shop": "Obchod", shopsPlus: "{n}+ obchodů",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. světová válka", "pl.bullpup": "Bullpup", "pl.mg": "Kulomety",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuální", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. světová válka", "pl.bullpup": "Bullpup", "pl.mg": "Kulomety", "ag.rifle": "Pušky", "ag.pistol": "Pistole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Ráže",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -93,7 +93,7 @@
       loadError: "Dáta sa nepodarilo načítať. Obnovte prosím stránku.",
       "f.minshops": "Predáva", "f.save": "Úspora aspoň", "f.brand": "Značka", "f.color": "Farba", "f.power": "Pohon", "f.material": "Materiál",
       "f.cap": "Typ zásobníka", "f.bbw": "Gramáž guličiek", "f.shop": "Obchod", shopsPlus: "{n}+ obchodov",
-      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. svetová vojna", "pl.bullpup": "Bullpup", "pl.mg": "Guľomety",
+      "pw.electric": "Elektrický (AEG)", "pw.gas": "Plynový (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Pružinový / manuálny", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Pružinové", "tile.hpa": "HPA", "f.platform": "Platforma", "pl.ak": "AK", "pl.m4": "M4 a M16", "pl.mp5": "MP5", "pl.ww2": "2. svetová vojna", "pl.bullpup": "Bullpup", "pl.mg": "Guľomety", "ag.rifle": "Pušky", "ag.pistol": "Pištole", "ag.pellets": "Diabolky", "f.airgun": "Typ", "f.caliber": "Kaliber",
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
@@ -123,7 +123,7 @@
       loadError: "Daten konnten nicht geladen werden. Bitte Seite neu laden.",
       "f.minshops": "Erhältlich in", "f.save": "Ersparnis mindestens", "f.brand": "Marke", "f.color": "Farbe", "f.power": "Antrieb", "f.material": "Material",
       "f.cap": "Magazintyp", "f.bbw": "BB-Gewicht", "f.shop": "Shop", shopsPlus: "{n}+ Shops",
-      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Federdruck", "tile.hpa": "HPA", "f.platform": "Plattform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "Zweiter Weltkrieg", "pl.bullpup": "Bullpup", "pl.mg": "Maschinengewehre",
+      "pw.electric": "Elektrisch (AEG)", "pw.gas": "Gas (GBB)", "pw.co2": "CO2", "pw.hpa": "HPA", "pw.spring": "Feder / manuell", "tile.electric": "AEG", "tile.gas": "GBB", "tile.co2": "CO₂", "tile.spring": "Federdruck", "tile.hpa": "HPA", "f.platform": "Plattform", "pl.ak": "AK", "pl.m4": "M4 & M16", "pl.mp5": "MP5", "pl.ww2": "Zweiter Weltkrieg", "pl.bullpup": "Bullpup", "pl.mg": "Maschinengewehre", "ag.rifle": "Gewehre", "ag.pistol": "Pistolen", "ag.pellets": "Diabolos", "f.airgun": "Typ", "f.caliber": "Kaliber",
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
@@ -148,6 +148,10 @@
     clothing: ["Clothing & boots", "Oblečení a obuv", "Oblečenie a obuv", "Kleidung & Schuhe"],
     comms: ["Radios & headsets", "Vysílačky a headsety", "Vysielačky a headsety", "Funk & Headsets"], grenades: ["Pyro & grenade launchers", "Pyro a granátomety", "Pyro a granátomety", "Pyro & Granatwerfer"],
     food: ["Food", "Jídlo", "Jedlo", "Essen"],
+    airguns: ["Airguns", "Vzduchové zbraně", "Vzduchové zbrane", "Luftdruckwaffen"], melee: ["Melee", "Chladné zbraně", "Chladné zbrane", "Nahkampfwaffen"],
+    bows: ["Bows & crossbows", "Luky a kuše", "Luky a kuše", "Bögen & Armbrüste"], targets: ["Targets", "Terče", "Terče", "Zielscheiben"],
+    magnets: ["Magnets", "Magnetky", "Magnetky", "Magnete"], books: ["Books, journals & catalogues", "Knihy, časopisy a katalogy", "Knihy, časopisy a katalógy", "Bücher, Zeitschriften & Kataloge"],
+    cables: ["Cables & adapters", "Kabely a redukce", "Káble a redukcie", "Kabel & Adapter"],
     other: ["Other", "Ostatní", "Ostatné", "Sonstiges"],
   };
   let lang = LANGS.includes(document.documentElement.lang) ? document.documentElement.lang : "en";
@@ -287,10 +291,14 @@
   const DRILL_TYPES = ["pistols", "guns", "smgs", "shotguns", "snipers"];
   const DRILL_POWERS = ["electric", "gas", "co2", "spring"];
   const DRILL_PLATFORMS = ["ak", "m4", "mp5", "ww2", "bullpup", "mg"];
+  const DRILL_VALUES = { power: DRILL_POWERS, platform: DRILL_PLATFORMS, airgun: ["rifle", "pistol", "pellets"],
+    caliber: ["4.5", "5.0", "5.5", "6.35", "7.62", "9"] };
   const FACETS = [
     ["brand", "brand", (p) => (p.b ? [p.b] : []), (v) => v],
     ["power", "power", tagVals("pw:"), (v) => t("pw." + v)],
     ["platform", "plat", tagVals("pl:"), (v) => t("pl." + v)],
+    ["airgun", "ag", tagVals("ag:"), (v) => t("ag." + v)],
+    ["caliber", "cal", tagVals("cal:"), (v) => (lang === "en" ? v : v.replace(".", ",") + " ") + "mm"],
     ["material", "material", tagVals("mt:"), (v) => t("mt." + v)],
     ["cap", "cap", tagVals("cap:"), (v) => t("cap." + v)],
     ["bbw", "bbw", tagVals("bbw:"), (v) => v.replace(".", ",") + " g"],
@@ -315,6 +323,11 @@
     return itemsCache.items;
   }
 
+  // 1, 2, two pages either side of the current one, and the last page; 0 marks a gap ("…").
+  const pageNumbers = (page, pages) => {
+    const want = [...new Set([1, 2, page - 2, page - 1, page, page + 1, page + 2, pages])].filter((n) => n >= 1 && n <= pages).sort((a, b) => a - b);
+    return want.flatMap((n, i) => (i && n - want[i - 1] > 1 ? (n - want[i - 1] === 2 ? [n - 1, n] : [0, n]) : [n]));
+  };
   async function listing(m) {
     const p = P();
     const q = p.get("q") || "", c = knownCat(p.get("cat"));
@@ -409,25 +422,31 @@
     const qimg = (img) => `<span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[group], "ic")}</span>`;
     let subTiles = group && GROUPS[group][2].length > 1 ? GROUPS[group][2].filter((sub) => m.counts[sub]).map((sub) =>
       `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">${qimg(photoOf(sub))}${esc(catName(sub))}</a>`).join("") : "";
-    // Guns go one step deeper per click: type > power (AEG, GBB, CO2, spring) > platform (AK, M4, …).
-    const pwOne = chosen.power.size === 1 ? [...chosen.power][0] : "";
-    if (DRILL_TYPES.includes(c)) {
-      const [name, key, vals, label] = pwOne ? ["platform", "plat", DRILL_PLATFORMS, (v) => t("pl." + v)] : ["power", "power", DRILL_POWERS, (v) => t("tile." + v)];
-      const tag = (name === "power" ? "pw:" : "pl:");
-      const best = (v) => { let b = null; for (const y of base) if (passes(y, name) && (y.a || []).includes(tag + v) && safeUrl(y.i) && (!b || y.s > b.s)) b = y; return b ? safeUrl(b.i) : ""; };
-      subTiles = vals.filter((v) => facetCounts[name].get(v)).map((v) => {
-        const on = chosen[name].size === 1 && chosen[name].has(v);
-        return `<a class="qtile ${on ? "on" : ""}" href="${url({ [key]: on ? "" : v, page: "" })}">${qimg(best(v))}${esc(label(v))}</a>`;
+    // Guns go one step deeper per click: type > power (AEG, GBB, CO2, spring) > platform (AK, M4, …);
+    // air guns: kind (rifles, pistols, diabolos) > calibre for diabolos.
+    const one = (name) => (chosen[name].size === 1 ? [...chosen[name]][0] : "");
+    const path = DRILL_TYPES.includes(c) ? ["power", "platform"] : c === "airguns" ? ["airgun", ...(one("airgun") === "pellets" ? ["caliber"] : [])] : [];
+    const level = path.find((n) => !one(n)) || path[path.length - 1];
+    if (level) {
+      const [, key, , label] = FACETS.find((f) => f[0] === level);
+      const tag = { power: "pw:", platform: "pl:", airgun: "ag:", caliber: "cal:" }[level];
+      const shownLabel = level === "power" ? (v) => t("tile." + v) : label;
+      const best = (v) => { let b = null; for (const y of base) if (passes(y, level) && (y.a || []).includes(tag + v) && safeUrl(y.i) && (!b || y.s > b.s)) b = y; return b ? safeUrl(b.i) : ""; };
+      subTiles = DRILL_VALUES[level].filter((v) => facetCounts[level].get(v)).map((v) => {
+        const on = one(level) === v;
+        return `<a class="qtile ${on ? "on" : ""}" href="${url({ [key]: on ? "" : v, page: "" })}">${qimg(best(v))}${esc(shownLabel(v))}</a>`;
       }).join("");
     }
     const priceTiles = bands.map((v) => `<a class="qtile ${pmax === v && isNaN(pmin) ? "on" : ""}" href="${url({ pmin: "", pmax: v, page: "" })}">
         <span class="qimg qprice">${icon("layers", "ic")}</span>${t("priceUpTo", { v: fmtCur(v) })}</a>`).join("");
 
     const steps = [];
-    if (c && c !== group) steps.push([catName(c), { power: "", plat: "", page: "" }]);
-    if (DRILL_TYPES.includes(c) && pwOne) {
-      steps.push([t("tile." + pwOne), { plat: "", page: "" }]);
-      if (chosen.platform.size === 1) steps.push([t("pl." + [...chosen.platform][0]), {}]);
+    if (c && c !== group) steps.push([catName(c), Object.fromEntries([...path.map((n) => [FACETS.find((f) => f[0] === n)[1], ""]), ["page", ""]])]);
+    for (const [i, n] of path.entries()) {
+      if (!one(n)) break;
+      const [, , , label] = FACETS.find((f) => f[0] === n);
+      const clear = Object.fromEntries([...path.slice(i + 1).map((m) => [FACETS.find((f) => f[0] === m)[1], ""]), ["page", ""]]);
+      steps.push([n === "power" ? t("tile." + one(n)) : label(one(n)), clear]);
     }
     const named = c ? [catName(c), ...steps.slice(1).map(([l]) => l)].join(" · ") : t("all");
     const title = q ? `“${esc(q)}”` : esc(named);
@@ -451,8 +470,10 @@
         <div class="count">${nprod(total)}</div>
         <nav class="sort-tabs">${["relevance", "price_asc", "price_desc", "savings", "name"].map((k) => `<a href="${url({ sort: k, page: "" })}" class="${sort === k ? "on" : ""}">${t("sort." + k)}</a>`).join("")}</nav>
         ${total ? `<div class="grid">${shown.map(card).join("")}</div>` : `<div class="empty">${t("nothing")}</div>`}
-        ${pages > 1 ? `<nav class="pager">${page > 1 ? `<a href="${url({ page: page - 1 })}">${t("prev")}</a>` : ""}
-          <span>${t("pageOf", { p: page, n: pages })}</span>${page < pages ? `<a href="${url({ page: page + 1 })}">${t("next")}</a>` : ""}</nav>` : ""}
+        ${pages > 1 ? `<nav class="pager" aria-label="${t("pageOf", { p: page, n: pages })}">${page > 1 ? `<a class="pg-step" href="${url({ page: page - 1 })}">${t("prev")}</a>` : ""}
+          ${pageNumbers(page, pages).map((n) => n === 0 ? `<span class="pg-gap">…</span>` : n === page ? `<span class="pg on" aria-current="page">${n}</span>`
+            : `<a class="pg" href="${url({ page: n === 1 ? "" : n })}">${n}</a>`).join("")}
+          ${page < pages ? `<a class="pg-step" href="${url({ page: page + 1 })}">${t("next")}</a>` : ""}</nav>` : ""}
       </section></div>`;
     priceSlider();
   }

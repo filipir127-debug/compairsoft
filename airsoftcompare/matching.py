@@ -135,7 +135,7 @@ def _product_category(members: list[dict]) -> str:
 def rebuild_products(conn: sqlite3.Connection, threshold: int = 90) -> int:
     rows = [dict(r) for r in conn.execute(
         "SELECT id, shop_id, title, norm_title, ean, brand, image, category, price_base, in_stock "
-        "FROM offers WHERE active = 1 AND price_base IS NOT NULL")]
+        "FROM offers WHERE active = 1 AND price_base > 0")]  # 0 Kč: configurators ("Build your Setup!"), placeholders
     groups: dict[int, list[dict]] = defaultdict(list)
     for o, root in zip(rows, cluster(rows, threshold)):
         groups[root].append(o)

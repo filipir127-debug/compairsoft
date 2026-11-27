@@ -45,8 +45,21 @@ RULES: list[tuple[str, str, str, str]] = [
     ("snipers", "Snipers", "🎯", r"\b(sniper\w*|odstrelov\w*|bolt ?action)\b"),
     ("shotguns", "Shotguns", "💨", r"\b(brokovnic\w*|shotgun\w*)\b"),
     # Not airsoft, but sold by the same shops; named so a gun model in the name can't claim them.
-    ("other", "Other", "🧩", r"\b(nuz|noze|nozem|katan\w*|maceta|macet\w*|kus[ei]|luk|luky|lukem|sipk\w*|terc\w*|"
-                            r"vzduchovk\w*|diabolk\w*|diabolo|paracord|karimatk\w*|sekyr\w*|tetiv\w*)\b"),
+    # Not airsoft, but sold by the same shops; named so a gun model in the name can't claim them.
+    ("airguns", "Airguns", "🎯", r"\b(vzduchov\w*|diabol\w*|airgun\w*|air ?rifle\w*|air ?pistol\w*|pellet\w*|broky)\b"),
+    ("melee", "Melee", "🗡️", r"\b(nuz|noze|nozem|nozu|knife|knives|katan\w*|maceta|macet\w*|machete\w*|sekyr\w*|sekerk\w*|"
+                            r"tomahawk\w*|bajonet\w*|dyk[ay]|dagger\w*|karambit\w*|obusek|obusk\w*|boxer|mec|mece|sword\w*|"
+                            r"ocilk\w*|brousek|brousk\w*|pochv\w*)\b"),
+    ("bows", "Bows & crossbows", "🏹", r"\b(luk|luky|lukem|luku|kus[ei]|crossbow\w*|bows?|tetiv\w*|sip|sipy|sipu|sipk\w*|"
+                                     r"arrow\w*|toulec\w*|hrot|foukack\w*|prak)\b"),
+    ("targets", "Targets", "🎯", r"\b(terc\w*|target\w*|popper\w*|lapac\w*|strelnic\w*)\b"),
+    ("magnets", "Magnets", "🧲", r"\b(magnetk\w*|fridge magnet\w*|magnet na lednic\w*)\b"),
+    ("books", "Books, journals & catalogues", "📚", r"\b(knih\w*|kniha|book|books|casopis\w*|katalog\w*|journal\w*|"
+                                                r"prirucka|prirucky|encyklop\w*|komiks\w*)\b"),
+    ("cables", "Cables & adapters", "🔌", r"\b(kabel(?!az)\w*|kabl\w*|cables?|konektor\w*|connector\w*|redukcni kabel|"
+                                        r"redukce (z |na |pro )?(t-?dean|dean|tamiya|xt-?\d+|konektor|velk|mal)\w*|"
+                                        r"sitov\w* adapter\w*|napajec\w*|usb adapter\w*)\b"),
+    ("other", "Other", "🧩", r"\b(paracord|karimatk\w*)\b"),
     ("guns", "Rifles", "🪖", r"\b(kulomet\w*|machine ?gun\w*|zbran\w*|samopal\w*|smg|pusk[ayu]|puskou|rifle\w*|carbine\w*)\b"),
 ]
 
@@ -69,7 +82,7 @@ CATEGORIES["other"] = ("Other", "🧩")
 
 # Top-level groups shown in the menu; each opens into its subcategories.
 GROUPS: dict[str, tuple[str, str, list[str]]] = {
-    "weapons": ("Guns", "🔫", ["pistols", "guns", "smgs", "shotguns", "snipers", "grenades"]),
+    "weapons": ("Guns", "🔫", ["pistols", "guns", "smgs", "shotguns", "snipers", "airguns", "grenades"]),
     "ammo": ("Magazines, BBs & gas", "📦", ["magazines", "bbs", "gas"]),
     "sights": ("Optics & lights", "🔭", ["optics", "lights"]),
     "upgrades": ("Parts & accessories", "⚙️", ["parts", "batteries", "chargers"]),
@@ -78,7 +91,7 @@ GROUPS: dict[str, tuple[str, str, list[str]]] = {
     "apparel": ("Clothing & boots", "👕", ["clothing"]),
     "radios": ("Radios & headsets", "📻", ["comms"]),
     "food": ("Food", "🥫", ["food"]),
-    "misc": ("Other", "🧩", ["other"]),
+    "misc": ("Other", "🧩", ["melee", "bows", "targets", "magnets", "books", "cables", "other"]),
 }
 GROUP_OF = {sub: g for g, (_, _, subs) in GROUPS.items() for sub in subs}
 
@@ -98,6 +111,8 @@ _RADIO_HINT = re.compile(r"\b(vysilac\w*|radiostanic\w*|pmr|baofeng|midland|moto
 _SMG = re.compile(r"\b(samopal\w*|smg|submachine\w*|machine pistol|mp-?5\w*|mp-?7\w*|mp-?9\w*|mpx|mp-?x|ump\w*|p90|ps90|"
                   r"vector|kriss|scorpion|skorpion|vz\.? ?61|evo ?3|uzi|thompson|ppsh\w*|pps-?43|mp-?40|sten|mac-?1[01]|m11|"
                   r"ingram|pp-?19\w*|bizon|pp-?2000|ppk-?20|vityaz|apc ?9\w*|tmp|mp ?18|veresk|m3a1|grease gun|pdw\w*)\b")
+# Calibres of air guns and their pellets (airsoft is 6 mm, so these don't clash).
+_AIRGUN_CALIBER = re.compile(r"\b(4[.,]5\d? ?mm|5[.,]5\d? ?mm|6[.,]35 ?mm|cal\.? ?\d[.,]\d+|\.177|\.22 ?(cal|lr)?)\b")
 _CZECH = re.compile(r"[áčďéěíňóřšťúůýžľĺŕô]")
 _HOLSTER_HINT = re.compile(r"\b(pistol\w*|revolver\w*|serpa|safariland|blackhawk|glock\w*|sig|p226|p320|1911|"
                            r"cz ?75|p-?0[79]|p-?10|beretta|m9|m92\w*|usp|walther|p99|hi-?capa)\b")
@@ -157,6 +172,8 @@ def _classify(text: str) -> tuple[str | None, bool]:
         found = _weak(head) or _strong(t, czech) or _weak(t)
     if found == "pouches" and re.search(r"\bpouzdr", t) and _HOLSTER_HINT.search(t):
         found = "holsters"  # "Pouzdro Blackhawk SERPA pro Glock 17"
+    if found in GUN_TYPES | {"other", None} and _AIRGUN_CALIBER.search(t):
+        found = "airguns"  # "CZ 75D Compact - CO2, 4,5mm", "Vzduchovka … cal.5,5mm"
     if found == "guns" and _is_smg(t):
         found = "smgs"
     if found in ("batteries", "chargers", "parts", "guns", "smgs") and _RADIO_HINT.search(t):
