@@ -1,0 +1,9 @@
+# Deployed as "compairsoft-scheduler" (Cloudflare account of the site). Deploy: npx wrangler deploy
+name = "compairsoft-scheduler"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+[triggers]
+# UTC, a few minutes before GitHub's backup schedule (23 0,5,10,15,20 * * *)
+crons = ["17 0,5,10,15,20 * * *"]

@@ -1,16 +1,19 @@
 name: Update prices and publish site
 
 on:
+  # The timer is a Cloudflare Worker (scheduler/worker.js) that starts this workflow at 00:17, 05:17,
+  # 10:17, 15:17 and 20:17 UTC: GitHub's own schedule is often late by hours or skipped. GitHub's
+  # schedule stays as a backup and steps aside (see "gate") when the Worker's run already happened.
   schedule:
     # Five runs a day while the crawled shops fill up; each crawls up to ~4h50m, so this is nearly
     # continuous. Pages read in the last 20 h are skipped, so once caught up a run takes minutes.
-    # Back to twice a day later:  - cron: "23 2,14 * * *"
+    # Back to twice a day later:  - cron: "23 2,14 * * *"  (and the Worker's cron too)
     - cron: "23 0,5,10,15,20 * * *"
   workflow_dispatch:
     inputs:
       crawl_minutes:
-        description: "Minutes to spend crawling shop pages (0 = only re-read feeds)"
-        default: "290"
+        description: "Minutes to spend crawling shop pages (0 = only re-read feeds; at most 220 so photos and translations fit in the 6 h limit)"
+        default: "220"
   push:
     branches: [master, "preview/**"]   # preview/* branches publish to a separate preview address
     paths: ["airsoftcompare/**", "shops.yaml", "requirements.txt", ".github/workflows/update.yml"]
@@ -23,7 +26,32 @@ permissions:
   contents: read
 
 jobs:
+  # GitHub's late schedule must not repeat an update the Worker already started: skip when another
+  # update ran within the last 4 hours, is still running, or finished in the last hour.
+  gate:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" != "schedule" ]; then echo "run=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          n=$(gh api "repos/${{ github.repository }}/actions/workflows/update.yml/runs?per_page=20" --jq '
+            [.workflow_runs[] | select(.id != ${{ github.run_id }} and (.event == "workflow_dispatch" or .event == "schedule"))
+             | select(.status != "completed"
+                      or (now - ((.run_started_at // .created_at) | fromdateiso8601)) < 14400
+                      or (now - (.updated_at | fromdateiso8601)) < 3600)] | length')
+          echo "other recent or running updates: $n"
+          if [ "$n" = "0" ]; then echo "run=true" >> "$GITHUB_OUTPUT"; else echo "run=false" >> "$GITHUB_OUTPUT"; fi
+
   update:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 355             # GitHub's limit is 6 h; crawling stops on its own before that
     env:
