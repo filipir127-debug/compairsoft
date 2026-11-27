@@ -11,7 +11,7 @@
   const T = {
     en: {
       "search.ph": "Search guns, magazines, red dots…", "search.btn": "Search", "nav.shops": "Shops", loading: "Loading…",
-      "foot.about": "Tired of going to each individual site to check where prices are better? Now you don't have to! Everything at one place.", "foot.browse": "Browse", "foot.know": "Good to know",
+      "foot.about": "Tired of going to each individual site to check where prices are better? Now you don't have to!\nEverything at one place.", "foot.browse": "Browse", "foot.know": "Good to know",
       "foot.disclaimer": "Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.",
       updated: "Prices last updated {d}.", all: "All products", "sec.most": "Compared in the most shops", "sec.diff": "Biggest price differences",
       "nf.title": "Page not found", "nf.home": "Back to the homepage", home: "Home",
@@ -36,11 +36,11 @@
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
-      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", onlyDiscount: "Discounted 10 % or more", soldIn2: "Sold in 2+ shops", availAll: "All products", availStock: "In stock anywhere", moreN: "{n} more", lessBtn: "Show less", priceUpTo: "Up to {v}", removeAll: "Clear all", origName: "Original name", ratesNote: "Prices in {c} are converted from CZK at the Czech National Bank rate of {d}.", zoom: "Show the original photo", showEmail: "Show email address",
+      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", about: "About & contact", onlyDiscount: "Discounted 10 % or more", soldIn2: "Sold in 2+ shops", availAll: "All products", availStock: "In stock anywhere", moreN: "{n} more", lessBtn: "Show less", priceUpTo: "Up to {v}", removeAll: "Clear all", origName: "Original name", ratesNote: "Prices in {c} are converted from CZK at the Czech National Bank rate of {d}.", zoom: "Show the original photo", showEmail: "Show email address",
     },
     cs: {
       "search.ph": "Hledat zbraně, zásobníky, kolimátory…", "search.btn": "Hledat", "nav.shops": "Obchody", loading: "Načítání…",
-      "foot.about": "Už vás nebaví procházet každý obchod zvlášť, abyste zjistili, kde je to levnější? Teď už nemusíte! Všechno na jednom místě.", "foot.browse": "Procházet", "foot.know": "Dobré vědět",
+      "foot.about": "Už vás nebaví procházet každý obchod zvlášť, abyste zjistili, kde je to levnější? Teď už nemusíte!\nVšechno na jednom místě.", "foot.browse": "Procházet", "foot.know": "Dobré vědět",
       "foot.disclaimer": "Ceny čteme z veřejných feedů a stránek obchodů a nemusí být aktuální. Před nákupem vždy ověřte cenu v obchodě.",
       updated: "Ceny naposledy aktualizovány {d}.", all: "Všechny produkty", "sec.most": "Porovnáno v nejvíce obchodech", "sec.diff": "Největší rozdíly v cenách",
       "nf.title": "Stránka nenalezena", "nf.home": "Zpět na úvod", home: "Úvod",
@@ -65,11 +65,11 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", onlyDiscount: "Se slevou 10 % a více", soldIn2: "Prodáváno ve 2+ obchodech", availAll: "Všechno zboží", availStock: "Skladem kdekoliv", moreN: "Dalších {n}", lessBtn: "Zobrazit méně", priceUpTo: "Do {v}", removeAll: "Zrušit vše", origName: "Původní název", ratesNote: "Ceny v {c} jsou přepočtené z Kč kurzem ČNB ze dne {d}.", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
+      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", about: "O nás a kontakt", onlyDiscount: "Se slevou 10 % a více", soldIn2: "Prodáváno ve 2+ obchodech", availAll: "Všechno zboží", availStock: "Skladem kdekoliv", moreN: "Dalších {n}", lessBtn: "Zobrazit méně", priceUpTo: "Do {v}", removeAll: "Zrušit vše", origName: "Původní název", ratesNote: "Ceny v {c} jsou přepočtené z Kč kurzem ČNB ze dne {d}.", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
     },
     sk: {
       "search.ph": "Hľadať zbrane, zásobníky, kolimátory…", "search.btn": "Hľadať", "nav.shops": "Obchody", loading: "Načítava sa…",
-      "foot.about": "Už vás nebaví prechádzať každý obchod zvlášť, aby ste zistili, kde je to lacnejšie? Teraz už nemusíte! Všetko na jednom mieste.", "foot.browse": "Prehliadať", "foot.know": "Dobré vedieť",
+      "foot.about": "Už vás nebaví prechádzať každý obchod zvlášť, aby ste zistili, kde je to lacnejšie? Teraz už nemusíte!\nVšetko na jednom mieste.", "foot.browse": "Prehliadať", "foot.know": "Dobré vedieť",
       "foot.disclaimer": "Ceny čítame z verejných feedov a stránok obchodov a nemusia byť aktuálne. Pred nákupom vždy overte cenu v obchode.",
       updated: "Ceny naposledy aktualizované {d}.", all: "Všetky produkty", "sec.most": "Porovnané v najviac obchodoch", "sec.diff": "Najväčšie rozdiely v cenách",
       "nf.title": "Stránka sa nenašla", "nf.home": "Späť na úvod", home: "Úvod",
@@ -94,11 +94,11 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", onlyDiscount: "So zľavou 10 % a viac", soldIn2: "Predávané v 2+ obchodoch", availAll: "Všetok tovar", availStock: "Skladom kdekoľvek", moreN: "Ďalších {n}", lessBtn: "Zobraziť menej", priceUpTo: "Do {v}", removeAll: "Zrušiť všetko", origName: "Pôvodný názov", ratesNote: "Ceny v {c} sú prepočítané z Kč kurzom ČNB zo dňa {d}.", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
+      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", about: "O nás a kontakt", onlyDiscount: "So zľavou 10 % a viac", soldIn2: "Predávané v 2+ obchodoch", availAll: "Všetok tovar", availStock: "Skladom kdekoľvek", moreN: "Ďalších {n}", lessBtn: "Zobraziť menej", priceUpTo: "Do {v}", removeAll: "Zrušiť všetko", origName: "Pôvodný názov", ratesNote: "Ceny v {c} sú prepočítané z Kč kurzom ČNB zo dňa {d}.", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
     },
     de: {
       "search.ph": "Waffen, Magazine, Red Dots suchen…", "search.btn": "Suchen", "nav.shops": "Shops", loading: "Wird geladen…",
-      "foot.about": "Keine Lust mehr, jeden Shop einzeln zu besuchen, um zu sehen, wo es günstiger ist? Das musst du jetzt nicht mehr! Alles an einem Ort.", "foot.browse": "Stöbern", "foot.know": "Gut zu wissen",
+      "foot.about": "Keine Lust mehr, jeden Shop einzeln zu besuchen, um zu sehen, wo es günstiger ist? Das musst du jetzt nicht mehr!\nAlles an einem Ort.", "foot.browse": "Stöbern", "foot.know": "Gut zu wissen",
       "foot.disclaimer": "Die Preise stammen aus öffentlichen Feeds und Produktseiten der Shops und können veraltet sein. Bitte vor dem Kauf im Shop prüfen.",
       updated: "Preise zuletzt aktualisiert am {d}.", all: "Alle Produkte", "sec.most": "In den meisten Shops verglichen", "sec.diff": "Größte Preisunterschiede",
       "nf.title": "Seite nicht gefunden", "nf.home": "Zur Startseite", home: "Start",
@@ -123,7 +123,7 @@
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
-      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", onlyDiscount: "Mit Rabatt ab 10 %", soldIn2: "In 2+ Shops erhältlich", availAll: "Alle Artikel", availStock: "Irgendwo auf Lager", moreN: "{n} weitere", lessBtn: "Weniger anzeigen", priceUpTo: "Bis {v}", removeAll: "Alle entfernen", origName: "Originalname", ratesNote: "Preise in {c} sind aus CZK zum Kurs der Tschechischen Nationalbank vom {d} umgerechnet.", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
+      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", about: "Über uns & Kontakt", onlyDiscount: "Mit Rabatt ab 10 %", soldIn2: "In 2+ Shops erhältlich", availAll: "Alle Artikel", availStock: "Irgendwo auf Lager", moreN: "{n} weitere", lessBtn: "Weniger anzeigen", priceUpTo: "Bis {v}", removeAll: "Alle entfernen", origName: "Originalname", ratesNote: "Preise in {c} sind aus CZK zum Kurs der Tschechischen Nationalbank vom {d} umgerechnet.", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
     },
   };
   const CAT_NAMES = {
@@ -297,6 +297,8 @@
   };
   const ILLU_PICK = Object.fromEntries(Object.entries(ILLU).map(([g, l]) => [g, l[Math.floor(Math.random() * l.length)]]));
   function home(m) {
+    setCanonical("/");
+    setJsonLd(null);
     markGroup(null);
     if (TR_LANGS.includes(lang) && m.tr) Object.assign(TR, m.tr[lang] || {});
     document.title = `CompAirsoft – ${t("hero.title")}`;
@@ -386,6 +388,8 @@
     const p = P();
     const q = p.get("q") || "", c = knownCat(p.get("cat"));
     const group = GROUPS[c] ? c : GROUP_OF[c];
+    setCanonical(c ? `/?cat=${c}` : q ? `/?q=${encodeURIComponent(q)}` : "/?all=1");
+    setJsonLd(null);
     const stock = p.has("stock");
     const minShops = Math.max(+p.get("minshops") || 0, p.has("multi") ? 2 : 0);
     const minSave = +p.get("save") || 0;
@@ -743,6 +747,25 @@
     markGroup(g);
     document.title = `${title} – ${t("priceCmp")} | CompAirsoft`;
     const live = d.o.filter((o) => o.a);
+    setCanonical(`/product/${id}`);
+    const img = safeUrl(p.orig) || safeUrl(p.i);
+    const crumbs = [["CompAirsoft", "/"], [CAT_NAMES[g][0], `/?cat=${g}`], ...(GROUPS[g][2].length > 1 ? [[(CAT_NAMES[p.c] || CAT_NAMES.other)[0], `/?cat=${p.c}`]] : [])];
+    setJsonLd({
+      "@context": "https://schema.org",
+      "@graph": [{
+        "@type": "Product", name: p.t, url: `${SITE_URL}/product/${id}`, ...(img ? { image: [img] } : {}),
+        ...(p.b ? { brand: { "@type": "Brand", name: p.b } } : {}), ...(p.e ? { gtin: String(p.e) } : {}),
+        category: (CAT_NAMES[p.c] || CAT_NAMES.other)[0],
+        offers: {
+          "@type": "AggregateOffer", priceCurrency: BASE, lowPrice: p.p, highPrice: Math.max(p.x || p.p, p.p),
+          offerCount: live.length || 1,
+          availability: p.k ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        },
+      }, {
+        "@type": "BreadcrumbList",
+        itemListElement: crumbs.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name, item: SITE_URL + path })),
+      }],
+    });
     const offers = d.o.map((o, i) => {
       const best = i === 0 && o.k !== 0 && o.a;
       const st = !o.a ? `<span class="stock no">${t("removed")}</span>` : o.k === 1 ? `<span class="stock yes">${t("inStock")}</span>`
@@ -834,6 +857,68 @@
     });
   }
 
+
+  // ---------------------------------------------------------------- about
+  // [title, sections [heading, text], contact heading, contact text]; {shops} is filled in.
+  const ABOUT = {
+    en: ["About CompAirsoft", [
+      ["What this is", "CompAirsoft compares the prices of airsoft guns, magazines, BBs, optics, tactical gear and clothing across Czech airsoft shops. Instead of opening every shop separately, you see all offers for a product side by side, the cheapest first."],
+      ["Where the prices come from", "We read each shop's public product feed or product pages several times a day. Prices, stock and product names come straight from the shops, so they can be a few hours old. Always check the price in the shop before you buy."],
+      ["We don't sell anything", "CompAirsoft is not a shop. An offer takes you straight to the shop's own page; we don't take orders or payments. No shop pays for its position: offers are sorted by price."],
+      ["Shops we compare", "{shops}"]],
+      "Contact", "A wrong price, a missing product, or a shop you'd like to see here? Write to us."],
+    cs: ["O CompAirsoftu", [
+      ["Co to je", "CompAirsoft porovnává ceny airsoftových zbraní, zásobníků, kuliček, optiky, taktické výstroje a oblečení napříč českými airsoftovými obchody. Místo procházení každého obchodu zvlášť vidíte všechny nabídky na jeden produkt vedle sebe, od nejlevnější."],
+      ["Odkud ceny bereme", "Několikrát denně čteme veřejné produktové feedy nebo stránky produktů jednotlivých obchodů. Ceny, dostupnost a názvy jsou přímo od obchodů, takže mohou být pár hodin staré. Před nákupem si cenu vždy ověřte v obchodě."],
+      ["Nic neprodáváme", "CompAirsoft není obchod. Nabídka vás pošle rovnou na stránku obchodu; objednávky ani platby nepřijímáme. Žádný obchod si neplatí za pozici: nabídky jsou seřazené podle ceny."],
+      ["Obchody, které porovnáváme", "{shops}"]],
+      "Kontakt", "Špatná cena, chybějící produkt nebo obchod, který byste tu rádi viděli? Napište nám."],
+    sk: ["O CompAirsofte", [
+      ["Čo to je", "CompAirsoft porovnáva ceny airsoftových zbraní, zásobníkov, guličiek, optiky, taktickej výstroje a oblečenia naprieč českými airsoftovými obchodmi. Namiesto prechádzania každého obchodu zvlášť vidíte všetky ponuky na jeden produkt vedľa seba, od najlacnejšej."],
+      ["Odkiaľ ceny berieme", "Niekoľkokrát denne čítame verejné produktové feedy alebo stránky produktov jednotlivých obchodov. Ceny, dostupnosť a názvy sú priamo od obchodov, takže môžu byť pár hodín staré. Pred nákupom si cenu vždy overte v obchode."],
+      ["Nič nepredávame", "CompAirsoft nie je obchod. Ponuka vás pošle rovno na stránku obchodu; objednávky ani platby neprijímame. Žiadny obchod si neplatí za pozíciu: ponuky sú zoradené podľa ceny."],
+      ["Obchody, ktoré porovnávame", "{shops}"]],
+      "Kontakt", "Zlá cena, chýbajúci produkt alebo obchod, ktorý by ste tu radi videli? Napíšte nám."],
+    de: ["Über CompAirsoft", [
+      ["Was das ist", "CompAirsoft vergleicht die Preise von Airsoft-Waffen, Magazinen, BBs, Optiken, taktischer Ausrüstung und Kleidung tschechischer Airsoft-Shops. Statt jeden Shop einzeln zu öffnen, siehst du alle Angebote zu einem Produkt nebeneinander, das günstigste zuerst."],
+      ["Woher die Preise kommen", "Wir lesen mehrmals täglich die öffentlichen Produkt-Feeds oder Produktseiten der Shops. Preise, Verfügbarkeit und Namen kommen direkt von den Shops und können daher einige Stunden alt sein. Prüfe den Preis vor dem Kauf immer im Shop."],
+      ["Wir verkaufen nichts", "CompAirsoft ist kein Shop. Ein Angebot führt dich direkt auf die Seite des Shops; wir nehmen keine Bestellungen oder Zahlungen an. Kein Shop zahlt für seine Position: Angebote sind nach Preis sortiert."],
+      ["Verglichene Shops", "{shops}"]],
+      "Kontakt", "Ein falscher Preis, ein fehlendes Produkt oder ein Shop, den du hier sehen möchtest? Schreib uns."],
+  };
+  function aboutPage(m) {
+    const [title, sections, contactH, contactTxt] = ABOUT[lang] || ABOUT.en;
+    document.title = `${title} – CompAirsoft`;
+    markGroup(null);
+    const shops = m.shops.map((s) => s.name).sort((a, b) => a.localeCompare(b));
+    const body = (txt) => (txt === "{shops}" ? `${shops.map(esc).join(", ")}. <a href="/shops">${t("nav.shops")} ›</a>` : esc(txt));
+    app.innerHTML = `<article class="prose"><h1>${esc(title)}</h1>
+      ${sections.filter(([, txt]) => txt !== "{shops}" || shops.length).map(([h, txt]) => `<h2>${esc(h)}</h2><p>${body(txt)}</p>`).join("")}
+      <h2>${esc(contactH)}</h2><p>${esc(contactTxt)}</p>
+      ${SITE.contact ? `<p id="contact"><button type="button" class="btn btn-ghost" id="show-email">${t("showEmail")}</button></p>` : ""}</article>`;
+    const btn = document.getElementById("show-email");
+    if (btn) btn.addEventListener("click", () => {
+      const mail = atob(SITE.contact).split("").reverse().join("");
+      document.getElementById("contact").innerHTML = `<a href="mailto:${esc(mail)}">${esc(mail)}</a>`;
+    });
+  }
+
+  // ---------------------------------------------------------------- search engines
+  // The canonical address of what is shown (filters, sorting and paging collapse onto the category),
+  // and structured data for product pages. Google reads both after running the page.
+  const SITE_URL = (SITE.site || location.origin).replace(/\/$/, "");
+  function setCanonical(path) {
+    let l = document.querySelector('link[rel="canonical"]');
+    if (!l) { l = document.createElement("link"); l.rel = "canonical"; document.head.appendChild(l); }
+    l.href = SITE_URL + path;
+  }
+  function setJsonLd(data) {
+    let s = document.getElementById("ld-page");
+    if (!data) { if (s) s.remove(); return; }
+    if (!s) { s = document.createElement("script"); s.type = "application/ld+json"; s.id = "ld-page"; document.head.appendChild(s); }
+    s.textContent = JSON.stringify(data);
+  }
+
   // ---------------------------------------------------------------- router
   const page = document.body.dataset.page;
   async function route() {
@@ -850,6 +935,7 @@
       if (page === "product") return await product();
       if (page === "shops") return shopsPage(m);
       if (page === "privacy") return privacyPage();
+      if (page === "about") return aboutPage(m);
       const p = P();
       const filtered = ["q", "cat", "shop", "stock", "multi", "minshops", "save", "pmin", "pmax", "all", "brand", ...paramKeys()].some((k) => p.get(k))
         || (p.get("sort") || "relevance") !== "relevance" || +p.get("page") > 1;

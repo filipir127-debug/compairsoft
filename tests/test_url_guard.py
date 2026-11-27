@@ -39,9 +39,9 @@ def test_no_inline_code_or_styles():
         text = f.read_text(encoding="utf-8")
         assert not re.search(r"\son[a-z]+=\"", text), f"inline event handler in {f.name}"
         assert 'style="' not in text, f"inline style in {f.name}"
-    base = (ROOT / "site/base.html").read_text(encoding="utf-8")
-    for tag in re.findall(r"<script[^>]*>", base):
-        assert "src=" in tag or 'type="application/json"' in tag, tag
+    pages = "".join((ROOT / "site" / f).read_text(encoding="utf-8") for f in ("base.html", "index.html", "about.html"))
+    for tag in re.findall(r"<script[^>]*>", pages):
+        assert "src=" in tag or 'type="application/json"' in tag or 'type="application/ld+json"' in tag, tag
 
 
 def test_safe_url_in_a_js_engine():
