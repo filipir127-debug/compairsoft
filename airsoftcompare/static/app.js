@@ -154,6 +154,37 @@
     cables: ["Cables & adapters", "Kabely a redukce", "Káble a redukcie", "Kabel & Adapter"],
     other: ["Other", "Ostatní", "Ostatné", "Sonstiges"],
   };
+  // Header slogans: the first one explains the name and is shown on a visitor's first visit;
+  // after that a random one, never the same twice in a row. Keep each under ~36 characters.
+  const SLOGANS = {
+    en: ["Compare? Airsoft? Compairsoft.", "Every shop in your sights.", "Zero in on the best price.", "Lock on to the best deal.",
+      "Don't blind-fire. Compare first.", "Your wallet takes no hits.", "Overpaying is friendly fire."],
+    cs: ["Porovnat? Airsoft? Compairsoft.", "Všechny obchody na mušce.", "Zamiř na nejlepší cenu.", "Nestřílej naslepo. Porovnej.",
+      "Peněženka bez zásahu.", "Přeplácení je friendly fire.", "Stejná zbraň, nižší cena."],
+    sk: ["Porovnať? Airsoft? Compairsoft.", "Všetky obchody na muške.", "Zameraj sa na najlepšiu cenu.", "Nestrieľaj naslepo. Porovnaj.",
+      "Peňaženka bez zásahu.", "Preplácanie je friendly fire.", "Rovnaká zbraň, nižšia cena."],
+    de: ["Vergleichen? Airsoft? Compairsoft.", "Alle Shops im Visier.", "Den besten Preis im Fadenkreuz.", "Nicht blind feuern. Vergleichen.",
+      "Kein Treffer für deinen Geldbeutel.", "Zu viel zahlen ist Friendly Fire.", "Gleiche Waffe, besserer Preis."],
+  };
+  const sloganIdx = (() => {
+    let last = null;
+    try { last = localStorage.getItem("slogan"); } catch (e) { /* private mode */ }
+    let i = 0;
+    if (last !== null) do i = Math.floor(Math.random() * SLOGANS.en.length); while (String(i) === last);
+    try { localStorage.setItem("slogan", String(i)); } catch (e) { /* private mode */ }
+    return i;
+  })();
+  function showSlogan() {
+    const el = document.getElementById("slogan");
+    if (!el) return;
+    const text = (SLOGANS[lang] || SLOGANS.en)[sloganIdx];
+    const [before, after] = text.split("Compairsoft");
+    el.textContent = before;
+    if (after !== undefined) {  // the name keeps the logo's two colours
+      const name = document.createElement("i"), b = document.createElement("b");
+      b.textContent = "airsoft"; name.append("Comp", b, after); el.append(name);
+    }
+  }
   let lang = LANGS.includes(document.documentElement.lang) ? document.documentElement.lang : "en";
   const t = (key, vars) => {
     let s = (T[lang] && T[lang][key]) ?? T.en[key] ?? key;
@@ -205,6 +236,7 @@
   // ---------------------------------------------------------------- shell: language, theme
   function applyShell() {
     document.documentElement.lang = lang;
+    showSlogan();
     document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll("[data-i18n-ph]").forEach((el) => { el.placeholder = t(el.dataset.i18nPh); });
     document.querySelectorAll(".catbar [data-group] span").forEach((el) => { el.textContent = catName(el.parentElement.dataset.group); });

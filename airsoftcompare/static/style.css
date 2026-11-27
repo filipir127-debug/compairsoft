@@ -48,6 +48,9 @@ img { max-width: 100%; }
 .logo:hover { text-decoration: none; }
 .logo b { color: var(--cta); font-weight: 800; }
 .logo-text { white-space: nowrap; }
+.logo-words { display: flex; flex-direction: column; line-height: 1; width: 13.5rem; }
+.logo-tag { font-size: 11px; font-weight: 500; letter-spacing: .01em; color: rgba(255,255,255,.68); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logo-tag i { font-style: normal; font-weight: 700; color: #fff; }
 .logo-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: rgba(255,255,255,.12); color: var(--cta); }
 .logo-mark .ic { width: 22px; height: 22px; stroke-width: 2.4; }
 .logo.small .logo-mark { background: var(--soft); }
@@ -238,6 +241,7 @@ img { max-width: 100%; }
   .search { order: 3; flex: 1 1 100%; max-width: 100%; min-width: 0; }
   .search button { padding: 10px 16px; }
   .top-nav { margin-left: auto; }
+  .logo-tag { display: none; } .logo-words { width: auto; }
   .filters { top: auto; }
   .hero { padding: 20px; } .hero h1 { font-size: 23px; }
   .hero-stats { width: 100%; } .hero-stats div { flex: 1; min-width: 0; padding: 10px 6px; }
