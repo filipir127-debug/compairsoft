@@ -259,11 +259,13 @@
   });
 
   // ---------------------------------------------------------------- pieces
-  function card(p) {
+  // i: position in its row or grid. The first few are on screen at once, so they load straight
+  // away (and the very first with high priority); the rest wait until they are scrolled to.
+  function card(p, i = 99) {
     const save = p.s > 1 && p.x > p.p ? `<span class="badge-save">−${Math.round((1 - p.p / p.x) * 100)} %</span>` : "";
     const stock = p.k ? `<div class="stock yes">${p.s > 1 ? t("inStockOf", { k: p.k, s: p.s }) : t("inStock")}</div>` : `<div class="stock no">${t("outOfStock")}</div>`;
     return `<a class="card" href="/product/${p.id}">
-      <div class="thumb">${groupIcon(p.c)}${safeUrl(p.i) ? `<img src="${esc(safeUrl(p.i))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}${save}</div>
+      <div class="thumb">${groupIcon(p.c)}${safeUrl(p.i) ? `<img src="${esc(safeUrl(p.i))}" alt="" ${i < 5 ? `loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}` : 'loading="lazy"'} referrerpolicy="no-referrer">` : ""}${save}</div>
       <div class="card-body">
         ${p.b ? `<div class="card-brand">${esc(p.b)}</div>` : ""}<div class="name">${esc(nameOf(p))}</div>${stock}
         <div class="price-row"><div class="price">${p.s > 1 ? `<small>${t("fromP")}</small> ` : ""}${money(p.p)}</div></div>
@@ -778,7 +780,7 @@
     }).join("");
     app.innerHTML = `
       <nav class="crumbs"><a href="/">${t("home")}</a><span>›</span><a href="/?cat=${g}">${esc(catName(g))}</a>${GROUPS[g][2].length > 1 ? `<span>›</span><a href="/?cat=${p.c}">${esc(catName(p.c))}</a>` : ""}</nav>
-      <section class="pd"><div class="pd-img">${groupIcon(p.c)}${safeUrl(p.i) ? `<button type="button" class="zoom" data-orig="${esc(safeUrl(p.orig) || safeUrl(p.i))}" aria-label="${t("zoom")}"><img src="${esc(safeUrl(p.i))}" alt="${esc(p.t)}" referrerpolicy="no-referrer"><span class="zoom-hint">${icon("search")}</span></button>` : ""}</div>
+      <section class="pd"><div class="pd-img">${groupIcon(p.c)}${safeUrl(p.i) ? `<button type="button" class="zoom" data-orig="${esc(safeUrl(p.orig) || safeUrl(p.i))}" aria-label="${t("zoom")}"><img src="${esc(safeUrl(p.i))}" alt="${esc(p.t)}" fetchpriority="high" referrerpolicy="no-referrer"><span class="zoom-hint">${icon("search")}</span></button>` : ""}</div>
         <div class="pd-info"><h1>${esc(title)}</h1>${title !== p.t ? `<div class="orig-name">${t("origName")}: ${esc(p.t)}</div>` : ""}
           <div class="pd-meta">${p.b ? `<span>${t("brand")}: <b>${esc(p.b)}</b></span>` : ""}<span>${t("category")}: <a href="/?cat=${p.c}">${esc(catName(p.c))}</a></span>${p.e ? `<span>EAN: ${esc(p.e)}</span>` : ""}</div>
           <div class="pd-buy"><div>

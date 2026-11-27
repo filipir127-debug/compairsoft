@@ -356,7 +356,7 @@ def export_site(cfg: dict, out: str | Path) -> None:
                                    "query-input": "required name=search_term_string"}}
     about = {"@type": "AboutPage", "url": f"{site_url}/about", "name": "About CompAirsoft", "about": {"@id": f"{site_url}/#org"}}
     ld = lambda *items: json.dumps({"@context": "https://schema.org", "@graph": list(items)}, ensure_ascii=False).replace("</", "<\\/")
-    site = {"site_url": site_url, "shop_names": sorted((s["name"] for s in shops), key=str.lower),
+    site = {"site_url": site_url, "image_hosts": [h for h in (settings.get("image_hosts") or []) if safe_url(h)], "shop_names": sorted((s["name"] for s in shops), key=str.lower),
             "jsonld_home": ld(website, org), "jsonld_org": ld(about, org),
             "CATEGORIES": CATEGORIES, "GROUPS": GROUPS, "GROUP_OF": GROUP_OF, "version": version, "ICONS": GROUP_ICONS,
             # Embedded in a <script type="application/json">: "</" must not end that element early.
