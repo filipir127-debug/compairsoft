@@ -4,9 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}CompAirsoft{% endblock %}</title>
-  <meta name="description" content="Compare prices of airsoft guns, magazines, optics and gear across Czech airsoft shops.">
+  <meta name="description" content="Compare prices of airsoft guns, magazines, BBs, optics, tactical gear and clothing across Czech airsoft shops in one place. Prices are updated several times a day.">
   <script src="/static/init.js?v={{ version }}"></script>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff7a00' stroke-width='2.4' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M22 12h-4M6 12H2M12 6V2M12 22v-4'/></svg>">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="/static/fonts/inter-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/static/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/static/style.css?v={{ version }}">
@@ -60,7 +62,7 @@
     <div>
       <h4 data-i18n="foot.know">Good to know</h4>
       <p data-i18n="foot.disclaimer">Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.</p>
-      <p class="small" id="updated"></p>
+      <p class="small" id="updated" data-nosnippet></p>
       <p class="small credits">Product photos © the shops listed. Icons: <a href="https://lucide.dev" rel="noopener">Lucide</a> (ISC). Font: Inter (OFL).</p>
     </div>
   </div>

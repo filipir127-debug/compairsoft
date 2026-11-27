@@ -272,7 +272,7 @@
     }).join("");
     const titles = { "Compared in the most shops": t("sec.most"), "Biggest price differences": t("sec.diff") };
     app.innerHTML = `
-      <section class="hero"><div><h1>${t("hero.title")}</h1><p>${t("hero.text", { offers: fmt(m.stats.offers), shops: m.stats.shops })}</p></div>
+      <section class="hero"><div><h1>${t("hero.title")}</h1><p data-nosnippet>${t("hero.text", { offers: fmt(m.stats.offers), shops: m.stats.shops })}</p></div>
         <div class="hero-stats"><div><b>${fmt(m.stats.products)}</b><span>${t("stat.products")}</span></div>
           <div><b>${fmt(m.stats.compared)}</b><span>${t("stat.compared")}</span></div><div><b>${m.stats.shops}</b><span>${t("stat.shops")}</span></div></div></section>
       <div class="hero-cats"><h2 class="sec-title">${t("categories")}</h2><section class="tiles">${tiles}</section></div>
