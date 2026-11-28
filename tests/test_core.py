@@ -472,3 +472,20 @@ def test_search_matches_whole_model_names():
 def test_airsoft_bbs_called_pellets_stay_bbs():
     assert categorize("Airsoftové kuličky G&G Perfect pellets 0,28g, 3300bb") == "bbs"
     assert categorize("Diabolo JSB Exact Jumbo RS 500ks cal.5,52mm") == "airguns"
+
+
+def test_site_ownership_files_are_at_the_root(tmp_path):
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.export import export_site
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    dbfile = tmp_path / "t.db"
+    conn = dbmod.connect(str(dbfile))
+    sid = _shop_id(conn, {"name": "Shop", "url": "https://x.cz", "type": "feed"})
+    save_offer(conn, sid, Offer(url="https://x.cz/m4", title="M4 zásobník", price=200, currency="CZK",
+                                in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
+    rebuild_products(conn)
+    export_site({"settings": {"database": str(dbfile), "base_currency": "CZK"}, "shops": [{"name": "Shop"}]}, tmp_path / "dist")
+    proof = tmp_path / "dist" / "seznam-wmt-XOmPV2trc7Xbp2BJRQu2xI8FVEpIWPpZ.txt"
+    assert proof.read_text() == "XOmPV2trc7Xbp2BJRQu2xI8FVEpIWPpZ"
