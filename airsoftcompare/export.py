@@ -20,7 +20,8 @@ from jinja2 import Environment, FileSystemLoader
 
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
-from .images import export_buckets, published_thumbs, thumb_name
+from .images import export_buckets, published_thumbs, thumb_name, thumbs_dir
+from .promo import export_promo
 from .rates import SHOWN, current_rates
 from .translate import LANGS, load_translations
 from .params import extract as extract_params, meta_defs
@@ -378,15 +379,24 @@ def export_site(cfg: dict, out: str | Path) -> None:
                                  ensure_ascii=False).replace("</", "<\\/")}
     for page in ("index", "product", "shops", "privacy", "about", "404"):
         (out / f"{page}.html").write_text(env.get_template(f"{page}.html").render(page=page, **site), encoding="utf-8")
+    thumbs = thumbs_dir(settings)
+    image_of = {p["id"]: p["image"] for p in products}
+    def thumb_of(pid: str) -> Path | None:
+        url = safe_url(image_of.get(pid))
+        f = thumbs / thumb_name(url) if url else None
+        return f if f and f.exists() else None
+    promo_paths = export_promo(env, out, site, products, offers, history, shop_name, cards, thumb_of)
     for asset in ("style.css", "app.js", "init.js", "LICENSE-Lucide.txt"):
         shutil.copy(HERE / "static" / asset, out / "static" / asset)
+    for sprite in ("icons.svg", "illustrations.svg"):  # referenced as /static/<file>?v=…#id
+        shutil.copy(HERE / "site" / sprite, out / "static" / sprite)
     shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
     for icon in (HERE / "static" / "icons").iterdir():  # at the root, where browsers and Google look for them
         shutil.copy(icon, out / icon.name)
     # Search engines: every category and product page, on the canonical host.
     site = settings.get("site_url", "https://www.compairsoft.eu").rstrip("/")
     today = date.today().isoformat()
-    urls = [f"{site}/", f"{site}/shops", f"{site}/about", f"{site}/privacy"] + [f"{site}/?cat={c}" for c in list(GROUPS) + sorted(counts)]
+    urls = [f"{site}/", f"{site}/shops", f"{site}/about", f"{site}/privacy"] + [site + p for p in promo_paths] + [f"{site}/?cat={c}" for c in list(GROUPS) + sorted(counts)]
     urls += [f"{site}/product/{p['id']}" for p in sorted(products, key=lambda p: -p["shop_count"])]
     chunks = [urls[i:i + 40000] for i in range(0, len(urls), 40000)]
     for n, chunk in enumerate(chunks, 1):
@@ -417,7 +427,8 @@ def export_site(cfg: dict, out: str | Path) -> None:
         # HTML pages: "no-transform" stops Cloudflare from inserting its JavaScript Detections script,
         # an inline script the CSP above would block (a console error on every page).
         + "".join(f"{path}\n  Cache-Control: public, max-age=0, must-revalidate, no-transform\n"
-                  for path in ("/", "/index.html", "/product", "/product/*", "/shops", "/privacy", "/about", "/404.html"))
+                  for path in ("/", "/index.html", "/product", "/product/*", "/shops", "/privacy", "/about", "/404.html",
+                               "/slevy", "/nejlevnejsi", "/nejlevnejsi/", "/nejlevnejsi/*"))
         + "/data/*\n  Cache-Control: public, max-age=600\n"
         "/static/*\n  Cache-Control: public, max-age=31536000, immutable\n", encoding="utf-8")
     if settings.get("image_hosts"):  # always written, so the photo deploy steps find their folders

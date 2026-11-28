@@ -19,6 +19,8 @@ SAFE_STARTS = (
     "url(",           # same-site links built from the current address
     "catHref(",       # same-site category link, known categories only
     "more}",          # homepage section links, constants from the export
+    "ICONS_SVG}#",    # our own icon file + a constant icon name
+    "ILLU_SVG}#",     # our own drawings file + a constant drawing name
 )
 
 

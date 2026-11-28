@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true">
-<!-- Category illustrations, drawn for CompAirsoft. Colours come from CSS variables (--il-*), so they follow the theme. -->
+<!-- Category illustrations, drawn for CompAirsoft. Colours come from the page's il-* CSS variables, so they follow the theme. -->
 
 <!-- M4 carbine with quad rail (CQB) -->
 <symbol id="cat-weapons" viewBox="0 0 160 90">

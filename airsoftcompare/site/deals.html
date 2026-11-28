@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_promo.html" import pcard, guide_links with context %}
+{% block lang %}cs{% endblock %}
+{% block title %}Slevy týdne na airsoft – CompAirsoft{% endblock %}
+{% block description %}Airsoftové zbraně, kuličky a vybavení, které tento týden zlevnily, a produkty, které jsou v jednom obchodě výrazně levnější než jinde. Aktualizováno několikrát denně.{% endblock %}
+{% block og_title %}Slevy týdne na airsoft – CompAirsoft{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}/slevy">{% endblock %}
+{% block og_url %}<meta property="og:url" content="{{ site_url }}/slevy">{% endblock %}
+{% block og_image %}<meta property="og:image" content="{{ site_url }}/slevy-og.png">{% endblock %}
+{% block content %}
+<div class="promo">
+  <h1>Slevy týdne</h1>
+  <p class="lead">Airsoft, který tento týden zlevnil, a produkty, které jsou v jednom obchodě výrazně levnější než v ostatních.
+    Ceny čteme z českých obchodů několikrát denně, naposledy {{ day.day }}. {{ day.month }}. {{ day.year }}. Před nákupem cenu vždy ověřte v obchodě.</p>
+  {{ guide_links(guides, "slevy") }}
+  {% if deals.drops %}
+  <div class="sec-head"><h2 class="sec-title">Zlevněno za posledních 7 dní</h2></div>
+  <p class="muted">Nejnižší cena skladem oproti nejnižší ceně před týdnem.</p>
+  <div class="grid">{% for d in deals.drops %}{{ pcard(d.card, d.now, d.was, d.pct, d.shop, i=loop.index0) }}{% endfor %}</div>
+  {% endif %}
+  {% if deals.gaps %}
+  <div class="sec-head"><h2 class="sec-title">Výrazně levněji než v ostatních obchodech</h2></div>
+  <p class="muted">Nejlevnější obchod se zbožím skladem oproti druhému nejlevnějšímu obchodu (přeškrtnutá cena).</p>
+  <div class="grid">{% for d in deals.gaps %}{{ pcard(d.card, d.now, d.was, d.pct, d.shop, i=loop.index0 + 8) }}{% endfor %}</div>
+  {% endif %}
+  {% if not deals.drops and not deals.gaps %}<p>Teď tu nejsou žádné výrazné slevy. Zkuste to znovu za pár hodin.</p>{% endif %}
+</div>
+{% endblock %}

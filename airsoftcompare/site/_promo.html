@@ -1,0 +1,17 @@
+{#- Shared pieces of the Czech promo pages (/slevy, /nejlevnejsi). -#}
+{% macro pcard(c, price, was=None, pct=None, shop=None, note=None, i=99) -%}
+<a class="card" href="/product/{{ c.id }}">
+  <div class="thumb">{% if c.i %}<img src="{{ c.i }}" alt="" {% if i < 5 %}loading="eager"{% else %}loading="lazy"{% endif %} referrerpolicy="no-referrer">{% endif %}{% if pct %}<span class="badge-save">−{{ (pct * 100)|round|int }} %</span>{% endif %}</div>
+  <div class="card-body">
+    {% if c.b %}<div class="card-brand">{{ c.b }}</div>{% endif %}<div class="name">{{ c.t }}</div>
+    <div class="stock yes">{% if shop %}Skladem: {{ shop }}{% else %}Skladem{% if c.s > 1 %} v {{ c.k }} z {{ c.s }} obchodů{% endif %}{% endif %}</div>
+    <div class="price-row"><div class="price">{{ czk(price) }}</div>{% if was %}<div class="was">{{ czk(was) }}</div>{% endif %}{% if note %}<div class="unit">{{ note }}</div>{% endif %}</div>
+    <div class="cmp {% if c.s > 1 %}multi{% endif %}">{% if c.s > 1 %}Porovnat {{ c.s }} {{ 'obchody' if c.s < 5 else 'obchodů' }}{% else %}Jen v 1 obchodě{% endif %}</div>
+  </div></a>
+{%- endmacro %}
+{% macro guide_links(guides, current=None) -%}
+<nav class="promo-links" aria-label="Nejlevnější">
+  <a href="/slevy" {% if current == "slevy" %}class="on"{% endif %}>Slevy týdne</a>
+  {% for g in guides %}<a href="/nejlevnejsi/{{ g.slug }}" {% if current == g.slug %}class="on"{% endif %}>{{ g.short }}</a>{% endfor %}
+</nav>
+{%- endmacro %}

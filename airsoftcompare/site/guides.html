@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "_promo.html" import guide_links with context %}
+{% block lang %}cs{% endblock %}
+{% block title %}Nejlevnější airsoft v českých obchodech – CompAirsoft{% endblock %}
+{% block description %}Nejlevnější airsoftové zbraně pro začátečníky, BB kuličky, pistole na CO2 a plyn, sniperky a ochranné brýle skladem v českých obchodech.{% endblock %}
+{% block og_title %}Nejlevnější airsoft v českých obchodech{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}/nejlevnejsi/">{% endblock %}
+{% block og_url %}<meta property="og:url" content="{{ site_url }}/nejlevnejsi/">{% endblock %}
+{% block content %}
+<div class="promo">
+  <h1>Nejlevnější airsoft v českých obchodech</h1>
+  <p class="lead">Žebříčky nejlevnějšího zboží skladem, sestavené z aktuálních cen českých airsoft obchodů. Aktualizováno {{ day.day }}. {{ day.month }}. {{ day.year }}.</p>
+  <ul class="guide-list">
+    <li><a href="/slevy">Slevy týdne</a> <span class="muted">– co zlevnilo a kde je to výrazně levnější</span></li>
+    {% for g in guides %}<li><a href="/nejlevnejsi/{{ g.slug }}">{{ g.title }}</a> <span class="muted">– {{ counts[g.slug] }} produktů</span></li>{% endfor %}
+  </ul>
+</div>
+{% endblock %}

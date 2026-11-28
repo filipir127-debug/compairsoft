@@ -474,6 +474,62 @@ def test_airsoft_bbs_called_pellets_stay_bbs():
     assert categorize("Diabolo JSB Exact Jumbo RS 500ks cal.5,52mm") == "airguns"
 
 
+def test_deals_price_drops_and_shop_gaps():
+    from datetime import date
+    from airsoftcompare.promo import find_deals
+    off = lambda shop, v, k=1: {"shop_id": shop, "price_base": v, "in_stock": k, "active": 1}
+    products = [{"id": "drop", "category": "guns"}, {"id": "gap", "category": "pistols"},
+                {"id": "typo", "category": "guns"}, {"id": "nostock", "category": "guns"}]
+    offers = {"drop": [off(1, 4000)], "gap": [off(1, 1000), off(2, 1500), off(3, 1600, 0)],
+              "typo": [off(1, 500), off(2, 5000)], "nostock": [off(1, 100, 0), off(2, 900)]}
+    history = {"drop": {"A": [["2026-11-01", 5000], ["2026-11-25", 4000]]}}
+    d = find_deals(products, offers, history, {1: "A", 2: "B", 3: "C"}, today=date(2026, 11, 28))
+    assert [(x["id"], x["was"], x["shop"]) for x in d["drops"]] == [("drop", 5000, "A")]
+    # gap: 1000 against the next cheapest shop (1500), not the dearest; a 90 % "discount" is a wrong match
+    assert [(x["id"], x["was"]) for x in d["gaps"]] == [("gap", 1500)]
+
+
+def test_guides_skip_accessories_and_sort_bbs_per_1000():
+    from airsoftcompare.promo import GUIDES, guide_items
+    g = {x.slug: x for x in GUIDES}
+    cards = [
+        {"id": "1", "t": "Airsoftová zbraň M4 CM.507, CYMA", "c": "guns", "p": 2500, "s": 2, "k": 1, "a": ["pw:electric"]},
+        {"id": "2", "t": "Trojnožka na pušku BBS", "c": "guns", "p": 1600, "s": 1, "k": 1, "a": ["pw:electric"]},
+        {"id": "3", "t": "Airsoftová zbraň AK47, CYMA", "c": "guns", "p": 3000, "s": 1, "k": 0, "a": ["pw:electric"]},
+        {"id": "4", "t": "Kuličky 0,25g 1000 ks", "c": "bbs", "p": 60, "s": 1, "k": 1, "a": ["bbw:0.25"], "n": {"bbcount": 1000}},
+        {"id": "5", "t": "Kuličky 0,25g 4000 ks", "c": "bbs", "p": 160, "s": 1, "k": 1, "a": ["bbw:0.25"], "n": {"bbcount": 4000}},
+    ]
+    assert [c["id"] for c in guide_items(g["airsoftove-zbrane-pro-zacatecniky"], cards)] == ["1"]
+    assert [(c["id"], c["unit"]) for c in guide_items(g["bb-kulicky-0-25g"], cards)] == [("5", 40), ("4", 60)]
+
+
+def test_export_writes_promo_pages_and_pictures(tmp_path):
+    from PIL import Image
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.export import export_site
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    dbfile = tmp_path / "t.db"
+    conn = dbmod.connect(str(dbfile))
+    a = _shop_id(conn, {"name": "Shop A", "url": "https://a.cz", "type": "feed"})
+    b = _shop_id(conn, {"name": "Shop B", "url": "https://b.cz", "type": "feed"})
+    for sid, price in ((a, 2000), (b, 2600)):
+        save_offer(conn, sid, Offer(url=f"https://x{sid}.cz/p", title="Airsoftová pistole Glock 17 CO2, Umarex", price=price,
+                                    currency="CZK", in_stock=True, ean="1234567890123", brand=None, image=None), {"CZK": 1.0})
+    rebuild_products(conn)
+    export_site({"settings": {"database": str(dbfile), "base_currency": "CZK", "site_url": "https://www.example.cz"},
+                 "shops": [{"name": "Shop A"}, {"name": "Shop B"}]}, tmp_path / "dist")
+    out = tmp_path / "dist"
+    deals = (out / "slevy.html").read_text()
+    assert 'lang="cs"' in deals and "Glock 17" in deals and "2 600 Kč" in deals and "slevy-og.png" in deals
+    assert "Glock 17" in (out / "nejlevnejsi/airsoftove-pistole-co2.html").read_text()
+    assert (out / "nejlevnejsi/index.html").exists()
+    assert Image.open(out / "slevy.png").size == (1080, 1350) and Image.open(out / "slevy-og.png").size == (1200, 630)
+    sitemap = (out / "sitemap-1.xml").read_text()
+    assert "https://www.example.cz/slevy<" in sitemap and "https://www.example.cz/nejlevnejsi/bb-kulicky-0-25g<" in sitemap
+    assert "no-transform" in (out / "_headers").read_text().split("\n/nejlevnejsi/*\n", 1)[1].split("\n/", 1)[0]
+
 
 def test_seznam_ownership_tag_on_the_homepage(tmp_path):
     from airsoftcompare import db as dbmod

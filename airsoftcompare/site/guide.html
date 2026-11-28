@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "_promo.html" import pcard, guide_links with context %}
+{% block lang %}cs{% endblock %}
+{% block title %}{{ g.title }} – CompAirsoft{% endblock %}
+{% block description %}{{ g.intro[0]|truncate(155, True, "…") }}{% endblock %}
+{% block og_title %}{{ g.title }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}/nejlevnejsi/{{ g.slug }}">{% endblock %}
+{% block og_url %}<meta property="og:url" content="{{ site_url }}/nejlevnejsi/{{ g.slug }}">{% endblock %}
+{% block content %}
+<div class="promo">
+  <nav class="crumbs"><a href="/">CompAirsoft</a> › <a href="/nejlevnejsi/">Nejlevnější</a></nav>
+  <h1>{{ g.title }}</h1>
+  {% for p in g.intro %}<p class="lead">{{ p }}</p>{% endfor %}
+  <p class="muted">Ceny z českých obchodů, aktualizováno {{ day.day }}. {{ day.month }}. {{ day.year }}. Před nákupem cenu vždy ověřte v obchodě.</p>
+  {{ guide_links(guides, g.slug) }}
+  {% if items %}
+  <div class="grid">{% for c in items %}{{ pcard(c, c.p, note=(czk(c.unit) ~ " " ~ g.per_label) if g.per else None, i=loop.index0) }}{% endfor %}</div>
+  <p class="more"><a class="btn" href="{{ g.more }}">Zobrazit všechny s filtry</a></p>
+  {% else %}<p>Teď žádný obchod nemá nic takového skladem.</p>{% endif %}
+  {% if g.tips %}<h2>Na co si dát pozor</h2>
+  <ul class="tips">{% for t in g.tips %}<li>{{ t }}</li>{% endfor %}</ul>{% endif %}
+</div>
+{% endblock %}

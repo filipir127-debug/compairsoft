@@ -36,7 +36,7 @@
       "mt.metal": "Metal", "mt.plastic": "Plastic / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Black", "col.green": "Green", "col.olive": "Olive", "col.tan": "Tan", "col.brown": "Brown", "col.grey": "Grey", "col.white": "White",
       "col.red": "Red", "col.blue": "Blue", "col.pink": "Pink", "col.orange": "Orange", "col.camo": "Camo",
-      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", about: "About & contact", onlyDiscount: "Discounted 10 % or more", soldIn2: "Sold in 2+ shops", availAll: "All products", availStock: "In stock anywhere", moreN: "{n} more", lessBtn: "Show less", priceUpTo: "Up to {v}", removeAll: "Clear all", origName: "Original name", ratesNote: "Prices in {c} are converted from CZK at the Czech National Bank rate of {d}.", zoom: "Show the original photo", showEmail: "Show email address",
+      "theme": "Dark / light mode", lang: "Language", privacy: "Privacy", about: "About & contact", deals: "Deals of the week", cheapest: "Cheapest picks", onlyDiscount: "Discounted 10 % or more", soldIn2: "Sold in 2+ shops", availAll: "All products", availStock: "In stock anywhere", moreN: "{n} more", lessBtn: "Show less", priceUpTo: "Up to {v}", removeAll: "Clear all", origName: "Original name", ratesNote: "Prices in {c} are converted from CZK at the Czech National Bank rate of {d}.", zoom: "Show the original photo", showEmail: "Show email address",
     },
     cs: {
       "search.ph": "Hledat zbraně, zásobníky, kolimátory…", "search.btn": "Hledat", "nav.shops": "Obchody", loading: "Načítání…",
@@ -65,7 +65,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Černá", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Písková", "col.brown": "Hnědá", "col.grey": "Šedá", "col.white": "Bílá",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Růžová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", about: "O nás a kontakt", onlyDiscount: "Se slevou 10 % a více", soldIn2: "Prodáváno ve 2+ obchodech", availAll: "Všechno zboží", availStock: "Skladem kdekoliv", moreN: "Dalších {n}", lessBtn: "Zobrazit méně", priceUpTo: "Do {v}", removeAll: "Zrušit vše", origName: "Původní název", ratesNote: "Ceny v {c} jsou přepočtené z Kč kurzem ČNB ze dne {d}.", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
+      "theme": "Tmavý / světlý režim", lang: "Jazyk", privacy: "Ochrana soukromí", about: "O nás a kontakt", deals: "Slevy týdne", cheapest: "Nejlevnější", onlyDiscount: "Se slevou 10 % a více", soldIn2: "Prodáváno ve 2+ obchodech", availAll: "Všechno zboží", availStock: "Skladem kdekoliv", moreN: "Dalších {n}", lessBtn: "Zobrazit méně", priceUpTo: "Do {v}", removeAll: "Zrušit vše", origName: "Původní název", ratesNote: "Ceny v {c} jsou přepočtené z Kč kurzem ČNB ze dne {d}.", zoom: "Zobrazit původní fotku", showEmail: "Zobrazit e-mail",
     },
     sk: {
       "search.ph": "Hľadať zbrane, zásobníky, kolimátory…", "search.btn": "Hľadať", "nav.shops": "Obchody", loading: "Načítava sa…",
@@ -94,7 +94,7 @@
       "mt.metal": "Kov", "mt.plastic": "Plast / ABS", "cap.low": "Low-cap", "cap.mid": "Mid-cap", "cap.hi": "Hi-cap", "cap.real": "Real-cap",
       "col.black": "Čierna", "col.green": "Zelená", "col.olive": "Olivová", "col.tan": "Piesková", "col.brown": "Hnedá", "col.grey": "Sivá", "col.white": "Biela",
       "col.red": "Červená", "col.blue": "Modrá", "col.pink": "Ružová", "col.orange": "Oranžová", "col.camo": "Maskáčová",
-      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", about: "O nás a kontakt", onlyDiscount: "So zľavou 10 % a viac", soldIn2: "Predávané v 2+ obchodoch", availAll: "Všetok tovar", availStock: "Skladom kdekoľvek", moreN: "Ďalších {n}", lessBtn: "Zobraziť menej", priceUpTo: "Do {v}", removeAll: "Zrušiť všetko", origName: "Pôvodný názov", ratesNote: "Ceny v {c} sú prepočítané z Kč kurzom ČNB zo dňa {d}.", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
+      "theme": "Tmavý / svetlý režim", lang: "Jazyk", privacy: "Ochrana súkromia", about: "O nás a kontakt", deals: "Zľavy týždňa", cheapest: "Najlacnejšie", onlyDiscount: "So zľavou 10 % a viac", soldIn2: "Predávané v 2+ obchodoch", availAll: "Všetok tovar", availStock: "Skladom kdekoľvek", moreN: "Ďalších {n}", lessBtn: "Zobraziť menej", priceUpTo: "Do {v}", removeAll: "Zrušiť všetko", origName: "Pôvodný názov", ratesNote: "Ceny v {c} sú prepočítané z Kč kurzom ČNB zo dňa {d}.", zoom: "Zobraziť pôvodnú fotku", showEmail: "Zobraziť e-mail",
     },
     de: {
       "search.ph": "Waffen, Magazine, Red Dots suchen…", "search.btn": "Suchen", "nav.shops": "Shops", loading: "Wird geladen…",
@@ -123,7 +123,7 @@
       "mt.metal": "Metall", "mt.plastic": "Kunststoff / ABS", "cap.low": "Low-Cap", "cap.mid": "Mid-Cap", "cap.hi": "Hi-Cap", "cap.real": "Real-Cap",
       "col.black": "Schwarz", "col.green": "Grün", "col.olive": "Oliv", "col.tan": "Tan", "col.brown": "Braun", "col.grey": "Grau", "col.white": "Weiß",
       "col.red": "Rot", "col.blue": "Blau", "col.pink": "Rosa", "col.orange": "Orange", "col.camo": "Tarn",
-      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", about: "Über uns & Kontakt", onlyDiscount: "Mit Rabatt ab 10 %", soldIn2: "In 2+ Shops erhältlich", availAll: "Alle Artikel", availStock: "Irgendwo auf Lager", moreN: "{n} weitere", lessBtn: "Weniger anzeigen", priceUpTo: "Bis {v}", removeAll: "Alle entfernen", origName: "Originalname", ratesNote: "Preise in {c} sind aus CZK zum Kurs der Tschechischen Nationalbank vom {d} umgerechnet.", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
+      "theme": "Dunkel / hell", lang: "Sprache", privacy: "Datenschutz", about: "Über uns & Kontakt", deals: "Angebote der Woche", cheapest: "Günstigste Tipps", onlyDiscount: "Mit Rabatt ab 10 %", soldIn2: "In 2+ Shops erhältlich", availAll: "Alle Artikel", availStock: "Irgendwo auf Lager", moreN: "{n} weitere", lessBtn: "Weniger anzeigen", priceUpTo: "Bis {v}", removeAll: "Alle entfernen", origName: "Originalname", ratesNote: "Preise in {c} sind aus CZK zum Kurs der Tschechischen Nationalbank vom {d} umgerechnet.", zoom: "Originalfoto anzeigen", showEmail: "E-Mail-Adresse anzeigen",
     },
   };
   const CAT_NAMES = {
@@ -220,7 +220,10 @@
   const fmtCur = (x) => (cur === "CZK" ? fmt(x) + " Kč"
     : x.toLocaleString(LOCALES[lang] || "en-GB", { style: "currency", currency: cur, maximumFractionDigits: x >= 1000 ? 0 : 2 }));
   const money = (v) => (v == null ? "–" : fmtCur(toCur(v)));
-  const icon = (name, cls = "ic") => `<svg class="${cls}"><use href="#i-${name}"/></svg>`;
+  // Icons and drawings are separate SVG files, cached by the browser (the HTML is sent uncompressed).
+  const SPRITE_V = (document.documentElement.dataset.v || "").replace(/\D/g, "");  // digits only
+  const ICONS_SVG = `/static/icons.svg?v=${SPRITE_V}`, ILLU_SVG = `/static/illustrations.svg?v=${SPRITE_V}`;
+  const icon = (name, cls = "ic") => `<svg class="${cls}"><use href="${ICONS_SVG}#i-${name}"/></svg>`;
   const groupIcon = (c) => icon(ICONS[GROUP_OF[c] || c] || "image", "ph");
   const P = () => new URLSearchParams(location.search);
   const url = (over) => {
@@ -320,7 +323,7 @@
 
       const links = subs.length > 1 ? `<div class="tile-subs">${subs.filter((s) => m.counts[s]).map((s) => `<a href="/?cat=${s}">${esc(catName(s))}</a>`).join("")}</div>` : "";
       return `<div class="tile"><a class="tile-main" href="/?cat=${g}">
-<span class="tile-img"><svg class="illu" viewBox="0 0 160 90" aria-hidden="true"><use href="#cat-${ILLU_PICK[g] || g}"/></svg></span>
+<span class="tile-img"><svg class="illu" viewBox="0 0 160 90" aria-hidden="true"><use href="${ILLU_SVG}#cat-${ILLU_PICK[g] || g}"/></svg></span>
           <span class="tile-text"><span class="tile-name">${esc(catName(g))}</span><span class="tile-n">${nprod(total)}</span></span></a>${links}</div>`;
     }).join("");
     const titles = { "Compared in the most shops": t("sec.most"), "Biggest price differences": t("sec.diff") };
@@ -557,7 +560,7 @@
     // fixed per category (chosen at export), so the tiles don't change with filters
     const photoOf = (sub) => safeUrl((m.catImages || {})[sub]) || "";
     // category tiles show the site's own drawing of the category (illustrations.svg)
-    const drawing = (sub) => `<span class="qimg qill"><svg viewBox="0 0 160 90" aria-hidden="true"><use href="#cat-${SUB_ILLU[sub] || "misc"}"/></svg></span>`;
+    const drawing = (sub) => `<span class="qimg qill"><svg viewBox="0 0 160 90" aria-hidden="true"><use href="${ILLU_SVG}#cat-${SUB_ILLU[sub] || "misc"}"/></svg></span>`;
     const qimg = (img) => `<span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[group], "ic")}</span>`;
     let subTiles = group && GROUPS[group][2].length > 1 ? GROUPS[group][2].filter((sub) => m.counts[sub]).map((sub) =>
       `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">${drawing(sub)}${esc(catName(sub))}</a>`).join("") : "";
@@ -973,6 +976,7 @@
       if (page === "shops") return shopsPage(m);
       if (page === "privacy") return privacyPage();
       if (page === "about") return aboutPage(m);
+      if (page === "deals" || page === "guide") return;  // Czech promo pages: rendered on the server
       const p = P();
       const filtered = ["q", "cat", "shop", "stock", "multi", "minshops", "save", "pmin", "pmax", "all", "brand", ...paramKeys()].some((k) => p.get(k))
         || (p.get("sort") || "relevance") !== "relevance" || +p.get("page") > 1;

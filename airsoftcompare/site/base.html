@@ -1,19 +1,19 @@
 <!doctype html>
-<html lang="en" data-v="{{ version }}">
+<html lang="{% block lang %}en{% endblock %}" data-v="{{ version }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}CompAirsoft{% endblock %}</title>
-  <meta name="description" content="We compare prices of airsoft guns, magazines, BBs, optics, clothing and more across Czech airsoft shops in one place.">
+  <meta name="description" content="{% block description %}We compare prices of airsoft guns, magazines, BBs, optics, clothing and more across Czech airsoft shops in one place.{% endblock %}">
   <meta name="seznam-wmt" content="dJGgsrPJ3txSUBbKZbMPWaRdmJTFlQQL">
   <script src="/static/init.js?v={{ version }}"></script>
   {% block canonical %}{% endblock %}
   <meta property="og:site_name" content="CompAirsoft">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{% block og_title %}CompAirsoft – compare airsoft prices across Czech shops{% endblock %}">
-  <meta property="og:description" content="We compare prices of airsoft guns, magazines, BBs, optics, clothing and more across Czech airsoft shops in one place.">
+  <meta property="og:description" content="{{ self.description() }}">
   {% block og_url %}{% endblock %}
-  <meta property="og:image" content="{{ site_url }}/og-image.png">
+  {% block og_image %}<meta property="og:image" content="{{ site_url }}/og-image.png">{% endblock %}
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="CompAirsoft – find the cheapest airsoft gear">
@@ -30,35 +30,33 @@
   {% endfor %}
 </head>
 <body data-page="{{ page }}">
-{% include "icons.svg" %}
-{% include "illustrations.svg" %}
 <header class="top">
   <div class="wrap top-inner">
-    <a class="logo" href="/"><span class="logo-mark"><svg class="ic"><use href="#i-crosshair"/></svg></span><span class="logo-words"><span class="logo-text">Comp<b>airsoft</b></span><span class="logo-tag" id="slogan" aria-hidden="true">Compare? Airsoft? <i>Comp<b>airsoft</b>.</i></span></span></a>
+    <a class="logo" href="/"><span class="logo-mark"><svg class="ic"><use href="/static/icons.svg?v={{ version }}#i-crosshair"/></svg></span><span class="logo-words"><span class="logo-text">Comp<b>airsoft</b></span><span class="logo-tag" id="slogan" aria-hidden="true">Compare? Airsoft? <i>Comp<b>airsoft</b>.</i></span></span></a>
     <form class="search" action="/" method="get" role="search">
-      <svg class="search-ico ic"><use href="#i-search"/></svg>
+      <svg class="search-ico ic"><use href="/static/icons.svg?v={{ version }}#i-search"/></svg>
       <input type="search" name="q" data-i18n-ph="search.ph" placeholder="Search guns, magazines, red dots…" autocomplete="off" aria-label="Search">
       <button type="submit" data-i18n="search.btn">Search</button>
     </form>
     <nav class="top-nav">
-      <a href="/shops"><svg class="ic"><use href="#i-store"/></svg><span data-i18n="nav.shops">Shops</span></a>
-      <label class="lang" title="Language"><svg class="ic"><use href="#i-globe"/></svg>
+      <a href="/shops" class="nav-shops"><svg class="ic"><use href="/static/icons.svg?v={{ version }}#i-store"/></svg><span data-i18n="nav.shops">Shops</span></a>
+      <label class="lang" title="Language"><svg class="ic"><use href="/static/icons.svg?v={{ version }}#i-globe"/></svg>
         <select id="lang" aria-label="Language">
           <option value="cs">CZ</option><option value="sk">SK</option><option value="en">EN</option><option value="de">DE</option>
         </select></label>
       <label class="lang cur" title="Currency">
         <select id="cur" aria-label="Currency">
-          <option value="CZK">Kč CZK</option><option value="EUR">€ EUR</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="PLN">zł PLN</option>
+          <option value="CZK">CZK Kč</option><option value="EUR">EUR €</option><option value="USD">USD $</option><option value="GBP">GBP £</option><option value="PLN">PLN zł</option>
         </select></label>
       <button class="theme-btn" id="theme" type="button" aria-label="Dark / light mode">
-        <svg class="ic ic-moon"><use href="#i-moon"/></svg><svg class="ic ic-sun"><use href="#i-sun"/></svg>
+        <svg class="ic ic-moon"><use href="/static/icons.svg?v={{ version }}#i-moon"/></svg><svg class="ic ic-sun"><use href="/static/icons.svg?v={{ version }}#i-sun"/></svg>
       </button>
     </nav>
   </div>
   <nav class="catbar" aria-label="Categories">
     <div class="wrap catbar-inner">
       {% for g, (label, icon, subs) in GROUPS.items() %}
-        <a href="/?cat={{ g }}" data-group="{{ g }}"><svg class="ic"><use href="#i-{{ ICONS[g] }}"/></svg><span data-i18n="g.{{ g }}">{{ label }}</span></a>
+        <a href="/?cat={{ g }}" data-group="{{ g }}"><svg class="ic"><use href="/static/icons.svg?v={{ version }}#i-{{ ICONS[g] }}"/></svg><span data-i18n="g.{{ g }}">{{ label }}</span></a>
       {% endfor %}
     </div>
   </nav>
@@ -67,19 +65,19 @@
 <footer class="foot">
   <div class="wrap foot-inner">
     <div>
-      <div class="logo small"><span class="logo-mark"><svg class="ic"><use href="#i-crosshair"/></svg></span><span class="logo-text">Comp<b>airsoft</b></span></div>
+      <div class="logo small"><span class="logo-mark"><svg class="ic"><use href="/static/icons.svg?v={{ version }}#i-crosshair"/></svg></span><span class="logo-text">Comp<b>airsoft</b></span></div>
       <p class="foot-about" data-i18n="foot.about">Tired of going to each individual site to check where prices are better? Now you don't have to!
 Everything at one place.</p>
     </div>
     <div>
-      <h4 data-i18n="foot.browse">Browse</h4>
-      <a href="/?all=1" data-i18n="all">All products</a><a href="/?multi=1&sort=savings" data-i18n="sec.diff">Biggest price differences</a><a href="/shops" data-i18n="nav.shops">Shops</a><a href="/about" data-i18n="about">About &amp; contact</a><a href="/privacy" data-i18n="privacy">Privacy</a>
+      <h2 class="foot-h" data-i18n="foot.browse">Browse</h2>
+      <a href="/?all=1" data-i18n="all">All products</a><a href="/?multi=1&sort=savings" data-i18n="sec.diff">Biggest price differences</a><a href="/slevy" data-i18n="deals">Deals of the week</a><a href="/nejlevnejsi/" data-i18n="cheapest">Cheapest picks</a><a href="/shops" data-i18n="nav.shops">Shops</a><a href="/about" data-i18n="about">About &amp; contact</a><a href="/privacy" data-i18n="privacy">Privacy</a>
     </div>
     <div>
-      <h4 data-i18n="foot.know">Good to know</h4>
+      <h2 class="foot-h" data-i18n="foot.know">Good to know</h2>
       <p data-i18n="foot.disclaimer">Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.</p>
       <p class="small" id="updated" data-nosnippet></p>
-      <p class="small credits">Product photos © the shops listed. Icons: <a href="https://lucide.dev" rel="noopener">Lucide</a> (ISC). Font: Inter (OFL).</p>
+      <p class="small credits">Product photos © the shops listed.</p>
     </div>
   </div>
 </footer>
