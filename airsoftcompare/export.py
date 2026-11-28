@@ -21,7 +21,7 @@ from jinja2 import Environment, FileSystemLoader
 from . import db as dbmod
 from .categories import CATEGORIES, GROUP_OF, GROUPS
 from .images import export_buckets, published_thumbs, thumb_name, thumbs_dir
-from .promo import export_promo
+from .promo import _varied as varied, export_promo, find_deals
 from .rates import SHOWN, current_rates
 from .translate import LANGS, load_translations
 from .params import extract as extract_params, meta_defs
@@ -333,7 +333,13 @@ def export_site(cfg: dict, out: str | Path) -> None:
     for p in products:
         counts[p["category"]] += 1
     multi = [p for p in products if p["shop_count"] > 1 and p["in_stock_count"] > 0]
+    # Deals of the week (the same as /slevy): price drops and shop gaps taking turns, two per category.
+    deals = find_deals(products, offers, history, shop_name)
+    cat_of = {p["id"]: p["category"] for p in products}
+    turns = [d for pair in zip(deals["drops"] + [None] * 24, deals["gaps"] + [None] * 24) for d in pair if d]
+    deal_cards = [{**cards[d["id"]], "p": _num(d["now"]), "w": _num(d["was"])} for d in varied(turns, cat_of, 2, 12)]
     sections = [
+        *([{"title": "Deals of the week", "more": "/slevy", "items": deal_cards}] if deal_cards else []),
         {"title": "Compared in the most shops", "more": "/?multi=1&sort=shops",
          "items": [cards[p["id"]] for p in sorted(multi, key=lambda p: (-p["shop_count"], -(p["max_price"] - p["min_price"])))[:12]]},
         {"title": "Biggest price differences", "more": "/?multi=1&sort=savings",

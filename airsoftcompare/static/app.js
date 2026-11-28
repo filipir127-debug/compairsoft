@@ -15,7 +15,7 @@
       "foot.disclaimer": "Prices are read from each shop's public feed or product pages and may be out of date. Always check the shop before buying.",
       updated: "Prices last updated {d}.", all: "All products", "sec.most": "Compared in the most shops", "sec.diff": "Biggest price differences",
       "nf.title": "Page not found", "nf.home": "Back to the homepage", home: "Home",
-      "hero.title": "Find the cheapest airsoft gear", "hero.text": "We compare <b>{offers}</b> offers from <b>{shops}</b> airsoft shops, so you don't have to open every one.", categories: "Categories",
+      "hero.title": "Find the cheapest airsoft gear", "brief.h1": "One kit. <em>{shops} shops.</em> Lowest price.", "brief.p": "We compare airsoft prices from Czech shops several times a day. No shop pays for its place: the cheapest offer always comes first.", quick: "Popular:", "strip.upd": "Updated {d}", "strip.shops": "{n} shops", "strip.offers": "{n} offers", "sec.deals": "Deals of the week", "hero.text": "We compare <b>{offers}</b> offers from <b>{shops}</b> airsoft shops, so you don't have to open every one.", categories: "Categories",
       nprod: "{n} products", nprod1: "1 product", browseAll: "Browse all {n} products", showAll: "Show all ›",
       filters: "Filters", price: "Price", from: "from", to: "to", avail: "Availability", inStockOnly: "In stock only", clear: "Clear filters",
       showMore: "Show more", showLess: "Show less", any: "Any", allOf: "All", results: "Show {n} products",
@@ -44,7 +44,7 @@
       "foot.disclaimer": "Ceny čteme z veřejných feedů a stránek obchodů a nemusí být aktuální. Před nákupem vždy ověřte cenu v obchodě.",
       updated: "Ceny naposledy aktualizovány {d}.", all: "Všechny produkty", "sec.most": "Porovnáno v nejvíce obchodech", "sec.diff": "Největší rozdíly v cenách",
       "nf.title": "Stránka nenalezena", "nf.home": "Zpět na úvod", home: "Úvod",
-      "hero.title": "Najděte nejlevnější airsoftové vybavení", "hero.text": "Porovnáváme <b>{offers}</b> nabídek z <b>{shops}</b> airsoftových obchodů, abyste nemuseli procházet každý zvlášť.", categories: "Kategorie",
+      "hero.title": "Najděte nejlevnější airsoftové vybavení", "brief.h1": "Jedna výbava. <em>{shops} obchodů.</em> Nejnižší cena.", "brief.p": "Porovnáváme ceny airsoftu z českých obchodů několikrát denně. Žádný obchod si nekupuje pořadí, nejlevnější nabídka je vždy první.", quick: "Časté hledání:", "strip.upd": "Aktualizováno {d}", "strip.shops": "{n} obchodů", "strip.offers": "{n} nabídek", "sec.deals": "Slevy týdne", "hero.text": "Porovnáváme <b>{offers}</b> nabídek z <b>{shops}</b> airsoftových obchodů, abyste nemuseli procházet každý zvlášť.", categories: "Kategorie",
       nprod: "{n} produktů", nprod1: "1 produkt", nprod2: "{n} produkty", browseAll: "Zobrazit všech {n} produktů", showAll: "Zobrazit vše ›",
       filters: "Filtry", price: "Cena", from: "od", to: "do", avail: "Dostupnost", inStockOnly: "Pouze skladem", clear: "Zrušit filtry",
       showMore: "Zobrazit více", showLess: "Zobrazit méně", any: "Libovolně", allOf: "Vše", results: "Zobrazit {n} produktů",
@@ -73,7 +73,7 @@
       "foot.disclaimer": "Ceny čítame z verejných feedov a stránok obchodov a nemusia byť aktuálne. Pred nákupom vždy overte cenu v obchode.",
       updated: "Ceny naposledy aktualizované {d}.", all: "Všetky produkty", "sec.most": "Porovnané v najviac obchodoch", "sec.diff": "Najväčšie rozdiely v cenách",
       "nf.title": "Stránka sa nenašla", "nf.home": "Späť na úvod", home: "Úvod",
-      "hero.title": "Nájdite najlacnejšie airsoftové vybavenie", "hero.text": "Porovnávame <b>{offers}</b> ponúk z <b>{shops}</b> airsoftových obchodov, aby ste nemuseli prechádzať každý zvlášť.", categories: "Kategórie",
+      "hero.title": "Nájdite najlacnejšie airsoftové vybavenie", "brief.h1": "Jedna výbava. <em>{shops} obchodov.</em> Najnižšia cena.", "brief.p": "Porovnávame ceny airsoftu z českých obchodov niekoľkokrát denne. Žiadny obchod si nekupuje poradie, najlacnejšia ponuka je vždy prvá.", quick: "Časté hľadania:", "strip.upd": "Aktualizované {d}", "strip.shops": "{n} obchodov", "strip.offers": "{n} ponúk", "sec.deals": "Zľavy týždňa", "hero.text": "Porovnávame <b>{offers}</b> ponúk z <b>{shops}</b> airsoftových obchodov, aby ste nemuseli prechádzať každý zvlášť.", categories: "Kategórie",
       nprod: "{n} produktov", nprod1: "1 produkt", nprod2: "{n} produkty", browseAll: "Zobraziť všetkých {n} produktov", showAll: "Zobraziť všetko ›",
       filters: "Filtre", price: "Cena", from: "od", to: "do", avail: "Dostupnosť", inStockOnly: "Iba skladom", clear: "Zrušiť filtre",
       showMore: "Zobraziť viac", showLess: "Zobraziť menej", any: "Ľubovoľne", allOf: "Všetko", results: "Zobraziť {n} produktov",
@@ -102,7 +102,7 @@
       "foot.disclaimer": "Die Preise stammen aus öffentlichen Feeds und Produktseiten der Shops und können veraltet sein. Bitte vor dem Kauf im Shop prüfen.",
       updated: "Preise zuletzt aktualisiert am {d}.", all: "Alle Produkte", "sec.most": "In den meisten Shops verglichen", "sec.diff": "Größte Preisunterschiede",
       "nf.title": "Seite nicht gefunden", "nf.home": "Zur Startseite", home: "Start",
-      "hero.title": "Finde die günstigste Airsoft-Ausrüstung", "hero.text": "Wir vergleichen <b>{offers}</b> Angebote aus <b>{shops}</b> Airsoft-Shops, damit du nicht jeden einzeln öffnen musst.", categories: "Kategorien",
+      "hero.title": "Finde die günstigste Airsoft-Ausrüstung", "brief.h1": "Eine Ausrüstung. <em>{shops} Shops.</em> Bester Preis.", "brief.p": "Wir vergleichen Airsoft-Preise tschechischer Shops mehrmals täglich. Kein Shop kauft sich seinen Platz: das günstigste Angebot steht immer oben.", quick: "Beliebt:", "strip.upd": "Aktualisiert {d}", "strip.shops": "{n} Shops", "strip.offers": "{n} Angebote", "sec.deals": "Angebote der Woche", "hero.text": "Wir vergleichen <b>{offers}</b> Angebote aus <b>{shops}</b> Airsoft-Shops, damit du nicht jeden einzeln öffnen musst.", categories: "Kategorien",
       nprod: "{n} Produkte", nprod1: "1 Produkt", browseAll: "Alle {n} Produkte anzeigen", showAll: "Alle anzeigen ›",
       filters: "Filter", price: "Preis", from: "von", to: "bis", avail: "Verfügbarkeit", inStockOnly: "Nur auf Lager", clear: "Filter zurücksetzen",
       showMore: "Mehr anzeigen", showLess: "Weniger anzeigen", any: "Beliebig", allOf: "Alle", results: "{n} Produkte anzeigen",
@@ -265,13 +265,15 @@
   // i: position in its row or grid. The first few are on screen at once, so they load straight
   // away (and the very first with high priority); the rest wait until they are scrolled to.
   function card(p, i = 99) {
-    const save = p.s > 1 && p.x > p.p ? `<span class="badge-save">−${Math.round((1 - p.p / p.x) * 100)} %</span>` : "";
-    const stock = p.k ? `<div class="stock yes">${p.s > 1 ? t("inStockOf", { k: p.k, s: p.s }) : t("inStock")}</div>` : `<div class="stock no">${t("outOfStock")}</div>`;
+    // a deal shows its drop against the earlier / next-cheapest price ("w"), others the spread between shops
+    const ref = p.w > p.p ? p.w : p.s > 1 ? p.x : 0;
+    const save = ref > p.p ? `<span class="badge-save">−${Math.round((1 - p.p / ref) * 100)} %</span>` : "";
+    const stock = p.k ? `<span class="stock yes">${p.s > 1 ? `${p.k}/${p.s} ${t("inStock").toLowerCase()}` : t("inStock")}</span>` : `<span class="stock no">${t("outOfStock")}</span>`;
     return `<a class="card" href="/product/${p.id}">
       <div class="thumb">${groupIcon(p.c)}${safeUrl(p.i) ? `<img src="${esc(safeUrl(p.i))}" alt="" ${i < 5 ? `loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}` : 'loading="lazy"'} referrerpolicy="no-referrer">` : ""}${save}</div>
       <div class="card-body">
-        ${p.b ? `<div class="card-brand">${esc(p.b)}</div>` : ""}<div class="name">${esc(nameOf(p))}</div>${stock}
-        <div class="price-row"><div class="price">${p.s > 1 ? `<small>${t("fromP")}</small> ` : ""}${money(p.p)}</div></div>
+        <div class="card-meta"><span class="card-brand">${esc(p.b || "")}</span>${stock}</div><div class="name">${esc(nameOf(p))}</div>
+        <div class="price-row"><div class="price">${p.s > 1 ? `<small>${t("fromP")}</small> ` : ""}${money(p.p)}</div>${p.w > p.p ? `<s class="was">${money(p.w)}</s>` : ""}</div>
         <div class="cmp ${p.s > 1 ? "multi" : ""}">${p.s > 1 ? t("compareN", { n: p.s }) : t("oneShop")}</div>
       </div></a>`;
   }
@@ -311,25 +313,29 @@
     melee: "sub-melee", bows: "sub-bows", targets: "sub-targets", magnets: "sub-magnets", books: "sub-books", cables: "sub-cables", other: "misc",
   };
   const ILLU_PICK = Object.fromEntries(Object.entries(ILLU).map(([g, l]) => [g, l[Math.floor(Math.random() * l.length)]]));
+  const QUICK = ["Glock 17", "M4", "AK-74", "0,25 g", "Green gas", "CO2", "LiPo"];
   function home(m) {
     setCanonical("/");
     setJsonLd(null);
     markGroup(null);
     if (TR_LANGS.includes(lang) && m.tr) Object.assign(TR, m.tr[lang] || {});
     document.title = `CompAirsoft – ${t("hero.title")}`;
+    // categories as numbered crates
+    let no = 0;
     const tiles = Object.entries(GROUPS).map(([g, [, , subs]]) => {
       const total = subs.reduce((n, s) => n + (m.counts[s] || 0), 0);
       if (!total) return "";
-
-      const links = subs.length > 1 ? `<div class="tile-subs">${subs.filter((s) => m.counts[s]).map((s) => `<a href="/?cat=${s}">${esc(catName(s))}</a>`).join("")}</div>` : "";
-      return `<div class="tile"><a class="tile-main" href="/?cat=${g}">
-<span class="tile-img"><svg class="illu" viewBox="0 0 160 90" aria-hidden="true"><use href="${ILLU_SVG}#cat-${ILLU_PICK[g] || g}"/></svg></span>
-          <span class="tile-text"><span class="tile-name">${esc(catName(g))}</span><span class="tile-n">${nprod(total)}</span></span></a>${links}</div>`;
+      no += 1;
+      return `<a class="crate" href="/?cat=${g}"><span class="no">${String(no).padStart(2, "0")}</span>
+        <svg class="illu" viewBox="0 0 160 90" aria-hidden="true"><use href="${ILLU_SVG}#cat-${ILLU_PICK[g] || g}"/></svg>
+        <span class="lbl">${esc(catName(g))}</span><span class="cnt">${nprod(total)}</span></a>`;
     }).join("");
-    const titles = { "Compared in the most shops": t("sec.most"), "Biggest price differences": t("sec.diff") };
+    const titles = { "Deals of the week": t("sec.deals"), "Compared in the most shops": t("sec.most"), "Biggest price differences": t("sec.diff") };
+    const quick = QUICK.map((q) => `<a href="${url({ q })}">${esc(q)}</a>`).join("");
     app.innerHTML = `
-      <section class="hero"><div><h1>${t("hero.title")}</h1><p data-nosnippet>${t("hero.text", { offers: fmt(m.stats.offers), shops: m.stats.shops })}</p></div></section>
-      <div class="hero-cats"><h2 class="sec-title">${t("categories")}</h2><section class="tiles">${tiles}</section></div>
+      <section class="brief"><div><h1>${t("brief.h1", { shops: m.stats.shops })}</h1><p data-nosnippet>${t("brief.p")}</p></div>
+        <div class="quick"><span class="lab">${t("quick")}</span>${quick}</div></section>
+      <div class="hero-cats"><div class="sec-head"><h2 class="sec-title">${t("categories")}</h2></div><section class="crates">${tiles}</section></div>
       ${m.sections.map((s) => row(titles[s.title] || s.title, s.more, s.items)).join("")}
       <div class="center"><a class="btn btn-big" href="/?all=1">${t("browseAll", { n: fmt(m.stats.products) })}</a></div>`;
     catbarFollow(app.querySelector(".hero-cats"));
@@ -1001,6 +1007,10 @@
       document.getElementById("updated").textContent = t("updated", { d: fmtDate(m.generated) })
         + (cur !== BASE && m.rates_date ? " " + t("ratesNote", { c: cur, d: fmtDate(m.rates_date) }) : "");
       catbarFollow(null);
+      const strip = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      strip("strip-upd", t("strip.upd", { d: fmtDate(m.generated) }));
+      strip("strip-shops", t("strip.shops", { n: m.stats.shops }));
+      strip("strip-offers", t("strip.offers", { n: fmt(m.stats.offers) }));
       if (page === "product") return await product();
       if (page === "shops") return shopsPage(m);
       if (page === "privacy") return privacyPage();

@@ -228,7 +228,8 @@ def _wrap(draw: ImageDraw.ImageDraw, text: str, font, width: int, lines: int) ->
     return out
 
 
-BG, PANEL, INK, MUTED, ORANGE, GREEN = "#0f172a", "#1e293b", "#f8fafc", "#94a3b8", "#f97316", "#22c55e"
+# the site's "tactical" colours: black-olive ground, olive panels, paper text, signal orange
+BG, PANEL, INK, MUTED, ORANGE, GREEN = "#17190f", "#2a2f1b", "#f4f1e6", "#c7bc96", "#ff8a3d", "#7fbf3f"
 
 
 def deals_picture(items: list[dict], titles: dict, thumbs: Callable[[str], Path | None], size: tuple[int, int],
@@ -250,10 +251,10 @@ def deals_picture(items: list[dict], titles: dict, thumbs: Callable[[str], Path 
     name_f, price_f, was_f, small_f = _font(32 if tall else 28, "SemiBold"), _font(46 if tall else 40), _font(28 if tall else 24, "Medium"), _font(24 if tall else 20, "Medium")
     for i, it in enumerate(items[:n]):
         y = top + i * (row_h + gap)
-        d.rounded_rectangle((pad, y, w - pad, y + row_h), radius=22, fill=PANEL)
+        d.rounded_rectangle((pad, y, w - pad, y + row_h), radius=2, fill=PANEL)
         ph = row_h - 28
         px = pad + 14
-        d.rounded_rectangle((px, y + 14, px + ph, y + 14 + ph), radius=14, fill="#ffffff")
+        d.rounded_rectangle((px, y + 14, px + ph, y + 14 + ph), radius=2, fill="#ffffff")
         src = thumbs(it["id"])
         if src:
             try:
@@ -281,7 +282,7 @@ def deals_picture(items: list[dict], titles: dict, thumbs: Callable[[str], Path 
         d.text((right - bw - 14, wy), was, font=was_f, fill=MUTED, anchor="ra")
         mid = wy + was_f.size * 0.6
         d.line((right - bw - 14 - ww, mid, right - bw - 14, mid), fill=MUTED, width=2)
-        d.rounded_rectangle((right - bw, wy - 2, right, wy + small_f.size + 10), radius=8, fill=GREEN)
+        d.rounded_rectangle((right - bw, wy - 2, right, wy + small_f.size + 10), radius=2, fill=GREEN)
         d.text((right - bw / 2, wy + 3), badge, font=small_f, fill="#052e16", anchor="ma")
     d.text((pad, h - foot + (26 if tall else 16)), "compairsoft.eu", font=_font(40 if tall else 32), fill=ORANGE)
     d.text((w - pad, h - foot + (36 if tall else 24)), "Porovnání cen airsoftu na jednom místě",

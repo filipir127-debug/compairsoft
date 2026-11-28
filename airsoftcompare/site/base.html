@@ -22,14 +22,16 @@
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="preload" href="/static/fonts/inter-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/static/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/barlow-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/barlow-condensed-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/saira-stencil-one-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/static/style.css?v={{ version }}">
   <link rel="preload" href="/data/meta.json?v={{ version }}" as="fetch" crossorigin>
   {% for host in image_hosts %}<link rel="preconnect" href="{{ host }}">
   {% endfor %}
 </head>
 <body data-page="{{ page }}">
+<div class="strip" data-nosnippet><div class="wrap"><span class="live" id="strip-upd">&nbsp;</span><span id="strip-shops"></span><span id="strip-offers" class="hide-s"></span></div></div>
 <header class="top">
   <div class="wrap top-inner">
     <a class="logo" href="/"><span class="logo-mark"><svg class="ic"><use href="/static/icons.svg?v={{ version }}#i-crosshair"/></svg></span><span class="logo-words"><span class="logo-text">Comp<b>airsoft</b></span><span class="logo-tag" id="slogan" aria-hidden="true">Compare? Airsoft? <i>Comp<b>airsoft</b>.</i></span></span></a>
