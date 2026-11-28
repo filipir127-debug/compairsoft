@@ -62,9 +62,18 @@ _PLATFORM = [
 GUN_TYPES = {"pistols", "guns", "smgs", "shotguns", "snipers"}
 # Air guns: kind (Guns > Airguns > Rifles / Pistols / Diabolos) and calibre (Diabolos > 4.5mm …).
 _AIRGUN_KIND = [("pellets", r"\b(diabol\w*|pellet\w*|broky|strelivo)\b"),
+                # parts and accessories named first: "Pumpa Hatsan pro vzduchovky", "Moon clip set (4,5mm)"
+                ("acc", r"\b(pump[ay]?|pruchodk\w*|moon ?clip\w*|servis\w*|kit|guide|katalog\w*|kulick\w*|bb kulic\w*|"
+                        r"nahradni|tesneni|zasobnik\w*|magazin\w*|kufr\w*|pouzdr\w*|montaz\w*|tlumic\w*|terc\w*|"
+                        r"lapac\w*|olej\w*|bombick\w*|nabojnic\w*|popruh\w*|remen\w*|dvojnoz\w*)\b"),
                 ("rifle", r"\b(vzduchovk\w*|pusk[ayu]\w*|samopal\w*|karabin\w*|rifle\w*)\b"),
-                ("pistol", r"\b(pistol\w*|revolver\w*|glock\w*|1911|beretta|cz ?75\w*|walther p\w*|makarov|schofield|"
-                           r"dan wesson|python|peacemaker|saa|smith ?& ?wesson|s ?& ?w|m29|629)\b")]
+                ("pistol", r"\b(pistol\w*|revolver\w*|glock\w*|1911|sa ?1911\w*|beretta|cz ?75\w*|p-?0[79]|walther p\w*|"
+                           r"makarov|schofield|dan wesson|python|peacemaker|saa|smith ?& ?wesson|s ?& ?w|m29|629|bersa|"
+                           r"sti|duty one|m9(-?a1)?|p92|92 ?fs|px4|p226|p229|p320|usp|x9|cp88|cp99|ppk\w*|colt|tt-?33)\b")]
+# Shops call any air gun "vzduchovka", pistols included ("Vzduchovka 1911 - CO2, GNB"): a pistol name
+# wins over that word unless the title names a long gun.
+_LONG_GUN = r"\b(pusk[ayu]\w*|samopal\w*|karabin\w*|rifle\w*|brokovnic\w*)\b"
+_PISTOL_ACTION = r"\b(gnb|gbb|nbb|blow ?back)\b"
 _INCH = {"177": "4.5", "20": "5.0", "22": "5.5", "25": "6.35", "30": "7.62", "357": "9"}
 CALIBERS = ("4.5", "5.0", "5.5", "6.35", "7.62", "9")
 
@@ -117,9 +126,12 @@ def _attrs(title: str, category: str, price: float | None = None) -> list[str]:
     if category == "airguns":
         # the first kind word decides: "Vzduchová pistole … Diabolo" is a pistol, "Diabolo … pistole" pellets
         hits = [(m.start(), k) for k, rx in _AIRGUN_KIND for m in [re.search(rx, t)] if m]
-        kind = min(hits)[1] if hits else "rifle"
+        named = {k for _, k in hits}
+        kind = min(hits)[1] if hits else ("pistol" if re.search(_PISTOL_ACTION, t) else "rifle")
         if kind == "pellets" and price and price > 1500:  # a gun "for diabolos", not a tin of them
-            kind = "pistol" if any(k == "pistol" for _, k in hits) else "rifle"
+            kind = "pistol" if "pistol" in named else "rifle"
+        if kind == "rifle" and not re.search(_LONG_GUN, t) and ("pistol" in named or re.search(_PISTOL_ACTION, t)):
+            kind = "pistol"
         tags.append("ag:" + kind)
         if cal := _caliber(t):
             tags.append(f"cal:{cal}")

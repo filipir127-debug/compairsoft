@@ -303,6 +303,19 @@ def test_other_and_airgun_categories(title, expected):
     ("Vzduchová pistole Glock 17 Gen5 Diabolo BlowBack", 3890, {"ag:pistol"}),
     ("ASG Schofield 6\" 4,5mm Diabolky Stainless", 3840, {"ag:pistol", "cal:4.5"}),
     ("Vzduchovka Taipan Veteran II cal.6,35mm FP", 42900, {"ag:rifle", "cal:6.35"}),
+    # shops call CO2 pistols "vzduchovka", or give only the model name
+    ("Vzduchovka 1911 - stříbrná, CO2, GNB, CyberGun", 1900, {"ag:pistol"}),
+    ("Vzduchovka CZ 75 Shadow 2 - celokov, GBB, CO2, ASG", 4780, {"ag:pistol"}),
+    ("Bersa BP9CC - CO2, 4,5mm, GNB, ASG", 1807, {"ag:pistol", "cal:4.5"}),
+    ("Sig Sauer P226 X-Five 4,5mm CO2 GBB", 3071, {"ag:pistol"}),
+    ("Vzduchový samopal Cobray Ingram M11 - černý, CO2, GNB, cal 4.5mm (.177), ASG", 1740, {"ag:rifle"}),
+    ("Swiss Arms Crow 4,5mm Black s puškohledem", 2900, {"ag:rifle"}),
+    # parts and accessories
+    ("Pumpa Hatsan pro větrovky Vzduchovky", 3990, {"ag:acc"}),
+    ("Full Power průchodka SPA Artemis M25 cal.4,5mm", 149, {"ag:acc"}),
+    ("ASG Moon clip set, 12 patron DW715 (4,5mm)", 909, {"ag:acc"}),
+    ("Servis kit pro Glock 17 Gen5 Diabolo Blowback CO2", 249, {"ag:acc"}),
+    ("Airgun BB kuličky 0,35g kal. 4,5mm 1500ks ASG", 156, {"ag:acc"}),
 ])
 def test_airgun_kind_and_calibre(title, price, expected):
     from airsoftcompare.export import _attrs
