@@ -383,8 +383,6 @@ def export_site(cfg: dict, out: str | Path) -> None:
     shutil.copytree(HERE / "static" / "fonts", out / "static" / "fonts")
     for icon in (HERE / "static" / "icons").iterdir():  # at the root, where browsers and Google look for them
         shutil.copy(icon, out / icon.name)
-    for proof in (HERE / "static" / "verify").iterdir():  # search engines' site-ownership files, at the root
-        shutil.copy(proof, out / proof.name)
     # Search engines: every category and product page, on the canonical host.
     site = settings.get("site_url", "https://www.compairsoft.eu").rstrip("/")
     today = date.today().isoformat()

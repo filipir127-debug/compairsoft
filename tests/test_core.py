@@ -474,7 +474,8 @@ def test_airsoft_bbs_called_pellets_stay_bbs():
     assert categorize("Diabolo JSB Exact Jumbo RS 500ks cal.5,52mm") == "airguns"
 
 
-def test_site_ownership_files_are_at_the_root(tmp_path):
+
+def test_seznam_ownership_tag_on_the_homepage(tmp_path):
     from airsoftcompare import db as dbmod
     from airsoftcompare.export import export_site
     from airsoftcompare.matching import rebuild_products
@@ -487,5 +488,6 @@ def test_site_ownership_files_are_at_the_root(tmp_path):
                                 in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
     rebuild_products(conn)
     export_site({"settings": {"database": str(dbfile), "base_currency": "CZK"}, "shops": [{"name": "Shop"}]}, tmp_path / "dist")
-    proof = tmp_path / "dist" / "seznam-wmt-XOmPV2trc7Xbp2BJRQu2xI8FVEpIWPpZ.txt"
-    assert proof.read_text() == "XOmPV2trc7Xbp2BJRQu2xI8FVEpIWPpZ"
+    head = (tmp_path / "dist/index.html").read_text().split("</head>")[0]
+    assert '<meta name="seznam-wmt" content="dJGgsrPJ3txSUBbKZbMPWaRdmJTFlQQL">' in head
+    assert not list((tmp_path / "dist").glob("seznam-wmt-*"))
