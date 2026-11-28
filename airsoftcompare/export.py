@@ -416,9 +416,31 @@ def export_site(cfg: dict, out: str | Path) -> None:
         "Disallow: /*?q=\n"
         "Allow: /\n"
         f"\nSitemap: {site}/sitemap.xml\n", encoding="utf-8")
+    # For AI assistants (llmstxt.org): what the site is and where its main pages are.
+    (out / "llms.txt").write_text(
+        "# CompAirsoft\n\n"
+        "> Price comparison of airsoft guns, magazines, BBs, optics, tactical gear and clothing across "
+        f"{len(shops)} Czech airsoft shops. Prices are read from the shops' public feeds and product pages "
+        "several times a day. CompAirsoft does not sell anything: each offer links to the shop.\n\n"
+        f"- {len(products):,} products, {sum(p['shop_count'] > 1 for p in products):,} of them sold in 2+ shops\n"
+        "- Prices in CZK (also shown in EUR, USD, GBP and PLN at the Czech National Bank rate)\n"
+        "- Languages: Czech, Slovak, English, German\n\n"
+        "## Main pages\n\n"
+        f"- [Home]({site}/): search and categories\n"
+        f"- [Deals of the week]({site}/slevy): price drops and products much cheaper in one shop (Czech)\n"
+        f"- [Cheapest picks]({site}/nejlevnejsi/): cheapest beginner AEGs, 0.25 g BBs, CO2 and gas pistols and more (Czech)\n"
+        f"- [Shops]({site}/shops): every compared shop and when its prices were last read\n"
+        f"- [About & contact]({site}/about)\n\n"
+        "## Categories\n\n"
+        + "".join(f"- [{label}]({site}/?cat={g})\n" for g, (label, _icon, _subs) in GROUPS.items())
+        + "\n## Product pages\n\n"
+        f"Each product has a page at {site}/product/<id> with every shop's price, stock and price history. "
+        f"All of them are listed in {site}/sitemap.xml.\n", encoding="utf-8")
     (out / "_redirects").write_text("/product/*  /product  200\n", encoding="utf-8")
     (out / "_headers").write_text(
-        "/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"
+        # "!" drops Cloudflare's default "Access-Control-Allow-Origin: *": nothing here is meant to be
+        # read by other sites' scripts (the photos come from our own image projects, loaded as <img>).
+        "/*\n  ! Access-Control-Allow-Origin\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n"
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
         "  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()\n"
         "  Strict-Transport-Security: max-age=31536000; includeSubDomains\n"

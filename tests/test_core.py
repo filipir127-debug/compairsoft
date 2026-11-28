@@ -547,3 +547,22 @@ def test_seznam_ownership_tag_on_the_homepage(tmp_path):
     head = (tmp_path / "dist/index.html").read_text().split("</head>")[0]
     assert '<meta name="seznam-wmt" content="dJGgsrPJ3txSUBbKZbMPWaRdmJTFlQQL">' in head
     assert not list((tmp_path / "dist").glob("seznam-wmt-*"))
+
+
+def test_llms_txt_and_no_cors_wildcard(tmp_path):
+    from airsoftcompare import db as dbmod
+    from airsoftcompare.export import export_site
+    from airsoftcompare.matching import rebuild_products
+    from airsoftcompare.sources.common import Offer
+    from airsoftcompare.updater import _shop_id, save_offer
+    dbfile = tmp_path / "t.db"
+    conn = dbmod.connect(str(dbfile))
+    sid = _shop_id(conn, {"name": "Shop", "url": "https://x.cz", "type": "feed"})
+    save_offer(conn, sid, Offer(url="https://x.cz/m4", title="M4 zásobník", price=200, currency="CZK",
+                                in_stock=True, ean=None, brand=None, image=None), {"CZK": 1.0})
+    rebuild_products(conn)
+    export_site({"settings": {"database": str(dbfile), "base_currency": "CZK", "site_url": "https://www.example.cz"},
+                 "shops": [{"name": "Shop"}]}, tmp_path / "dist")
+    llms = (tmp_path / "dist/llms.txt").read_text()
+    assert llms.startswith("# CompAirsoft\n\n> ") and "https://www.example.cz/slevy" in llms and "/?cat=weapons" in llms
+    assert (tmp_path / "dist/_headers").read_text().startswith("/*\n  ! Access-Control-Allow-Origin\n")
