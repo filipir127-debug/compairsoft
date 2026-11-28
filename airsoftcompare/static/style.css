@@ -237,6 +237,14 @@ img { max-width: 100%; }
 }
 @media (max-width: 640px) {
   .top-inner { flex-wrap: wrap; height: auto; padding-top: 10px; padding-bottom: 10px; gap: 10px 16px; }
+  /* Scrolling down (app.js) folds the header to its logo row: the rest is clipped away (the header
+     keeps its size, so the page doesn't jump) and the theme button moves up into the logo row. */
+  .top { clip-path: inset(0 0 -20px 0); transition: clip-path .5s ease; }  /* -20px: room for the shadow */
+  .top.hdr-hidden { clip-path: inset(0 0 calc(100% - var(--hdr-keep, 54px)) 0); }
+  .top::after { content: ""; position: absolute; left: 0; right: 0; top: calc(var(--hdr-keep, 54px) - 1px); height: 1px; background: rgba(255,255,255,.14); opacity: 0; transition: opacity .5s ease; pointer-events: none; }
+  .top.hdr-hidden::after { opacity: 1; }
+  .theme-btn { transition: transform .5s ease; }
+  .top.hdr-hidden .theme-btn { transform: translateY(var(--theme-dy, -46px)); }
   .search { order: 3; flex: 1 1 100%; max-width: 100%; min-width: 0; }
   .search button { padding: 10px 16px; }
   .top-nav { margin-left: auto; }

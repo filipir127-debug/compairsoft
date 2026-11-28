@@ -959,6 +959,35 @@
     s.textContent = JSON.stringify(data);
   }
 
+  // ---------------------------------------------------------------- phone header
+  // On phones the header takes a lot of the screen: scrolling down folds it to the logo row (with
+  // the theme button moved up into it); scrolling up or reaching the top unfolds it. Never while
+  // typing in the search.
+  (() => {
+    const top = document.querySelector(".top"), phone = matchMedia("(max-width: 640px)");
+    const logo = top.querySelector(".logo"), theme = top.querySelector(".theme-btn");
+    let lastY = scrollY, queued = false;
+    const fold = () => {
+      if (top.classList.contains("hdr-hidden")) return;
+      const t = top.getBoundingClientRect(), l = logo.getBoundingClientRect(), b = theme.getBoundingClientRect();
+      top.style.setProperty("--hdr-keep", `${Math.round(l.bottom - t.top + (l.top - t.top))}px`);
+      top.style.setProperty("--theme-dy", `${Math.round((l.top + l.height / 2) - (b.top + b.height / 2))}px`);
+      top.classList.add("hdr-hidden");
+    };
+    addEventListener("scroll", () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        const y = scrollY;
+        if (!phone.matches || y <= top.offsetHeight || top.contains(document.activeElement)) top.classList.remove("hdr-hidden");
+        else if (y > lastY + 6) fold();
+        else if (y < lastY - 6) top.classList.remove("hdr-hidden");
+        if (Math.abs(y - lastY) > 6 || y <= top.offsetHeight) lastY = y;
+      });
+    }, { passive: true });
+  })();
+
   // ---------------------------------------------------------------- router
   const page = document.body.dataset.page;
   async function route() {
