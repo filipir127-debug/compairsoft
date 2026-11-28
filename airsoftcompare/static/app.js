@@ -297,6 +297,16 @@
     weapons: ["weapons", "weapons-ak", "weapons-smg", "weapons-pistol", "weapons-sniper", "weapons-shotgun"],
     protection: ["protection", "protection-goggles", "protection-glasses", "protection-mask", "protection-glove", "protection-headset"],
   };
+  // subcategory -> drawing in illustrations.svg (cat-<name>)
+  const SUB_ILLU = {
+    pistols: "weapons-pistol", guns: "weapons", smgs: "weapons-smg", shotguns: "weapons-shotgun", snipers: "weapons-sniper",
+    airguns: "sub-airguns", grenades: "sub-grenades", magazines: "sub-magazines", bbs: "sub-bbs", gas: "sub-gas",
+    optics: "sights", lights: "sub-lights", parts: "upgrades", batteries: "sub-batteries", chargers: "sub-chargers",
+    vests: "gear", pouches: "sub-pouches", holsters: "sub-holsters", slings: "sub-slings",
+    masks: "protection-mask", eyewear: "protection-goggles", helmets: "protection", gloves: "protection-glove",
+    clothing: "apparel", comms: "radios", food: "food",
+    melee: "sub-melee", bows: "sub-bows", targets: "sub-targets", magnets: "sub-magnets", books: "sub-books", cables: "sub-cables", other: "misc",
+  };
   const ILLU_PICK = Object.fromEntries(Object.entries(ILLU).map(([g, l]) => [g, l[Math.floor(Math.random() * l.length)]]));
   function home(m) {
     setCanonical("/");
@@ -546,9 +556,11 @@
     const bands = sorted.length > 20 ? [...new Set([0.25, 0.5, 0.75].map((f) => nice(qv(f))))] : [];
     // fixed per category (chosen at export), so the tiles don't change with filters
     const photoOf = (sub) => safeUrl((m.catImages || {})[sub]) || "";
+    // category tiles show the site's own drawing of the category (illustrations.svg)
+    const drawing = (sub) => `<span class="qimg qill"><svg viewBox="0 0 160 90" aria-hidden="true"><use href="#cat-${SUB_ILLU[sub] || "misc"}"/></svg></span>`;
     const qimg = (img) => `<span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[group], "ic")}</span>`;
     let subTiles = group && GROUPS[group][2].length > 1 ? GROUPS[group][2].filter((sub) => m.counts[sub]).map((sub) =>
-      `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">${qimg(photoOf(sub))}${esc(catName(sub))}</a>`).join("") : "";
+      `<a class="qtile ${c === sub ? "on" : ""}" href="${url({ cat: c === sub ? group : sub, page: "" })}">${drawing(sub)}${esc(catName(sub))}</a>`).join("") : "";
     // Guns go one step deeper per click: type > power (AEG, GBB, CO2, spring) > platform (AK, M4, …);
     // air guns: kind (rifles, pistols, diabolos) > calibre for diabolos.
     const one = (name) => (chosen[name].size === 1 ? [...chosen[name]][0] : "");
@@ -567,10 +579,7 @@
       }).join("");
     }
     // A search across all categories: tiles for the categories it found, most results first.
-    const catTile = (sub, label, href, on) => {
-      const img = photoOf(sub);
-      return `<a class="qtile ${on ? "on" : ""}" href="${url(href)}"><span class="qimg">${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon(ICONS[GROUP_OF[sub]] || "layers", "ic")}</span>${label}</a>`;
-    };
+    const catTile = (sub, label, href, on) => `<a class="qtile ${on ? "on" : ""}" href="${url(href)}">${drawing(sub)}${label}</a>`;
     if (q && !c) {
       const found = new Map();
       for (const x of items) found.set(x.c, (found.get(x.c) || 0) + 1);

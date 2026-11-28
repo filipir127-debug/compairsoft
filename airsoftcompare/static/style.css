@@ -435,3 +435,7 @@ html.js .intro { display: none; }
 
 /* number of search results in a category tile */
 .qtile .qn { margin-left: auto; padding-left: 8px; white-space: nowrap; font-size: 12px; font-weight: 600; color: var(--muted); }
+
+/* category tiles: the category drawing instead of a product photo */
+.qimg.qill { width: 64px; height: 36px; background: none; border-radius: 0; overflow: visible; }
+.qimg.qill svg { width: 100%; height: 100%; display: block; }
